@@ -1,0 +1,430 @@
+{
+  "$defs": {
+    "AuthorityScope": {
+      "enum": [
+        "TEST_FIXTURE_ONLY",
+        "PLATFORM"
+      ],
+      "title": "AuthorityScope",
+      "type": "string"
+    },
+    "BddBlockerCode": {
+      "enum": [
+        "SCENARIO_SPEC_DIGEST_INVALID",
+        "VOCABULARY_SNAPSHOT_DIGEST_INVALID",
+        "CLASSIFICATION_SNAPSHOT_DIGEST_INVALID",
+        "AUTHORITY_SCOPE_MISMATCH",
+        "MISSING_CLASSIFICATION_APPROVAL",
+        "AMBIGUOUS_CLASSIFICATION_APPROVAL",
+        "CLASSIFICATION_CANDIDATE_MISMATCH",
+        "NO_APPROVED_BUSINESS_TERM",
+        "AMBIGUOUS_APPROVED_BUSINESS_TERM",
+        "MAPPING_SOURCE_MISMATCH",
+        "NON_PROMOTABLE_MAPPING_KIND",
+        "MODALITY_NOT_APPROVED_BY_MAPPING",
+        "NON_DEFINITIVE_EFFECT",
+        "EFFECT_CLOSURE_INSUFFICIENT",
+        "DEPENDENCY_RESOLUTION_INCOMPLETE",
+        "TRACEABILITY_MANIFEST_FAILED",
+        "GHERKIN_STRUCTURE_INVALID"
+      ],
+      "title": "BddBlockerCode",
+      "type": "string"
+    },
+    "BddCompilationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "blockers": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/BddBlockerCode"
+          },
+          "title": "Blockers",
+          "type": "array"
+        },
+        "candidate_bdd_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Bdd Ref"
+        },
+        "classification_approval_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Classification Approval Refs",
+          "type": "array"
+        },
+        "classification_snapshot_digest": {
+          "title": "Classification Snapshot Digest",
+          "type": "string"
+        },
+        "compilation_status": {
+          "$ref": "#/$defs/BddCompilationStatus"
+        },
+        "compiler_configuration_digest": {
+          "title": "Compiler Configuration Digest",
+          "type": "string"
+        },
+        "compiler_version": {
+          "const": "bdd-compiler-1.1",
+          "default": "bdd-compiler-1.1",
+          "title": "Compiler Version",
+          "type": "string"
+        },
+        "effective_timestamp": {
+          "title": "Effective Timestamp",
+          "type": "string"
+        },
+        "finding_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Finding Refs",
+          "type": "array"
+        },
+        "input_scenario_spec_digest": {
+          "title": "Input Scenario Spec Digest",
+          "type": "string"
+        },
+        "mapping_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Mapping Refs",
+          "type": "array"
+        },
+        "output_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Digest"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "vocabulary_snapshot_digest": {
+          "title": "Vocabulary Snapshot Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "compilation_status",
+        "scenario_spec_ref",
+        "input_scenario_spec_digest",
+        "vocabulary_snapshot_digest",
+        "classification_snapshot_digest",
+        "compiler_configuration_digest",
+        "effective_timestamp"
+      ],
+      "title": "BddCompilationResult",
+      "type": "object"
+    },
+    "BddCompilationStatus": {
+      "enum": [
+        "SUCCEEDED",
+        "BLOCKED",
+        "FAILED"
+      ],
+      "title": "BddCompilationStatus",
+      "type": "string"
+    },
+    "CandidateBdd": {
+      "additionalProperties": false,
+      "properties": {
+        "authority_scope": {
+          "$ref": "#/$defs/AuthorityScope"
+        },
+        "candidate_bdd_id": {
+          "title": "Candidate Bdd Id",
+          "type": "string"
+        },
+        "classification_snapshot_digest": {
+          "title": "Classification Snapshot Digest",
+          "type": "string"
+        },
+        "compiler_version": {
+          "const": "bdd-compiler-1.1",
+          "default": "bdd-compiler-1.1",
+          "title": "Compiler Version",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "gherkin_artifact_ref": {
+          "title": "Gherkin Artifact Ref",
+          "type": "string"
+        },
+        "platform_governance_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Platform Governance Ref"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "candidate-bdd-1.0",
+          "default": "candidate-bdd-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "traceability_manifest_ref": {
+          "title": "Traceability Manifest Ref",
+          "type": "string"
+        },
+        "vocabulary_snapshot_digest": {
+          "title": "Vocabulary Snapshot Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_bdd_id",
+        "scenario_spec_ref",
+        "gherkin_artifact_ref",
+        "traceability_manifest_ref",
+        "vocabulary_snapshot_digest",
+        "classification_snapshot_digest",
+        "authority_scope",
+        "content_digest"
+      ],
+      "title": "CandidateBdd",
+      "type": "object"
+    },
+    "GherkinArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "dialect": {
+          "const": "en",
+          "default": "en",
+          "title": "Dialect",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "text",
+        "content_digest"
+      ],
+      "title": "GherkinArtifact",
+      "type": "object"
+    },
+    "GherkinElementBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "effect_or_precondition_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Effect Or Precondition Refs",
+          "type": "array"
+        },
+        "element_id": {
+          "title": "Element Id",
+          "type": "string"
+        },
+        "element_kind": {
+          "enum": [
+            "SCENARIO_NAME",
+            "GIVEN",
+            "WHEN",
+            "THEN",
+            "AND"
+          ],
+          "title": "Element Kind",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "mapping_ref": {
+          "title": "Mapping Ref",
+          "type": "string"
+        },
+        "scenario_spec_element_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Scenario Spec Element Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "element_id",
+        "element_kind",
+        "scenario_spec_element_refs",
+        "mapping_ref"
+      ],
+      "title": "GherkinElementBinding",
+      "type": "object"
+    },
+    "TraceabilityManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "element_bindings": {
+          "items": {
+            "$ref": "#/$defs/GherkinElementBinding"
+          },
+          "title": "Element Bindings",
+          "type": "array"
+        },
+        "gherkin_artifact_ref": {
+          "title": "Gherkin Artifact Ref",
+          "type": "string"
+        },
+        "input_digest_set": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Input Digest Set",
+          "type": "array"
+        },
+        "manifest_id": {
+          "title": "Manifest Id",
+          "type": "string"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "manifest_id",
+        "scenario_spec_ref",
+        "gherkin_artifact_ref",
+        "element_bindings",
+        "input_digest_set",
+        "content_digest"
+      ],
+      "title": "TraceabilityManifest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority_scope": {
+      "$ref": "#/$defs/AuthorityScope"
+    },
+    "candidate_bdds": {
+      "items": {
+        "$ref": "#/$defs/CandidateBdd"
+      },
+      "title": "Candidate Bdds",
+      "type": "array"
+    },
+    "classification_snapshot_digest": {
+      "title": "Classification Snapshot Digest",
+      "type": "string"
+    },
+    "classification_snapshot_ref": {
+      "title": "Classification Snapshot Ref",
+      "type": "string"
+    },
+    "compilation_results": {
+      "items": {
+        "$ref": "#/$defs/BddCompilationResult"
+      },
+      "title": "Compilation Results",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "gherkin_artifacts": {
+      "items": {
+        "$ref": "#/$defs/GherkinArtifact"
+      },
+      "title": "Gherkin Artifacts",
+      "type": "array"
+    },
+    "scenario_spec_batch_digest": {
+      "title": "Scenario Spec Batch Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "bdd-compilation-batch-1.0",
+      "default": "bdd-compilation-batch-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "traceability_manifests": {
+      "items": {
+        "$ref": "#/$defs/TraceabilityManifest"
+      },
+      "title": "Traceability Manifests",
+      "type": "array"
+    },
+    "vocabulary_snapshot_digest": {
+      "title": "Vocabulary Snapshot Digest",
+      "type": "string"
+    },
+    "vocabulary_snapshot_ref": {
+      "title": "Vocabulary Snapshot Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scenario_spec_batch_digest",
+    "vocabulary_snapshot_ref",
+    "vocabulary_snapshot_digest",
+    "classification_snapshot_ref",
+    "classification_snapshot_digest",
+    "authority_scope",
+    "gherkin_artifacts",
+    "traceability_manifests",
+    "candidate_bdds",
+    "compilation_results",
+    "content_digest"
+  ],
+  "title": "BddCompilationBatch",
+  "type": "object"
+}

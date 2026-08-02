@@ -1,0 +1,69 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_digest": {
+      "title": "Artifact Digest",
+      "type": "string"
+    },
+    "artifact_id": {
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "authority_ref": {
+      "title": "Authority Ref",
+      "type": "string"
+    },
+    "certification_binding_id": {
+      "title": "Certification Binding Id",
+      "type": "string"
+    },
+    "certification_ref": {
+      "title": "Certification Ref",
+      "type": "string"
+    },
+    "certification_type": {
+      "title": "Certification Type",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "valid_from": {
+      "title": "Valid From",
+      "type": "string"
+    },
+    "valid_to": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid To"
+    }
+  },
+  "required": [
+    "certification_binding_id",
+    "artifact_id",
+    "artifact_digest",
+    "certification_ref",
+    "certification_type",
+    "authority_ref",
+    "valid_from",
+    "content_digest"
+  ],
+  "title": "CertificationEnvelope",
+  "type": "object"
+}

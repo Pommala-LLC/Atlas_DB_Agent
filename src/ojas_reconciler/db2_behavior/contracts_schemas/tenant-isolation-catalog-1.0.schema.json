@@ -1,0 +1,84 @@
+{
+  "$defs": {
+    "TenantIsolationRule": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted_parameter_names": {
+          "default": [
+            "P_TENANT_ID"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Accepted Parameter Names",
+          "type": "array"
+        },
+        "relation_name": {
+          "title": "Relation Name",
+          "type": "string"
+        },
+        "required_scope": {
+          "default": "WRITE",
+          "enum": [
+            "READ",
+            "WRITE",
+            "BOTH"
+          ],
+          "title": "Required Scope",
+          "type": "string"
+        },
+        "tenant_column": {
+          "title": "Tenant Column",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relation_name",
+        "tenant_column"
+      ],
+      "title": "TenantIsolationRule",
+      "type": "object"
+    }
+  },
+  "$id": "tenant-isolation-catalog-1.0.schema.json",
+  "additionalProperties": false,
+  "properties": {
+    "catalog_id": {
+      "title": "Catalog Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/TenantIsolationRule"
+      },
+      "title": "Rules",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "tenant-isolation-catalog-1.0",
+      "default": "tenant-isolation-catalog-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_kind": {
+      "enum": [
+        "CATALOG",
+        "MOCK"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    }
+  },
+  "required": [
+    "catalog_id",
+    "source_kind",
+    "rules",
+    "content_digest"
+  ],
+  "title": "TenantIsolationCatalog",
+  "type": "object"
+}

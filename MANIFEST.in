@@ -1,0 +1,15 @@
+include README.md
+include MANIFEST.in
+include ATLAS_*.json
+include build.bat
+include ATLAS_ANALYZE.bat
+include ATLAS_CONSOLE.bat
+include RUN_UI_E2E.bat
+recursive-include requirements *.txt
+recursive-include organic *.json
+recursive-include contracts *.json
+recursive-include docs *.md *.sha256
+recursive-include examples *.json *.sql *.md
+recursive-include samples *.json *.sql *.md
+recursive-include scripts *.py *.bat
+recursive-include tests *.py *.json *.sql *.feature *.ndjson *.txt *.lark

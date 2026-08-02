@@ -1,0 +1,80 @@
+{
+  "$defs": {
+    "GovernanceEventType": {
+      "enum": [
+        "ARTIFACT_CACHED",
+        "REFERENCE_BASELINE_CACHED",
+        "BASELINE_RETIRED",
+        "BASELINE_COMPARED",
+        "REVIEW_AMENDMENT_CACHED",
+        "EXTERNAL_PLATFORM_DECISION_CACHED",
+        "EXTERNAL_CERTIFICATION_CACHED",
+        "ARTIFACT_ADMITTED",
+        "BASELINE_REGISTERED",
+        "ARTIFACT_AMENDED",
+        "PLATFORM_DECISION_BOUND",
+        "CERTIFICATION_BOUND"
+      ],
+      "title": "GovernanceEventType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actor_ref": {
+      "title": "Actor Ref",
+      "type": "string"
+    },
+    "artifact_id": {
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "event_at": {
+      "title": "Event At",
+      "type": "string"
+    },
+    "event_id": {
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_type": {
+      "$ref": "#/$defs/GovernanceEventType"
+    },
+    "payload_digest": {
+      "title": "Payload Digest",
+      "type": "string"
+    },
+    "previous_event_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Event Digest"
+    },
+    "sequence": {
+      "title": "Sequence",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "event_id",
+    "sequence",
+    "event_type",
+    "artifact_id",
+    "actor_ref",
+    "event_at",
+    "payload_digest",
+    "content_digest"
+  ],
+  "title": "GovernanceAuditEvent",
+  "type": "object"
+}

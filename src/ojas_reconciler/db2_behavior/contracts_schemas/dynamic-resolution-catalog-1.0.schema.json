@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "catalog_id": {
+      "title": "Catalog Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "relation_names": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Relation Names",
+      "type": "array"
+    },
+    "routine_names": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Routine Names",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "dynamic-resolution-catalog-1.0",
+      "default": "dynamic-resolution-catalog-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_kind": {
+      "enum": [
+        "CATALOG",
+        "SOURCE"
+      ],
+      "title": "Source Kind",
+      "type": "string"
+    }
+  },
+  "required": [
+    "catalog_id",
+    "source_kind",
+    "content_digest"
+  ],
+  "title": "DynamicResolutionCatalog",
+  "type": "object"
+}

@@ -1,0 +1,117 @@
+{
+  "$defs": {
+    "Contradiction": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ContradictionCode"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "expectation_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expectation Ref"
+        },
+        "plan_ref": {
+          "title": "Plan Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "detail",
+        "plan_ref"
+      ],
+      "title": "Contradiction",
+      "type": "object"
+    },
+    "ContradictionCode": {
+      "description": "Only these are emitted. There is deliberately no CONFIRMED code.",
+      "enum": [
+        "STATICALLY_INFEASIBLE_PATH_OBSERVED",
+        "DYNAMIC_VARIANT_OUTSIDE_ENUMERATION",
+        "UNDECLARED_MUTATION_OBSERVED",
+        "MUST_EFFECT_NOT_OBSERVED",
+        "OUT_PARAMETER_VALUE_MISMATCH",
+        "SQLSTATE_MISMATCH"
+      ],
+      "title": "ContradictionCode",
+      "type": "string"
+    }
+  },
+  "$id": "falsification-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority_scope": {
+      "const": "RUNTIME_EVIDENCE_ONLY",
+      "default": "RUNTIME_EVIDENCE_ONLY",
+      "title": "Authority Scope",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "contradictions": {
+      "items": {
+        "$ref": "#/$defs/Contradiction"
+      },
+      "title": "Contradictions",
+      "type": "array"
+    },
+    "note": {
+      "default": "Absence of contradictions is not confirmation. One execution exercises one path; unobserved paths remain unproven.",
+      "title": "Note",
+      "type": "string"
+    },
+    "observation_ref": {
+      "title": "Observation Ref",
+      "type": "string"
+    },
+    "plan_ref": {
+      "title": "Plan Ref",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "falsification-report-1.0",
+      "default": "falsification-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unobserved_expectation_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unobserved Expectation Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "plan_ref",
+    "observation_ref",
+    "contradictions",
+    "unobserved_expectation_refs",
+    "content_digest"
+  ],
+  "title": "FalsificationReport",
+  "type": "object"
+}

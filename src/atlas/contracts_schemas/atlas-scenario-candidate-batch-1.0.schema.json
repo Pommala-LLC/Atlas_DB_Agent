@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "DialectId": {
+      "enum": [
+        "DB2_SQL_PL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL",
+        "POSTGRESQL_PLPGSQL",
+        "MYSQL_STORED_PROGRAM"
+      ],
+      "title": "DialectId",
+      "type": "string"
+    },
+    "ScenarioCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "authority_scope": {
+          "const": "NON_AUTHORITATIVE_TECHNICAL_CANDIDATE",
+          "default": "NON_AUTHORITATIVE_TECHNICAL_CANDIDATE",
+          "title": "Authority Scope",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "given": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Given",
+          "type": "array"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "scenario_id": {
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "then": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Then",
+          "type": "array"
+        },
+        "when": {
+          "title": "When",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "name",
+        "given",
+        "when",
+        "then",
+        "evidence_refs"
+      ],
+      "title": "ScenarioCandidate",
+      "type": "object"
+    }
+  },
+  "$id": "atlas-scenario-candidate-batch-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dialect": {
+      "$ref": "#/$defs/DialectId"
+    },
+    "routine_ref": {
+      "title": "Routine Ref",
+      "type": "string"
+    },
+    "scenarios": {
+      "items": {
+        "$ref": "#/$defs/ScenarioCandidate"
+      },
+      "title": "Scenarios",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "atlas-scenario-candidate-batch-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_ir_digest": {
+      "title": "Source Ir Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "routine_ref",
+    "dialect",
+    "scenarios",
+    "source_ir_digest",
+    "content_digest"
+  ],
+  "title": "ScenarioCandidateBatch",
+  "type": "object"
+}

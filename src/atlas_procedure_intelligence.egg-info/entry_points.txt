@@ -1,0 +1,7 @@
+[console_scripts]
+atlas = atlas.cli:main
+atlas-console = atlas.web.runner:main
+commercial-behavior-console = atlas.web.runner:main
+db2-behavior = ojas_reconciler.db2_behavior.cli:main
+ojas-db2-agent = ojas_reconciler.db2_behavior.cli:main
+ojas-db2-gate0 = ojas_reconciler.db2_behavior.cli:main

@@ -1,0 +1,149 @@
+{
+  "$defs": {
+    "GovernanceArtifactType": {
+      "enum": [
+        "SCENARIO_SPEC_BATCH",
+        "SCENARIO_SPEC",
+        "CLASSIFICATION_OBSERVATION",
+        "EFFECT_CLOSURE",
+        "RESOLUTION_VECTOR",
+        "ANALYSIS_BUDGET_REPORT",
+        "BDD_COMPILATION_BATCH",
+        "CANDIDATE_BDD",
+        "TRACEABILITY_MANIFEST",
+        "GHERKIN_ARTIFACT",
+        "RUNTIME_VERIFICATION_BATCH",
+        "RUNTIME_EXECUTION_RECORD",
+        "RUNTIME_VERIFICATION_RESULT",
+        "PLATFORM_DECISION",
+        "CERTIFICATION_BINDING"
+      ],
+      "title": "GovernanceArtifactType",
+      "type": "string"
+    },
+    "LocalEvidenceAuthorityScope": {
+      "enum": [
+        "LOCAL_NON_AUTHORITATIVE_EVIDENCE"
+      ],
+      "title": "LocalEvidenceAuthorityScope",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_ref": {
+      "title": "Artifact Ref",
+      "type": "string"
+    },
+    "artifact_revision_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Artifact Revision Id"
+    },
+    "artifact_type": {
+      "$ref": "#/$defs/GovernanceArtifactType"
+    },
+    "authority_scope": {
+      "$ref": "#/$defs/LocalEvidenceAuthorityScope",
+      "default": "LOCAL_NON_AUTHORITATIVE_EVIDENCE"
+    },
+    "behavior_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Behavior Id"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "invalidates_machine_attestation": {
+      "default": false,
+      "title": "Invalidates Machine Attestation",
+      "type": "boolean"
+    },
+    "parent_artifact_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Artifact Id"
+    },
+    "payload_digest": {
+      "title": "Payload Digest",
+      "type": "string"
+    },
+    "platform_governance_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Platform Governance Ref"
+    },
+    "source_symbol_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Symbol Id"
+    },
+    "symbol_lineage_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Symbol Lineage Id"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "artifact_type",
+    "artifact_ref",
+    "content_digest",
+    "payload_digest",
+    "created_at"
+  ],
+  "title": "StoredArtifactRecord",
+  "type": "object"
+}

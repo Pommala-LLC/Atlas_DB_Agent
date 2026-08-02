@@ -1,0 +1,89 @@
+{
+  "$id": "naming-compatibility-policy-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "alias_support_until": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Alias Support Until"
+    },
+    "artifact_schema_compatibility": {
+      "title": "Artifact Schema Compatibility",
+      "type": "string"
+    },
+    "authority_ref": {
+      "title": "Authority Ref",
+      "type": "string"
+    },
+    "cli_aliases": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Cli Aliases",
+      "type": "array"
+    },
+    "cli_primary": {
+      "title": "Cli Primary",
+      "type": "string"
+    },
+    "commercial_name": {
+      "title": "Commercial Name",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "distribution_name": {
+      "title": "Distribution Name",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "governance_record_migration": {
+      "title": "Governance Record Migration",
+      "type": "string"
+    },
+    "policy_id": {
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "python_namespace": {
+      "title": "Python Namespace",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "naming-compatibility-policy-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "policy_id",
+    "commercial_name",
+    "distribution_name",
+    "python_namespace",
+    "cli_primary",
+    "cli_aliases",
+    "artifact_schema_compatibility",
+    "governance_record_migration",
+    "authority_ref",
+    "evidence_refs",
+    "content_digest"
+  ],
+  "title": "NamingCompatibilityPolicy",
+  "type": "object"
+}

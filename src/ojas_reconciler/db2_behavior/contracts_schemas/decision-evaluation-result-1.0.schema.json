@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "DecisionOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "effect_kind": {
+          "title": "Effect Kind",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "value_expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Expression"
+        }
+      },
+      "required": [
+        "target",
+        "effect_kind",
+        "evidence_refs"
+      ],
+      "title": "DecisionOutput",
+      "type": "object"
+    }
+  },
+  "$id": "decision-evaluation-result-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blockers": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "evaluated_rules": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Evaluated Rules",
+      "type": "array"
+    },
+    "matched_rule_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Matched Rule Id"
+    },
+    "model_digest": {
+      "title": "Model Digest",
+      "type": "string"
+    },
+    "outputs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/DecisionOutput"
+      },
+      "title": "Outputs",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "decision-evaluation-result-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "model_digest",
+    "status",
+    "content_digest"
+  ],
+  "title": "DecisionEvaluationResult",
+  "type": "object"
+}

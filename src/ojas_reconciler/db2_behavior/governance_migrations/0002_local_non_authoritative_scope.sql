@@ -1,0 +1,4 @@
+ALTER TABLE governance_artifacts
+    ADD COLUMN authority_scope TEXT NOT NULL
+    DEFAULT 'LOCAL_NON_AUTHORITATIVE_EVIDENCE'
+    CHECK (authority_scope = 'LOCAL_NON_AUTHORITATIVE_EVIDENCE');

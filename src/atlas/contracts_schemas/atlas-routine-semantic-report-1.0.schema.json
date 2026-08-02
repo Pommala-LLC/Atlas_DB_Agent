@@ -1,0 +1,315 @@
+{
+  "$defs": {
+    "DecisionArm": {
+      "additionalProperties": false,
+      "properties": {
+        "arm_id": {
+          "title": "Arm Id",
+          "type": "string"
+        },
+        "condition_text": {
+          "title": "Condition Text",
+          "type": "string"
+        },
+        "effect_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Effect Node Refs",
+          "type": "array"
+        },
+        "precedence": {
+          "minimum": 0,
+          "title": "Precedence",
+          "type": "integer"
+        },
+        "predicate_node_ref": {
+          "title": "Predicate Node Ref",
+          "type": "string"
+        },
+        "terminal": {
+          "title": "Terminal",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "arm_id",
+        "precedence",
+        "predicate_node_ref",
+        "condition_text",
+        "effect_node_refs",
+        "terminal"
+      ],
+      "title": "DecisionArm",
+      "type": "object"
+    },
+    "DialectId": {
+      "enum": [
+        "DB2_SQL_PL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL",
+        "POSTGRESQL_PLPGSQL",
+        "MYSQL_STORED_PROGRAM"
+      ],
+      "title": "DialectId",
+      "type": "string"
+    },
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MAY",
+        "CONDITIONAL",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "EffectSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "condition_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Condition Refs",
+          "type": "array"
+        },
+        "effect_id": {
+          "title": "Effect Id",
+          "type": "string"
+        },
+        "expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expression"
+        },
+        "kind": {
+          "$ref": "#/$defs/SemanticNodeKind"
+        },
+        "modality": {
+          "$ref": "#/$defs/EffectModality"
+        },
+        "node_ref": {
+          "title": "Node Ref",
+          "type": "string"
+        },
+        "relation_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Relation Refs",
+          "type": "array"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        }
+      },
+      "required": [
+        "effect_id",
+        "node_ref",
+        "kind",
+        "modality"
+      ],
+      "title": "EffectSummary",
+      "type": "object"
+    },
+    "SemanticNodeKind": {
+      "enum": [
+        "ENTRY",
+        "EXIT",
+        "BLOCK",
+        "DECLARE",
+        "ASSIGNMENT",
+        "CONDITION",
+        "CASE",
+        "LOOP",
+        "LOOP_CONTROL",
+        "QUERY",
+        "SELECT_INTO",
+        "RESULT_SET",
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "MERGE",
+        "UPSERT",
+        "CALL",
+        "DYNAMIC_SQL",
+        "CURSOR_DECLARE",
+        "CURSOR_OPEN",
+        "CURSOR_FETCH",
+        "CURSOR_CLOSE",
+        "ERROR_RAISE",
+        "ERROR_HANDLER",
+        "DIAGNOSTICS",
+        "TRANSACTION_BEGIN",
+        "COMMIT",
+        "ROLLBACK",
+        "SAVEPOINT",
+        "RETURN",
+        "TEMP_OBJECT",
+        "SECURITY_CONTEXT",
+        "CONDITION_DECLARE",
+        "PRAGMA",
+        "ASSERT",
+        "BULK_OPERATION",
+        "LABEL",
+        "GOTO",
+        "LOCK",
+        "TRANSACTION_SETTING",
+        "MESSAGE",
+        "TRUNCATE",
+        "DDL",
+        "CALL_TARGET",
+        "OPAQUE"
+      ],
+      "title": "SemanticNodeKind",
+      "type": "string"
+    }
+  },
+  "$id": "atlas-routine-semantic-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "atlas_version": {
+      "title": "Atlas Version",
+      "type": "string"
+    },
+    "call_targets": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Call Targets",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "decision_arms": {
+      "items": {
+        "$ref": "#/$defs/DecisionArm"
+      },
+      "title": "Decision Arms",
+      "type": "array"
+    },
+    "dialect": {
+      "$ref": "#/$defs/DialectId"
+    },
+    "dynamic_sql_node_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dynamic Sql Node Refs",
+      "type": "array"
+    },
+    "effects": {
+      "items": {
+        "$ref": "#/$defs/EffectSummary"
+      },
+      "title": "Effects",
+      "type": "array"
+    },
+    "finding_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Finding Counts",
+      "type": "object"
+    },
+    "handler_node_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Handler Node Refs",
+      "type": "array"
+    },
+    "opaque_node_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Opaque Node Refs",
+      "type": "array"
+    },
+    "parse_status": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "BLOCKED"
+      ],
+      "title": "Parse Status",
+      "type": "string"
+    },
+    "relation_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Relation Refs",
+      "type": "array"
+    },
+    "result_set_node_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Result Set Node Refs",
+      "type": "array"
+    },
+    "routine_ir_digest": {
+      "title": "Routine Ir Digest",
+      "type": "string"
+    },
+    "routine_ref": {
+      "title": "Routine Ref",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "atlas-routine-semantic-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "transaction_node_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Transaction Node Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "atlas_version",
+    "dialect",
+    "routine_ref",
+    "routine_ir_digest",
+    "parse_status",
+    "decision_arms",
+    "effects",
+    "call_targets",
+    "relation_refs",
+    "dynamic_sql_node_refs",
+    "result_set_node_refs",
+    "transaction_node_refs",
+    "handler_node_refs",
+    "opaque_node_refs",
+    "finding_counts",
+    "content_digest"
+  ],
+  "title": "RoutineSemanticReport",
+  "type": "object"
+}

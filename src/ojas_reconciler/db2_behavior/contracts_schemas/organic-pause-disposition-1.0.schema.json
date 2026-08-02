@@ -1,0 +1,161 @@
+{
+  "$defs": {
+    "PauseCause": {
+      "enum": [
+        "PRODUCT_DEFECT",
+        "DIALECT_GAP",
+        "CATALOG_INPUT_GAP",
+        "CUSTOMER_CONTRACT_GAP",
+        "PROCEDURE_CLASS_NOT_SUPPORTED",
+        "ESTATE_CONFIGURATION_GAP",
+        "SOURCE_CUSTODY_VIOLATION",
+        "EPISTEMIC_FAILURE"
+      ],
+      "title": "PauseCause",
+      "type": "string"
+    },
+    "PauseDispositionDecision": {
+      "enum": [
+        "CONTINUE_PILOT",
+        "PAUSE_FOR_PRODUCT_FIX",
+        "PAUSE_FOR_CUSTOMER_INPUT",
+        "STRATIFY_CORPUS",
+        "DECLARE_PROCEDURE_CLASS_NOT_SUPPORTED",
+        "TERMINATE_PILOT"
+      ],
+      "title": "PauseDispositionDecision",
+      "type": "string"
+    },
+    "PauseResponsibility": {
+      "enum": [
+        "PRODUCT",
+        "CUSTOMER",
+        "JOINT"
+      ],
+      "title": "PauseResponsibility",
+      "type": "string"
+    }
+  },
+  "$id": "organic-pause-disposition-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approved_by_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approved By Ref"
+    },
+    "blocker_codes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Blocker Codes",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "decided_at": {
+      "title": "Decided At",
+      "type": "string"
+    },
+    "decision": {
+      "$ref": "#/$defs/PauseDispositionDecision"
+    },
+    "disposition_id": {
+      "title": "Disposition Id",
+      "type": "string"
+    },
+    "dominant_cause": {
+      "$ref": "#/$defs/PauseCause"
+    },
+    "owner_ref": {
+      "title": "Owner Ref",
+      "type": "string"
+    },
+    "pause_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pause Reasons",
+      "type": "array"
+    },
+    "rationale": {
+      "title": "Rationale",
+      "type": "string"
+    },
+    "remediation_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Remediation Actions",
+      "type": "array"
+    },
+    "responsibility": {
+      "$ref": "#/$defs/PauseResponsibility"
+    },
+    "schema_version": {
+      "default": "organic-pause-disposition-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_digests": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Digests",
+      "type": "array"
+    },
+    "target_reassessment_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Reassessment At"
+    },
+    "validation_id": {
+      "title": "Validation Id",
+      "type": "string"
+    },
+    "validation_report_digest": {
+      "title": "Validation Report Digest",
+      "type": "string"
+    },
+    "validation_report_ref": {
+      "title": "Validation Report Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "disposition_id",
+    "validation_report_ref",
+    "validation_report_digest",
+    "validation_id",
+    "source_digests",
+    "pause_reasons",
+    "dominant_cause",
+    "responsibility",
+    "decision",
+    "rationale",
+    "remediation_actions",
+    "owner_ref",
+    "decided_at",
+    "content_digest"
+  ],
+  "title": "OrganicPauseDisposition",
+  "type": "object"
+}

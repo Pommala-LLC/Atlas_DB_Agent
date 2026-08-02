@@ -1,0 +1,83 @@
+{
+  "$id": "https://pommala.com/contracts/readable-bdd-warning-policy-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "baseline_fingerprints": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "max_warning_count": {
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "REPORT_ONLY",
+        "NO_NEW_WARNINGS"
+      ]
+    },
+    "procedure": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "readable-bdd-warning-policy-1.0"
+    },
+    "waivers": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "approved_by": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fingerprint": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "justification": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "release_scope": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "fingerprint",
+          "justification",
+          "owner",
+          "approved_by",
+          "expires_at",
+          "release_scope"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "baseline_fingerprints",
+    "waivers"
+  ],
+  "title": "Readable BDD Warning Policy 1.0",
+  "type": "object"
+}

@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "ColumnPopulationDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "GENERATE_VALUE",
+            "USE_SCENARIO_VALUE",
+            "OMIT_USE_DEFAULT",
+            "OMIT_GENERATED",
+            "SET_NULL",
+            "BLOCKED"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "column_ref": {
+          "title": "Column Ref",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "column_ref",
+        "action",
+        "reason",
+        "evidence_refs"
+      ],
+      "title": "ColumnPopulationDecision",
+      "type": "object"
+    },
+    "TestDataGenerationStatus": {
+      "enum": [
+        "GENERATED",
+        "GENERATED_WITH_WARNINGS",
+        "BLOCKED"
+      ],
+      "title": "TestDataGenerationStatus",
+      "type": "string"
+    }
+  },
+  "$id": "test-data-generation-result-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "decisions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ColumnPopulationDecision"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "requirements": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Requirements",
+      "type": "array"
+    },
+    "status": {
+      "$ref": "#/$defs/TestDataGenerationStatus"
+    },
+    "warnings": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "TestDataGenerationResult",
+  "type": "object"
+}

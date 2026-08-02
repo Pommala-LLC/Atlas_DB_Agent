@@ -1,0 +1,298 @@
+{
+  "$defs": {
+    "IfcidCorrelationKey": {
+      "additionalProperties": false,
+      "description": "How trace records tie to one invocation. At least one strong key required.",
+      "properties": {
+        "authid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Authid"
+        },
+        "correlation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Correlation Id"
+        },
+        "luwid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Luwid"
+        },
+        "package_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Package Name"
+        },
+        "plan_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plan Name"
+        },
+        "thread_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thread Token"
+        }
+      },
+      "title": "IfcidCorrelationKey",
+      "type": "object"
+    },
+    "IfcidId": {
+      "enum": [
+        "IFCID_0002",
+        "IFCID_0003",
+        "IFCID_0021",
+        "IFCID_0058",
+        "IFCID_0063",
+        "IFCID_0172",
+        "IFCID_0196",
+        "IFCID_0316",
+        "IFCID_0317",
+        "IFCID_0350",
+        "IFCID_0361",
+        "IFCID_0401"
+      ],
+      "title": "IfcidId",
+      "type": "string"
+    },
+    "StatementIdentity": {
+      "additionalProperties": false,
+      "description": "Statement identity independent of captured SQL text.",
+      "properties": {
+        "collection": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collection"
+        },
+        "package": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Package"
+        },
+        "package_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Package Version"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "statement_number": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Statement Number"
+        },
+        "stmt_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stmt Id"
+        }
+      },
+      "title": "StatementIdentity",
+      "type": "object"
+    }
+  },
+  "$id": "normalized-ifcid-record-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Site adapter output. One record, already decoded.\n\nAdapter contract: ``recorded_at`` is a canonical timestamp and records are\nreturned in non-decreasing ``recorded_at`` order. The deriver verifies this\nrather than trusting it.\n\nPopulate ``statement_identity`` wherever the IFCID carries it, including on\ntext-bearing records. That is what lets a text record and a count record be\nrecognised as the same statement.",
+  "properties": {
+    "correlation": {
+      "$ref": "#/$defs/IfcidCorrelationKey"
+    },
+    "executions": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Executions"
+    },
+    "ifcid": {
+      "$ref": "#/$defs/IfcidId"
+    },
+    "recorded_at": {
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "sqlcode": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sqlcode"
+    },
+    "sqlstate": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sqlstate"
+    },
+    "statement_identity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/StatementIdentity"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "statement_kind": {
+      "default": "UNKNOWN",
+      "enum": [
+        "DYNAMIC",
+        "STATIC",
+        "UNKNOWN"
+      ],
+      "title": "Statement Kind",
+      "type": "string"
+    },
+    "statement_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Statement Text"
+    },
+    "table_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Table Name"
+    },
+    "table_qualifier": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Table Qualifier"
+    }
+  },
+  "required": [
+    "ifcid",
+    "recorded_at",
+    "correlation"
+  ],
+  "title": "NormalizedIfcidRecord",
+  "type": "object"
+}

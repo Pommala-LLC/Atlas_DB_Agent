@@ -1,0 +1,285 @@
+{
+  "$defs": {
+    "AssertionKind": {
+      "enum": [
+        "OUTPUT_EQUALS",
+        "SQLSTATE_EQUALS",
+        "ROW_EQUALS",
+        "ROW_ABSENT",
+        "EVENT_OCCURRED",
+        "EVENT_NOT_OCCURRED"
+      ],
+      "title": "AssertionKind",
+      "type": "string"
+    },
+    "BddTestCase": {
+      "additionalProperties": false,
+      "properties": {
+        "assertions": {
+          "items": {
+            "$ref": "#/$defs/TestAssertion"
+          },
+          "title": "Assertions",
+          "type": "array"
+        },
+        "behavior_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Behavior Ref"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "dataset_ref": {
+          "title": "Dataset Ref",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "expected_status": {
+          "$ref": "#/$defs/TestCaseStatus",
+          "default": "PASSED"
+        },
+        "feature_name": {
+          "title": "Feature Name",
+          "type": "string"
+        },
+        "invocation": {
+          "$ref": "#/$defs/ProcedureInvocationSpec"
+        },
+        "scenario_name": {
+          "title": "Scenario Name",
+          "type": "string"
+        },
+        "tags": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "test_case_id": {
+          "title": "Test Case Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "test_case_id",
+        "feature_name",
+        "scenario_name",
+        "dataset_ref",
+        "invocation",
+        "assertions",
+        "content_digest"
+      ],
+      "title": "BddTestCase",
+      "type": "object"
+    },
+    "ProcedureInvocationSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "parameters": {
+          "additionalProperties": {
+            "$ref": "#/$defs/TypedValue"
+          },
+          "title": "Parameters",
+          "type": "object"
+        },
+        "procedure_name": {
+          "title": "Procedure Name",
+          "type": "string"
+        },
+        "procedure_schema": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Procedure Schema"
+        }
+      },
+      "required": [
+        "procedure_name",
+        "parameters"
+      ],
+      "title": "ProcedureInvocationSpec",
+      "type": "object"
+    },
+    "TestAssertion": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_id": {
+          "title": "Assertion Id",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "expected_columns": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Expected Columns",
+          "type": "object"
+        },
+        "expected_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Value"
+        },
+        "key": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Key",
+          "type": "object"
+        },
+        "kind": {
+          "$ref": "#/$defs/AssertionKind"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assertion_id",
+        "kind",
+        "target"
+      ],
+      "title": "TestAssertion",
+      "type": "object"
+    },
+    "TestCaseStatus": {
+      "enum": [
+        "PASSED",
+        "FAILED",
+        "BLOCKED",
+        "INCONCLUSIVE",
+        "NOT_EXECUTED"
+      ],
+      "title": "TestCaseStatus",
+      "type": "string"
+    },
+    "TypedValue": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Canonical Value"
+        },
+        "database_type": {
+          "title": "Database Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "database_type",
+        "canonical_value"
+      ],
+      "title": "TypedValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "package_id": {
+      "title": "Package Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "bdd-test-case-batch-1.0",
+      "default": "bdd-test-case-batch-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "test_cases": {
+      "items": {
+        "$ref": "#/$defs/BddTestCase"
+      },
+      "title": "Test Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "package_id",
+    "test_cases",
+    "content_digest"
+  ],
+  "title": "BddTestCaseBatch",
+  "type": "object"
+}

@@ -1,0 +1,43 @@
+{
+  "commit": "b4e91c9d219bed119b5127b43dc30186b258c38c",
+  "fixtures": [
+    {
+      "expected": "GHERKIN_PARSE_ERROR",
+      "expected_errors_git_blob_sha1": "4ed66e0ee165fddc66e4ea761ee735a8f02c6961",
+      "expected_errors_path": "testdata/bad/file_ends_with_open_docstring.feature.errors.ndjson",
+      "expected_errors_sha256": "22bde2433bcb98c9d48fbc9cb35bac4d8dbe06cd252fb4f3960b50a878d02038",
+      "git_blob_sha1": "0be1f7b10aba48625c911b8468a8ba7999e3270b",
+      "local_expected_errors_path": "tests/fixtures/gherkin-official/bad/file_ends_with_open_docstring.feature.errors.ndjson",
+      "local_path": "tests/fixtures/gherkin-official/bad/file_ends_with_open_docstring.feature",
+      "path": "testdata/bad/file_ends_with_open_docstring.feature",
+      "sha256": "40c6c699ea9ad8762435f429ba04b5d23cf029b879d19d59c1528e74a637c7f2"
+    },
+    {
+      "expected": "GHERKIN_PARSE_ERROR",
+      "expected_errors_git_blob_sha1": "5c2af058175974ce93d88b4ddf1b312c6859babc",
+      "expected_errors_path": "testdata/bad/inconsistent_cell_count.feature.errors.ndjson",
+      "expected_errors_sha256": "42fd199970057f37a328773ad624030864940788a7fc34cd39d415a01ca16386",
+      "git_blob_sha1": "721369cacbb473df1edb4e458f30da85243fb4c6",
+      "local_expected_errors_path": "tests/fixtures/gherkin-official/bad/inconsistent_cell_count.feature.errors.ndjson",
+      "local_path": "tests/fixtures/gherkin-official/bad/inconsistent_cell_count.feature",
+      "path": "testdata/bad/inconsistent_cell_count.feature",
+      "sha256": "35a18d3027b9ec01235eb17d770ae635de091ece5b8ef17dc82b7598621dcafe"
+    },
+    {
+      "expected": "GHERKIN_PARSE_ERROR",
+      "expected_errors_git_blob_sha1": "a0b77e864e81a424a3925704c53a4d54f9f509ba",
+      "expected_errors_path": "testdata/bad/whitespace_in_tags.feature.errors.ndjson",
+      "expected_errors_sha256": "9072f90057892fd77d50cfbf168a6e488f84b9f95e9a9e636ef3814fb817e5ad",
+      "git_blob_sha1": "b9abcc7b64e8e85da44a2c89ac22b89721691f7e",
+      "local_expected_errors_path": "tests/fixtures/gherkin-official/bad/whitespace_in_tags.feature.errors.ndjson",
+      "local_path": "tests/fixtures/gherkin-official/bad/whitespace_in_tags.feature",
+      "path": "testdata/bad/whitespace_in_tags.feature",
+      "sha256": "ba88dde726139fd188b56263be3c9d43c462d49f14180b5ecdfe2744662d002b"
+    }
+  ],
+  "license": "MIT",
+  "license_file": "tests/fixtures/gherkin-official/LICENSE",
+  "package_version": "gherkin-official==42.0.0",
+  "repository": "https://github.com/cucumber/gherkin",
+  "schema_version": "upstream-gherkin-fixture-provenance-1.0"
+}

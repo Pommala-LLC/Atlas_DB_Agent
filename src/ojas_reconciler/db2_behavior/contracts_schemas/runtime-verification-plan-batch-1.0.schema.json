@@ -1,0 +1,448 @@
+{
+  "$defs": {
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MUST_IF_CALLER_CONTRACT_HOLDS",
+        "MAY",
+        "MUST_NOT",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "LiveVerificationEligibility": {
+      "enum": [
+        "DB2_SANDBOX_ALLOWED",
+        "MANUAL_APPROVAL_REQUIRED",
+        "PROHIBITED"
+      ],
+      "title": "LiveVerificationEligibility",
+      "type": "string"
+    },
+    "RollbackContainment": {
+      "enum": [
+        "ROLLBACK_SAFE",
+        "CALLER_ROLLBACK_POSSIBLE",
+        "NOT_GUARANTEED",
+        "UNKNOWN"
+      ],
+      "title": "RollbackContainment",
+      "type": "string"
+    },
+    "RuntimeExpectedObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "expectation_id": {
+          "title": "Expectation Id",
+          "type": "string"
+        },
+        "expected_value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuntimeValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "modality": {
+          "$ref": "#/$defs/EffectModality"
+        },
+        "observation_kind": {
+          "$ref": "#/$defs/RuntimeObservationKind"
+        },
+        "scenario_effect_ref": {
+          "title": "Scenario Effect Ref",
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        }
+      },
+      "required": [
+        "expectation_id",
+        "scenario_effect_ref",
+        "modality",
+        "observation_kind"
+      ],
+      "title": "RuntimeExpectedObservation",
+      "type": "object"
+    },
+    "RuntimeInputRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter_mode": {
+          "enum": [
+            "IN",
+            "INOUT"
+          ],
+          "title": "Parameter Mode",
+          "type": "string"
+        },
+        "parameter_name": {
+          "title": "Parameter Name",
+          "type": "string"
+        },
+        "type_text": {
+          "title": "Type Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter_name",
+        "parameter_mode",
+        "type_text"
+      ],
+      "title": "RuntimeInputRequirement",
+      "type": "object"
+    },
+    "RuntimeObservationKind": {
+      "enum": [
+        "OUT_PARAMETER",
+        "DML_EFFECT",
+        "CALL_EFFECT",
+        "SQLSTATE",
+        "RESULT_SET",
+        "EFFECT_REFERENCE"
+      ],
+      "title": "RuntimeObservationKind",
+      "type": "string"
+    },
+    "RuntimePlanStatus": {
+      "enum": [
+        "READY_SCRIPTED",
+        "READY_DB2_SANDBOX",
+        "MANUAL_APPROVAL_REQUIRED",
+        "BLOCKED"
+      ],
+      "title": "RuntimePlanStatus",
+      "type": "string"
+    },
+    "RuntimeSafetyAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_id": {
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "commit_on_return": {
+          "enum": [
+            "YES",
+            "NO",
+            "UNKNOWN"
+          ],
+          "title": "Commit On Return",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "explicit_rollback_present": {
+          "title": "Explicit Rollback Present",
+          "type": "boolean"
+        },
+        "external_side_effects_status": {
+          "enum": [
+            "ABSENT",
+            "POSSIBLE",
+            "UNKNOWN"
+          ],
+          "title": "External Side Effects Status",
+          "type": "string"
+        },
+        "internal_commit_present": {
+          "title": "Internal Commit Present",
+          "type": "boolean"
+        },
+        "live_eligibility": {
+          "$ref": "#/$defs/LiveVerificationEligibility"
+        },
+        "procedure_identity_ref": {
+          "title": "Procedure Identity Ref",
+          "type": "string"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "rollback_containment": {
+          "$ref": "#/$defs/RollbackContainment"
+        },
+        "transaction_ownership": {
+          "$ref": "#/$defs/TransactionOwnership"
+        },
+        "unresolved_call_boundaries": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unresolved Call Boundaries",
+          "type": "array"
+        },
+        "unresolved_dynamic_boundaries": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unresolved Dynamic Boundaries",
+          "type": "array"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "procedure_identity_ref",
+        "internal_commit_present",
+        "explicit_rollback_present",
+        "commit_on_return",
+        "unresolved_call_boundaries",
+        "unresolved_dynamic_boundaries",
+        "external_side_effects_status",
+        "transaction_ownership",
+        "rollback_containment",
+        "live_eligibility",
+        "reason_codes",
+        "evidence_refs",
+        "content_digest"
+      ],
+      "title": "RuntimeSafetyAssessment",
+      "type": "object"
+    },
+    "RuntimeValue": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canonical Value"
+        },
+        "value_kind": {
+          "$ref": "#/$defs/RuntimeValueKind"
+        }
+      },
+      "required": [
+        "value_kind"
+      ],
+      "title": "RuntimeValue",
+      "type": "object"
+    },
+    "RuntimeValueKind": {
+      "enum": [
+        "NULL",
+        "STRING",
+        "INTEGER",
+        "DECIMAL",
+        "BOOLEAN",
+        "DATE",
+        "TIMESTAMP",
+        "RAW"
+      ],
+      "title": "RuntimeValueKind",
+      "type": "string"
+    },
+    "RuntimeVerificationPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_revision_id": {
+          "title": "Artifact Revision Id",
+          "type": "string"
+        },
+        "behavior_id": {
+          "title": "Behavior Id",
+          "type": "string"
+        },
+        "blockers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blockers",
+          "type": "array"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "expected_observations": {
+          "items": {
+            "$ref": "#/$defs/RuntimeExpectedObservation"
+          },
+          "title": "Expected Observations",
+          "type": "array"
+        },
+        "input_requirements": {
+          "items": {
+            "$ref": "#/$defs/RuntimeInputRequirement"
+          },
+          "title": "Input Requirements",
+          "type": "array"
+        },
+        "plan_id": {
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "plan_status": {
+          "$ref": "#/$defs/RuntimePlanStatus"
+        },
+        "procedure_identity_ref": {
+          "title": "Procedure Identity Ref",
+          "type": "string"
+        },
+        "procedure_name": {
+          "title": "Procedure Name",
+          "type": "string"
+        },
+        "procedure_schema": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Procedure Schema"
+        },
+        "safety_assessment_ref": {
+          "title": "Safety Assessment Ref",
+          "type": "string"
+        },
+        "scenario_spec_digest": {
+          "title": "Scenario Spec Digest",
+          "type": "string"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "runtime-verification-plan-1.0",
+          "default": "runtime-verification-plan-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_symbol_id": {
+          "title": "Source Symbol Id",
+          "type": "string"
+        },
+        "symbol_lineage_id": {
+          "title": "Symbol Lineage Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plan_id",
+        "behavior_id",
+        "source_symbol_id",
+        "symbol_lineage_id",
+        "artifact_revision_id",
+        "scenario_spec_ref",
+        "scenario_spec_digest",
+        "procedure_identity_ref",
+        "procedure_name",
+        "input_requirements",
+        "expected_observations",
+        "safety_assessment_ref",
+        "plan_status",
+        "blockers",
+        "evidence_refs",
+        "content_digest"
+      ],
+      "title": "RuntimeVerificationPlan",
+      "type": "object"
+    },
+    "TransactionOwnership": {
+      "enum": [
+        "EXECUTOR_OWNED",
+        "CALLER_CONTROLLED",
+        "PROCEDURE_CONTROLLED",
+        "MIXED",
+        "UNKNOWN"
+      ],
+      "title": "TransactionOwnership",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "plans": {
+      "items": {
+        "$ref": "#/$defs/RuntimeVerificationPlan"
+      },
+      "title": "Plans",
+      "type": "array"
+    },
+    "safety_assessment": {
+      "$ref": "#/$defs/RuntimeSafetyAssessment"
+    },
+    "scenario_spec_batch_digest": {
+      "title": "Scenario Spec Batch Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "runtime-verification-plan-batch-1.0",
+      "default": "runtime-verification-plan-batch-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_result_digest": {
+      "title": "Semantic Result Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scenario_spec_batch_digest",
+    "semantic_result_digest",
+    "safety_assessment",
+    "plans",
+    "content_digest"
+  ],
+  "title": "RuntimeVerificationPlanBatch",
+  "type": "object"
+}

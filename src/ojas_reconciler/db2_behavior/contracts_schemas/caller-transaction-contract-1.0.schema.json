@@ -1,0 +1,67 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "authority_ref": {
+      "title": "Authority Ref",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "contract_id": {
+      "title": "Contract Id",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "failure_disposition": {
+      "const": "CALLER_ROLLS_BACK",
+      "title": "Failure Disposition",
+      "type": "string"
+    },
+    "procedure_name": {
+      "title": "Procedure Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Schema Name"
+    },
+    "schema_version": {
+      "const": "caller-transaction-contract-1.0",
+      "default": "caller-transaction-contract-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "success_disposition": {
+      "const": "CALLER_COMMITS",
+      "title": "Success Disposition",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract_id",
+    "procedure_name",
+    "success_disposition",
+    "failure_disposition",
+    "authority_ref",
+    "content_digest"
+  ],
+  "title": "CallerTransactionContract",
+  "type": "object"
+}

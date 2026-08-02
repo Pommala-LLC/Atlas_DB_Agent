@@ -1,0 +1,162 @@
+{
+  "$defs": {
+    "ResolutionCompleteness": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "UNKNOWN"
+      ],
+      "title": "ResolutionCompleteness",
+      "type": "string"
+    },
+    "SqlTypeFamily": {
+      "enum": [
+        "SMALL_INTEGER",
+        "INTEGER",
+        "BIG_INTEGER",
+        "DECIMAL",
+        "FLOATING_POINT",
+        "CHARACTER",
+        "GRAPHIC",
+        "DATE",
+        "TIME",
+        "TIMESTAMP",
+        "BOOLEAN",
+        "BINARY",
+        "LOB",
+        "XML",
+        "DISTINCT",
+        "UNKNOWN"
+      ],
+      "title": "SqlTypeFamily",
+      "type": "string"
+    },
+    "TypeResolutionStatus": {
+      "enum": [
+        "DECLARED",
+        "CATALOG_RESOLVED",
+        "DDL_RESOLVED",
+        "AUTHORITY_OVERRIDE",
+        "DIALECT_INFERRED",
+        "CONFLICT",
+        "UNKNOWN"
+      ],
+      "title": "TypeResolutionStatus",
+      "type": "string"
+    }
+  },
+  "$id": "canonical-sql-type-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "code_page": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Page"
+    },
+    "completeness": {
+      "$ref": "#/$defs/ResolutionCompleteness"
+    },
+    "database_type": {
+      "title": "Database Type",
+      "type": "string"
+    },
+    "distinct_type_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Distinct Type Name"
+    },
+    "family": {
+      "$ref": "#/$defs/SqlTypeFamily"
+    },
+    "for_bit_data": {
+      "default": false,
+      "title": "For Bit Data",
+      "type": "boolean"
+    },
+    "length": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Length"
+    },
+    "nullable": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Nullable"
+    },
+    "precision": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Precision"
+    },
+    "resolution_status": {
+      "$ref": "#/$defs/TypeResolutionStatus"
+    },
+    "scale": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scale"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "family",
+    "database_type",
+    "resolution_status",
+    "completeness",
+    "source_refs"
+  ],
+  "title": "CanonicalSqlType",
+  "type": "object"
+}

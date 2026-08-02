@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/procedure_analysis.css">
+</head>
+<body class="atlas-procedure-page">
+  <header class="procedure-app-topbar">
+    <a class="atlas-brand" href="/runs"><span class="atlas-mark">△</span><strong>ATLAS</strong></a>
+    <nav class="atlas-nav" aria-label="Procedure analysis navigation">
+      <a href="#routine-list">Routines</a>
+      <a class="active" href="#source-view">Source View</a>
+      <a href="#decision-table">Control Flow</a>
+      <a href="#routine-summary">Metrics</a>
+      <a href="#audit-trail">Reports</a>
+    </nav>
+    <div class="atlas-actions"><span class="atlas-help">?</span><a href="/commercial" title="Settings">⚙</a><span class="atlas-avatar">A</span></div>
+  </header>
+  <main class="atlas-main">
+    {% if message %}<div class="atlas-notice success">{{ message }}</div>{% endif %}
+    {% if error %}<div class="atlas-notice error">{{ error }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

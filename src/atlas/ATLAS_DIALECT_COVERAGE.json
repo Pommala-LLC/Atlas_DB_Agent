@@ -1,0 +1,331 @@
+{
+  "atlas_version": "2.0.0rc5",
+  "content_digest": "sha256:f953718abc7b9baf208fd8bb27729388c3fcbe5d90312203aa0f163b1b15820a",
+  "dialects": [
+    {
+      "adapter_id": "atlas-db2-sqlpl-2.2",
+      "common_constructs": [
+        "routine_header_and_characteristics",
+        "parameters_and_return_contract",
+        "nested_blocks",
+        "declarations",
+        "assignments_and_variable_use",
+        "if_elseif_else",
+        "case",
+        "loops_and_loop_control",
+        "exception_handlers",
+        "error_raise_and_reraise",
+        "diagnostics",
+        "cursor_lifecycle",
+        "static_queries",
+        "select_into",
+        "insert_update_delete_merge_upsert",
+        "routine_calls",
+        "dynamic_sql",
+        "transactions_savepoints_and_settings",
+        "result_sets_and_returns",
+        "temporary_objects",
+        "locks",
+        "security_context",
+        "labels_and_goto",
+        "source_spans_control_flow_effects_and_findings"
+      ],
+      "dialect": "DB2_SQL_PL",
+      "explicit_boundaries": [
+        "unclassified_vendor_extensions_are_retained_as_opaque_nodes_with_source_spans",
+        "runtime_data_and_external_system_effects_remain_evidence_boundaries",
+        "catalog_dependent_semantics_are_conditional_when_catalog_metadata_is_absent",
+        "dynamic_identifiers_are_not_guessed_when_the_value_domain_is_not_enumerable",
+        "candidate_scenarios_are_non_authoritative_until_customer_review",
+        "catalog_dependent_overload_resolution",
+        "runtime_dynamic_identifier_values",
+        "external_routine_bodies",
+        "unclassified_extensions_are_opaque"
+      ],
+      "reference_urls": [
+        "https://www.ibm.com/docs/en/db2/11.5.x?topic=procedures-sql",
+        "https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=sql-procedural-language-pl"
+      ],
+      "routine_kinds": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER"
+      ],
+      "status": "DIALECT_BOUNDED_SEMANTICS",
+      "vendor_constructs": [
+        "atomic_and_not_atomic_blocks",
+        "continue_exit_undo_handlers",
+        "values_into",
+        "with_return_cursors",
+        "associate_result_set_locators",
+        "allocate_cursor",
+        "special_registers",
+        "sequence_references"
+      ]
+    },
+    {
+      "adapter_id": "atlas-oracle-plsql-2.2",
+      "common_constructs": [
+        "routine_header_and_characteristics",
+        "parameters_and_return_contract",
+        "nested_blocks",
+        "declarations",
+        "assignments_and_variable_use",
+        "if_elseif_else",
+        "case",
+        "loops_and_loop_control",
+        "exception_handlers",
+        "error_raise_and_reraise",
+        "diagnostics",
+        "cursor_lifecycle",
+        "static_queries",
+        "select_into",
+        "insert_update_delete_merge_upsert",
+        "routine_calls",
+        "dynamic_sql",
+        "transactions_savepoints_and_settings",
+        "result_sets_and_returns",
+        "temporary_objects",
+        "locks",
+        "security_context",
+        "labels_and_goto",
+        "source_spans_control_flow_effects_and_findings"
+      ],
+      "dialect": "ORACLE_PLSQL",
+      "explicit_boundaries": [
+        "unclassified_vendor_extensions_are_retained_as_opaque_nodes_with_source_spans",
+        "runtime_data_and_external_system_effects_remain_evidence_boundaries",
+        "catalog_dependent_semantics_are_conditional_when_catalog_metadata_is_absent",
+        "dynamic_identifiers_are_not_guessed_when_the_value_domain_is_not_enumerable",
+        "candidate_scenarios_are_non_authoritative_until_customer_review",
+        "package_state_requires_runtime_or_catalog_evidence",
+        "dynamic_identifier_values_are_not_guessed",
+        "sql_engine_context_restrictions_are_reported_when_statically_determinable",
+        "unclassified_extensions_are_opaque"
+      ],
+      "reference_urls": [
+        "https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/",
+        "https://docs.oracle.com/en/database/oracle/oracle-database/26/lnpls/dynamic-sql.html"
+      ],
+      "routine_kinds": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER",
+        "PACKAGE_ROUTINE"
+      ],
+      "status": "DIALECT_BOUNDED_SEMANTICS",
+      "vendor_constructs": [
+        "authid",
+        "pragmas",
+        "raise_application_error",
+        "forall",
+        "bulk_collect",
+        "save_exceptions",
+        "cursor_attributes",
+        "returning_into",
+        "pipelined_functions",
+        "package_routines",
+        "open_for"
+      ]
+    },
+    {
+      "adapter_id": "atlas-sqlserver-tsql-2.2",
+      "common_constructs": [
+        "routine_header_and_characteristics",
+        "parameters_and_return_contract",
+        "nested_blocks",
+        "declarations",
+        "assignments_and_variable_use",
+        "if_elseif_else",
+        "case",
+        "loops_and_loop_control",
+        "exception_handlers",
+        "error_raise_and_reraise",
+        "diagnostics",
+        "cursor_lifecycle",
+        "static_queries",
+        "select_into",
+        "insert_update_delete_merge_upsert",
+        "routine_calls",
+        "dynamic_sql",
+        "transactions_savepoints_and_settings",
+        "result_sets_and_returns",
+        "temporary_objects",
+        "locks",
+        "security_context",
+        "labels_and_goto",
+        "source_spans_control_flow_effects_and_findings"
+      ],
+      "dialect": "SQLSERVER_TSQL",
+      "explicit_boundaries": [
+        "unclassified_vendor_extensions_are_retained_as_opaque_nodes_with_source_spans",
+        "runtime_data_and_external_system_effects_remain_evidence_boundaries",
+        "catalog_dependent_semantics_are_conditional_when_catalog_metadata_is_absent",
+        "dynamic_identifiers_are_not_guessed_when_the_value_domain_is_not_enumerable",
+        "candidate_scenarios_are_non_authoritative_until_customer_review",
+        "dynamic_batch_identifiers_are_not_guessed",
+        "metadata_dependent_name_resolution_requires_catalog_evidence",
+        "udf_restrictions_are_reported_when_statically_determinable",
+        "unclassified_extensions_are_opaque"
+      ],
+      "reference_urls": [
+        "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-procedure-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql",
+        "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/create-user-defined-functions-database-engine"
+      ],
+      "routine_kinds": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER"
+      ],
+      "status": "DIALECT_BOUNDED_SEMANTICS",
+      "vendor_constructs": [
+        "sp_executesql",
+        "throw_and_raiserror",
+        "xact_state",
+        "xact_abort",
+        "output_clause",
+        "table_variables",
+        "local_and_global_temp_tables",
+        "goto",
+        "execute_as"
+      ]
+    },
+    {
+      "adapter_id": "atlas-postgresql-plpgsql-2.2",
+      "common_constructs": [
+        "routine_header_and_characteristics",
+        "parameters_and_return_contract",
+        "nested_blocks",
+        "declarations",
+        "assignments_and_variable_use",
+        "if_elseif_else",
+        "case",
+        "loops_and_loop_control",
+        "exception_handlers",
+        "error_raise_and_reraise",
+        "diagnostics",
+        "cursor_lifecycle",
+        "static_queries",
+        "select_into",
+        "insert_update_delete_merge_upsert",
+        "routine_calls",
+        "dynamic_sql",
+        "transactions_savepoints_and_settings",
+        "result_sets_and_returns",
+        "temporary_objects",
+        "locks",
+        "security_context",
+        "labels_and_goto",
+        "source_spans_control_flow_effects_and_findings"
+      ],
+      "dialect": "POSTGRESQL_PLPGSQL",
+      "explicit_boundaries": [
+        "unclassified_vendor_extensions_are_retained_as_opaque_nodes_with_source_spans",
+        "runtime_data_and_external_system_effects_remain_evidence_boundaries",
+        "catalog_dependent_semantics_are_conditional_when_catalog_metadata_is_absent",
+        "dynamic_identifiers_are_not_guessed_when_the_value_domain_is_not_enumerable",
+        "candidate_scenarios_are_non_authoritative_until_customer_review",
+        "transaction_control_requires_top_level_call_context",
+        "dynamic_identifier_values_are_not_guessed",
+        "trigger_event_context_requires_catalog_or_runtime_evidence",
+        "unclassified_extensions_are_opaque"
+      ],
+      "reference_urls": [
+        "https://www.postgresql.org/docs/current/plpgsql-control-structures.html",
+        "https://www.postgresql.org/docs/current/plpgsql-statements.html",
+        "https://www.postgresql.org/docs/current/plpgsql-transactions.html"
+      ],
+      "routine_kinds": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER"
+      ],
+      "status": "DIALECT_BOUNDED_SEMANTICS",
+      "vendor_constructs": [
+        "found_register",
+        "select_into_strict",
+        "return_query",
+        "return_next",
+        "return_query_execute",
+        "get_stacked_diagnostics",
+        "assert",
+        "perform",
+        "security_definer",
+        "volatility_and_parallel_safety"
+      ]
+    },
+    {
+      "adapter_id": "atlas-mysql-stored-program-2.2",
+      "common_constructs": [
+        "routine_header_and_characteristics",
+        "parameters_and_return_contract",
+        "nested_blocks",
+        "declarations",
+        "assignments_and_variable_use",
+        "if_elseif_else",
+        "case",
+        "loops_and_loop_control",
+        "exception_handlers",
+        "error_raise_and_reraise",
+        "diagnostics",
+        "cursor_lifecycle",
+        "static_queries",
+        "select_into",
+        "insert_update_delete_merge_upsert",
+        "routine_calls",
+        "dynamic_sql",
+        "transactions_savepoints_and_settings",
+        "result_sets_and_returns",
+        "temporary_objects",
+        "locks",
+        "security_context",
+        "labels_and_goto",
+        "source_spans_control_flow_effects_and_findings"
+      ],
+      "dialect": "MYSQL_STORED_PROGRAM",
+      "explicit_boundaries": [
+        "unclassified_vendor_extensions_are_retained_as_opaque_nodes_with_source_spans",
+        "runtime_data_and_external_system_effects_remain_evidence_boundaries",
+        "catalog_dependent_semantics_are_conditional_when_catalog_metadata_is_absent",
+        "dynamic_identifiers_are_not_guessed_when_the_value_domain_is_not_enumerable",
+        "candidate_scenarios_are_non_authoritative_until_customer_review",
+        "prepared_statement_text_values_are_runtime_evidence",
+        "definer_privilege_resolution_requires_catalog_context",
+        "function_and_trigger_restrictions_are_reported_when_statically_determinable",
+        "unclassified_extensions_are_opaque"
+      ],
+      "reference_urls": [
+        "https://dev.mysql.com/doc/refman/8.4/en/sql-compound-statements.html",
+        "https://dev.mysql.com/doc/refman/8.4/en/cursors.html",
+        "https://dev.mysql.com/doc/refman/8.4/en/declare-handler.html"
+      ],
+      "routine_kinds": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER"
+      ],
+      "status": "DIALECT_BOUNDED_SEMANTICS",
+      "vendor_constructs": [
+        "declaration_ordering",
+        "continue_and_exit_handlers",
+        "named_conditions",
+        "asensitive_read_only_nonscrollable_cursors",
+        "get_diagnostics",
+        "prepare_execute_deallocate",
+        "on_duplicate_key_update",
+        "sql_security"
+      ]
+    }
+  ],
+  "product_name": "Atlas",
+  "schema_version": "atlas-semantic-coverage-manifest-1.0",
+  "semantic_contract": [
+    "Every discovered routine body statement is represented in Atlas IR.",
+    "Each dialect package owns its profile, classifier, semantic policy, capabilities, normalization rules, and adapter.",
+    "Admitted constructs receive database-specific semantic annotations and control-flow structure.",
+    "Unsupported extensions are never discarded; they become explicit OPAQUE nodes and findings.",
+    "Full body semantics does not mean every future vendor extension is inferred without evidence.",
+    "Historical Ojas/Db2 artifacts and digests remain unchanged compatibility evidence."
+  ]
+}

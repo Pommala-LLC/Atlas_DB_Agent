@@ -1,0 +1,111 @@
+[build-system]
+requires = ["setuptools>=82"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atlas-procedure-intelligence"
+version = "2.0.0rc5"
+description = "Atlas modular multi-database stored-routine behavior intelligence with pluggable dialect semantics and governed evidence workflows"
+readme = "README.md"
+requires-python = ">=3.13,<3.15"
+license = "LicenseRef-Proprietary"
+authors = [{ name = "Pommala LLC" }]
+dependencies = [
+  "pydantic>=2.12,<3",
+  "networkx>=3.6,<4",
+  "lark>=1.3,<2",
+  "jsonschema>=4.26,<5",
+  "gherkin-official==42.0.0",
+]
+
+[project.optional-dependencies]
+query = ["sqlfluff[rs]>=4.2,<5"]
+catalog = ["ibm_db>=3.2.9,<4"]
+runtime = ["ibm_db>=3.2.9,<4"]
+constraints = ["z3-solver>=4.13,<5"]
+ui = [
+  "fastapi>=0.128,<1",
+  "uvicorn>=0.48,<1",
+  "jinja2>=3.1,<4",
+  "python-multipart>=0.0.20,<1",
+]
+auth = [
+  "PyJWT[crypto]>=2.10,<3",
+]
+test = [
+  "pytest==9.0.2",
+  "fastapi==0.128.2",
+  "uvicorn==0.48.0",
+  "jinja2==3.1.6",
+  "python-multipart==0.0.29",
+  "httpx==0.28.1",
+  "PyJWT[crypto]==2.13.0",
+  "cryptography==46.0.4",
+  "gherkin-official==42.0.0",
+]
+quality = [
+  "ruff==0.16.1",
+  "mypy==2.3.0",
+]
+release = [
+  "pytest==9.0.2",
+  "fastapi==0.128.2",
+  "uvicorn==0.48.0",
+  "jinja2==3.1.6",
+  "python-multipart==0.0.29",
+  "httpx==0.28.1",
+  "PyJWT[crypto]==2.13.0",
+  "cryptography==46.0.4",
+  "gherkin-official==42.0.0",
+  "ruff==0.16.1",
+  "mypy==2.3.0",
+]
+dev = [
+  "pytest>=9,<10",
+  "ruff>=0.16,<0.17",
+  "mypy>=2.3,<3",
+  "hypothesis>=6.163,<7",
+  "syrupy>=5,<6",
+  "fastapi>=0.128,<1",
+  "uvicorn>=0.48,<1",
+  "jinja2>=3.1,<4",
+  "python-multipart>=0.0.20,<1",
+  "httpx>=0.28,<1",
+  "PyJWT[crypto]>=2.10,<3",
+  "gherkin-official==42.0.0",
+]
+
+[project.scripts]
+atlas = "atlas.cli:main"
+atlas-console = "atlas.web.runner:main"
+# Legacy compatibility surfaces. They preserve historical automation and governance references.
+db2-behavior = "ojas_reconciler.db2_behavior.cli:main"
+ojas-db2-agent = "ojas_reconciler.db2_behavior.cli:main"
+ojas-db2-gate0 = "ojas_reconciler.db2_behavior.cli:main"
+commercial-behavior-console = "atlas.web.runner:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"ojas_reconciler.db2_behavior" = ["governance_migrations/*.sql", "governance_migrations/*.json", "spikes/lark_sqlpl/*.lark", "contracts_schemas/*.json", "commercial_templates/*.json", "commercial_templates/*.md"]
+"ojas_reconciler.db2_behavior.commercial_ui" = ["templates/*.html", "static/*.css", "static/*.js"]
+"atlas" = ["*.json", "*.md", "contracts_schemas/*.json"]
+"ojas_reconciler.db2_behavior.parsing.adapters.lark_sqlpl" = ["*.lark"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unreachable = true
+no_implicit_optional = true
+strict_equality = true
+

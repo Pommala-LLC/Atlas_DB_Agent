@@ -1,0 +1,11 @@
+{
+  "approved_values": [
+    {
+      "relation_ref": "SCHEMA.TABLE",
+      "column_name": "PRIMARY_KEY_COLUMN",
+      "canonical_value": 1,
+      "authority_ref": "customer-authority:fixture-review",
+      "evidence_refs": ["catalog:snapshot"]
+    }
+  ]
+}

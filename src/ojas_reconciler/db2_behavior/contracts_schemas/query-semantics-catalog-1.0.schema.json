@@ -1,0 +1,57 @@
+{
+  "$defs": {
+    "QueryUniqueKey": {
+      "additionalProperties": false,
+      "properties": {
+        "column_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Column Names",
+          "type": "array"
+        },
+        "relation_name": {
+          "title": "Relation Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relation_name",
+        "column_names"
+      ],
+      "title": "QueryUniqueKey",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "catalog_id": {
+      "title": "Catalog Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "query-semantics-catalog-1.0",
+      "default": "query-semantics-catalog-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unique_keys": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/QueryUniqueKey"
+      },
+      "title": "Unique Keys",
+      "type": "array"
+    }
+  },
+  "required": [
+    "catalog_id",
+    "content_digest"
+  ],
+  "title": "QuerySemanticsCatalog",
+  "type": "object"
+}

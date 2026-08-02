@@ -1,0 +1,50 @@
+<section class="finding-filter-strip">
+  <div class="filter-title">Filter routines:</div>
+  <button type="button" class="finding-filter active" data-filter="all">All <b id="filter-count-all">{{ selected_analysis.counts.routines if selected_analysis else 0 }}</b></button>
+  <button type="button" class="finding-filter structural" data-filter="structural">Structural blockers <b id="filter-count-structural">0</b></button>
+  <button type="button" class="finding-filter code" data-filter="code">Code findings <b id="filter-count-code">0</b></button>
+  <button type="button" class="finding-filter gap" data-filter="gap">Analyser gaps <b id="filter-count-gap">0</b></button>
+  <button type="button" class="finding-filter refusal" data-filter="refusal">File errors <b id="filter-count-refusal">{{ (selected_analysis.counts.file_errors + selected_analysis.counts.blocked) if selected_analysis else 0 }}</b></button>
+  <button type="button" class="finding-filter zero" data-filter="zero">Zero-opaque partials <b id="filter-count-zero">0</b></button>
+  <div class="finding-legend">
+    <span><i class="structural"></i><small>Structural<br>(blocks completeness)</small></span>
+    <span><i class="code"></i><small>Code finding<br>(in your code)</small></span>
+    <span><i class="gap"></i><small>Analyser gap<br>(Atlas limitation)</small></span>
+    <span><i class="refusal"></i><small>File error<br>(no analysis)</small></span>
+  </div>
+</section>
+
+<section class="analysis-workbench">
+  <aside class="routine-column" id="routine-list">
+    <div class="routine-column-meta"><span>Uploaded files: <b>{{ selected_analysis.counts.sources if selected_analysis else 0 }}</b></span><span>Procedures discovered: <b>{{ selected_analysis.counts.routines if selected_analysis else 0 }}</b></span><span>(Multiple files and procedures supported)</span></div>
+    <div class="routine-table-head"><span>Routine (file)</span><span>Status</span><span>Opaque coverage</span></div>
+    <div id="procedure-routine-list">
+      {% if not selected_analysis %}<div class="empty-routine"><strong>No procedures yet</strong><span>Paste SQL or upload files, then choose Analyze.</span></div>{% endif %}
+    </div>
+  </aside>
+  <section class="source-column" id="source-view">
+    <header class="source-column-head"><b id="procedure-current-name">{{ selected_analysis.routines[0].routine_ref if selected_analysis and selected_analysis.routines else 'No procedure selected' }}</b><div><span id="procedure-current-meta">{{ selected_analysis.declared_dialect if selected_analysis else '' }}</span><span class="source-options">Show: ☑ Gutter &nbsp; ☑ Highlights &nbsp; ☑ Line numbers</span></div></header>
+    <div id="procedure-refusal-banner" class="file-refusal-banner"></div>
+    <div class="source-editor-wrap"><div id="procedure-source" class="source-editor">{% if not selected_analysis %}<div class="empty-source"><strong>Source view</strong><span>Procedure source and line-level findings will appear here.</span></div>{% endif %}</div><div id="procedure-minimap" class="source-minimap"></div></div>
+  </section>
+
+  <section class="analysis-bottom">
+    <nav class="analysis-tabs">
+      <button type="button" class="analysis-tab active" data-tab="findings">Findings (<span id="procedure-finding-count">0</span>)</button>
+      <button type="button" class="analysis-tab" data-tab="decision" id="decision-table">Decision Table</button>
+      <button type="button" class="analysis-tab" data-tab="scenarios">Scenarios</button>
+      <button type="button" class="analysis-tab" data-tab="lineage">Lineage</button>
+      <button type="button" class="analysis-tab" data-tab="audit" id="audit-trail">Audit Trail</button>
+    </nav>
+    <div class="analysis-tab-body active" data-tab-panel="findings">
+      <div class="finding-table-head"><span>Type</span><span>Category</span><span>Attribution</span><span>Location</span><span>Message</span></div>
+      <div id="procedure-findings">{% if not selected_analysis %}<div class="empty-bottom">No findings yet.</div>{% endif %}</div>
+    </div>
+    <div class="analysis-tab-body" data-tab-panel="decision"><div id="procedure-decisions"></div></div>
+    <div class="analysis-tab-body" data-tab-panel="scenarios"><div id="procedure-scenarios"></div></div>
+    <div class="analysis-tab-body" data-tab-panel="lineage"><div id="procedure-lineage"></div></div>
+    <div class="analysis-tab-body" data-tab-panel="audit"><div id="procedure-audit"></div></div>
+  </section>
+  <aside class="routine-summary" id="routine-summary"><h3>Routine summary</h3>{% if not selected_analysis %}<p>No analysis selected.</p>{% endif %}</aside>
+</section>
+{% if selected_analysis %}<script id="procedure-analysis" type="application/json">{{ selected_analysis|tojson }}</script>{% endif %}

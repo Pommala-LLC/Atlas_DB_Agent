@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pommala.com/contracts/readable-bdd-proposal-batch-1.1.schema.json",
+  "title": "Readable BDD Proposal Batch 1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "authority_scope", "review_required", "renderer_version",
+    "procedure", "accounting", "artifacts", "combined_text", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "readable-bdd-proposal-batch-1.1"},
+    "authority_scope": {"const": "NON_AUTHORITATIVE_PROPOSAL"},
+    "review_required": {"const": true},
+    "renderer_version": {"type": "string", "minLength": 1},
+    "procedure": {"type": "string", "minLength": 1},
+    "combined_text": {"type": "string", "minLength": 1},
+    "content_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_behavior_bundles", "scenario_admitted", "scenario_blocked",
+        "readable_behavior_candidates", "readable_unhandled_condition_candidates",
+        "readable_total", "omitted_semantic_behavior_bundles"
+      ],
+      "properties": {
+        "semantic_behavior_bundles": {"type": "integer", "minimum": 0},
+        "scenario_admitted": {"type": "integer", "minimum": 0},
+        "scenario_blocked": {"type": "integer", "minimum": 0},
+        "readable_behavior_candidates": {"type": "integer", "minimum": 0},
+        "readable_unhandled_condition_candidates": {"type": "integer", "minimum": 0},
+        "readable_total": {"type": "integer", "minimum": 0},
+        "omitted_semantic_behavior_bundles": {"type": "integer", "minimum": 0}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id", "schema_version", "authority_scope", "review_required",
+          "renderer_version", "proposal_kind", "analysis_status", "variant_key",
+          "behavior_id", "behavior_effect_bundle_ref", "behavior_slice_ref",
+          "scenario_spec_ref", "technical_gherkin_artifact_ref", "source_symbol_id",
+          "symbol_lineage_id", "artifact_revision_id", "evidence_refs", "finding_refs",
+          "blocker_codes", "blocker_details", "rule_name", "scenario_name", "text",
+          "content_digest"
+        ],
+        "properties": {
+          "proposal_id": {"type": "string", "minLength": 1},
+          "schema_version": {"const": "readable-bdd-proposal-1.1"},
+          "authority_scope": {"const": "NON_AUTHORITATIVE_PROPOSAL"},
+          "review_required": {"const": true},
+          "renderer_version": {"type": "string", "minLength": 1},
+          "proposal_kind": {"enum": ["BEHAVIOR", "UNHANDLED_CONDITION"]},
+          "analysis_status": {
+            "enum": [
+              "ADMITTED_TECHNICAL_SCENARIO",
+              "PARTIAL_TECHNICAL_CANDIDATE",
+              "UNHANDLED_CONDITION_CANDIDATE"
+            ]
+          },
+          "variant_key": {"type": "string", "minLength": 1},
+          "behavior_id": {"type": ["string", "null"]},
+          "behavior_effect_bundle_ref": {"type": ["string", "null"]},
+          "behavior_slice_ref": {"type": ["string", "null"]},
+          "scenario_spec_ref": {"type": ["string", "null"]},
+          "technical_gherkin_artifact_ref": {"type": ["string", "null"]},
+          "source_symbol_id": {"type": "string", "minLength": 1},
+          "symbol_lineage_id": {"type": "string", "minLength": 1},
+          "artifact_revision_id": {"type": "string", "minLength": 1},
+          "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "finding_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "blocker_codes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "blocker_details": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "rule_name": {"type": "string", "minLength": 1},
+          "scenario_name": {"type": "string", "minLength": 1},
+          "text": {"type": "string", "minLength": 1},
+          "content_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        }
+      }
+    }
+  }
+}

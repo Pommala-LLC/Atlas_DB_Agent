@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "IfcidCorrelationKey": {
+      "additionalProperties": false,
+      "description": "How trace records tie to one invocation. At least one strong key required.",
+      "properties": {
+        "authid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Authid"
+        },
+        "correlation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Correlation Id"
+        },
+        "luwid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Luwid"
+        },
+        "package_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Package Name"
+        },
+        "plan_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Plan Name"
+        },
+        "thread_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thread Token"
+        }
+      },
+      "title": "IfcidCorrelationKey",
+      "type": "object"
+    }
+  },
+  "$id": "ifcid-invocation-window-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "When the procedure ran, as reported by the caller \u2014 not by the trace.",
+  "properties": {
+    "correlation": {
+      "$ref": "#/$defs/IfcidCorrelationKey"
+    },
+    "ended_at": {
+      "title": "Ended At",
+      "type": "string"
+    },
+    "invocation_id": {
+      "title": "Invocation Id",
+      "type": "string"
+    },
+    "procedure_name": {
+      "title": "Procedure Name",
+      "type": "string"
+    },
+    "procedure_schema": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Procedure Schema"
+    },
+    "started_at": {
+      "title": "Started At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "invocation_id",
+    "procedure_schema",
+    "procedure_name",
+    "started_at",
+    "ended_at",
+    "correlation"
+  ],
+  "title": "IfcidInvocationWindow",
+  "type": "object"
+}

@@ -1,0 +1,132 @@
+{
+  "$defs": {
+    "GraphEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Attributes",
+          "type": "object"
+        },
+        "edge_id": {
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "edge_type": {
+          "title": "Edge Type",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source",
+        "target",
+        "edge_type"
+      ],
+      "title": "GraphEdge",
+      "type": "object"
+    },
+    "GraphNode": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Attributes",
+          "type": "object"
+        },
+        "authority": {
+          "default": "TECHNICAL_EVIDENCE",
+          "title": "Authority",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "node_type": {
+          "title": "Node Type",
+          "type": "string"
+        },
+        "status": {
+          "default": "OBSERVED_OR_EXTRACTED",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "node_type",
+        "label"
+      ],
+      "title": "GraphNode",
+      "type": "object"
+    }
+  },
+  "$id": "procedure-knowledge-graph-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/GraphEdge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "graph_id": {
+      "title": "Graph Id",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/GraphNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "procedure_ref": {
+      "title": "Procedure Ref",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "procedure-knowledge-graph-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unresolved_boundaries": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved Boundaries",
+      "type": "array"
+    }
+  },
+  "required": [
+    "graph_id",
+    "procedure_ref",
+    "nodes",
+    "edges",
+    "content_digest"
+  ],
+  "title": "ProcedureKnowledgeGraph",
+  "type": "object"
+}

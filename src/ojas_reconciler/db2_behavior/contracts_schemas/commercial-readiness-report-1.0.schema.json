@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "CommercialMaturity": {
+      "enum": [
+        "COMMERCIALIZATION_CANDIDATE",
+        "ORGANIC_VALIDATION_REQUIRED",
+        "COMMERCIAL_FOUNDATION_READY",
+        "GENERALLY_AVAILABLE"
+      ],
+      "title": "CommercialMaturity",
+      "type": "string"
+    },
+    "NamingStatus": {
+      "enum": [
+        "PROVISIONAL_PENDING_NAMING_BASELINE",
+        "FROZEN_WITH_COMPATIBILITY_POLICY"
+      ],
+      "title": "NamingStatus",
+      "type": "string"
+    },
+    "OrganicValidationStatus": {
+      "enum": [
+        "BLOCKED_CUSTODY",
+        "ORGANIC_SMOKE_COMPLETED",
+        "ORGANIC_SMOKE_FAILED",
+        "DISCOVERY_COMPLETED",
+        "ESTATE_PILOT_MEASURED",
+        "PILOT_PAUSED_PRODUCT_GAP",
+        "FAILED_INTERNAL"
+      ],
+      "title": "OrganicValidationStatus",
+      "type": "string"
+    }
+  },
+  "$id": "commercial-readiness-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blockers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "capability_manifest_valid": {
+      "title": "Capability Manifest Valid",
+      "type": "boolean"
+    },
+    "commercial_maturity": {
+      "$ref": "#/$defs/CommercialMaturity"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "custody_ready": {
+      "title": "Custody Ready",
+      "type": "boolean"
+    },
+    "customer_boundary_gates": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Customer Boundary Gates",
+      "type": "array"
+    },
+    "deployment_gates": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Deployment Gates",
+      "type": "array"
+    },
+    "distribution_name": {
+      "title": "Distribution Name",
+      "type": "string"
+    },
+    "distribution_version": {
+      "title": "Distribution Version",
+      "type": "string"
+    },
+    "editions_status": {
+      "default": "DEFERRED",
+      "title": "Editions Status",
+      "type": "string"
+    },
+    "naming_status": {
+      "$ref": "#/$defs/NamingStatus"
+    },
+    "organic_estate_pilot_measured": {
+      "default": false,
+      "title": "Organic Estate Pilot Measured",
+      "type": "boolean"
+    },
+    "organic_validation_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OrganicValidationStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_version": {
+      "default": "commercial-readiness-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "verified_gate_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Verified Gate Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "distribution_name",
+    "distribution_version",
+    "commercial_maturity",
+    "capability_manifest_valid",
+    "custody_ready",
+    "deployment_gates",
+    "customer_boundary_gates",
+    "blockers",
+    "naming_status",
+    "content_digest"
+  ],
+  "title": "CommercialReadinessReport",
+  "type": "object"
+}

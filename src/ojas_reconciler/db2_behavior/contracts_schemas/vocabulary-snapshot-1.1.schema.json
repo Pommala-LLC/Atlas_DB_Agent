@@ -1,0 +1,218 @@
+{
+  "$defs": {
+    "AuthorityScope": {
+      "enum": [
+        "TEST_FIXTURE_ONLY",
+        "PLATFORM"
+      ],
+      "title": "AuthorityScope",
+      "type": "string"
+    },
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MUST_IF_CALLER_CONTRACT_HOLDS",
+        "MAY",
+        "MUST_NOT",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "MappingKind": {
+      "enum": [
+        "EXACT_APPROVED_MAPPING",
+        "STRUCTURAL_APPROVED_MAPPING",
+        "SYMBOL_BOUND_APPROVED_MAPPING",
+        "MANUALLY_APPROVED_MAPPING",
+        "MAPPING_CANDIDATE_ONLY"
+      ],
+      "title": "MappingKind",
+      "type": "string"
+    },
+    "PlaceholderContract": {
+      "additionalProperties": false,
+      "properties": {
+        "placeholder": {
+          "title": "Placeholder",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "placeholder"
+      ],
+      "title": "PlaceholderContract",
+      "type": "object"
+    },
+    "VocabularyMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_ref": {
+          "title": "Approval Ref",
+          "type": "string"
+        },
+        "authority_scope": {
+          "$ref": "#/$defs/AuthorityScope"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "manual_requirement_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Manual Requirement Ref"
+        },
+        "mapping_id": {
+          "title": "Mapping Id",
+          "type": "string"
+        },
+        "mapping_kind": {
+          "$ref": "#/$defs/MappingKind"
+        },
+        "mapping_version": {
+          "title": "Mapping Version",
+          "type": "string"
+        },
+        "normalized_technical_pattern_ref": {
+          "title": "Normalized Technical Pattern Ref",
+          "type": "string"
+        },
+        "phrase_template": {
+          "title": "Phrase Template",
+          "type": "string"
+        },
+        "placeholder_contract": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PlaceholderContract"
+          },
+          "title": "Placeholder Contract",
+          "type": "array"
+        },
+        "structural_context_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Structural Context Digest"
+        },
+        "supported_modalities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EffectModality"
+          },
+          "title": "Supported Modalities",
+          "type": "array"
+        },
+        "symbol_binding_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Symbol Binding Refs",
+          "type": "array"
+        },
+        "valid_from": {
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid To"
+        }
+      },
+      "required": [
+        "mapping_id",
+        "mapping_version",
+        "mapping_kind",
+        "normalized_technical_pattern_ref",
+        "phrase_template",
+        "approval_ref",
+        "authority_scope",
+        "valid_from",
+        "content_digest"
+      ],
+      "title": "VocabularyMapping",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority_scope": {
+      "$ref": "#/$defs/AuthorityScope"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "effective_timestamp": {
+      "title": "Effective Timestamp",
+      "type": "string"
+    },
+    "mappings": {
+      "items": {
+        "$ref": "#/$defs/VocabularyMapping"
+      },
+      "title": "Mappings",
+      "type": "array"
+    },
+    "registry_version": {
+      "title": "Registry Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "vocabulary-snapshot-1.1",
+      "default": "vocabulary-snapshot-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "registry_version",
+    "effective_timestamp",
+    "authority_scope",
+    "mappings",
+    "content_digest"
+  ],
+  "title": "VocabularySnapshot",
+  "type": "object"
+}

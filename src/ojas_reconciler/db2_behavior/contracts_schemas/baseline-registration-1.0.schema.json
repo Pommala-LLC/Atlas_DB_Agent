@@ -1,0 +1,51 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "authority_ref": {
+      "title": "Authority Ref",
+      "type": "string"
+    },
+    "behavior_id": {
+      "title": "Behavior Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "effective_from": {
+      "title": "Effective From",
+      "type": "string"
+    },
+    "effective_to": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Effective To"
+    },
+    "registration_id": {
+      "title": "Registration Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "registration_id",
+    "artifact_id",
+    "behavior_id",
+    "authority_ref",
+    "effective_from",
+    "content_digest"
+  ],
+  "title": "BaselineRegistration",
+  "type": "object"
+}

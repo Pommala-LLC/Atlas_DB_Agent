@@ -1,0 +1,26 @@
+{
+  "schema_version": "procedure-composition-contract-1.0",
+  "contract_id": "composition-replace-me",
+  "composition_kind": "EXTERNAL_SEQUENCE",
+  "upstream_procedure_ref": "SCHEMA.VALIDATE_INPUT",
+  "downstream_procedure_ref": "SCHEMA.APPLY_RULES",
+  "upstream_semantic_digest": "sha256:replace-me",
+  "downstream_semantic_digest": "sha256:replace-me",
+  "orchestration_definition_digest": null,
+  "transaction_contract_digest": null,
+  "invocation_site_ref": "orchestrator:replace-me",
+  "parameter_mappings": [
+    {"upstream_ref": "P_CLAIM_ID", "downstream_ref": "P_CLAIM_ID", "mapping_expression": null, "evidence_refs": ["source:replace-me"]}
+  ],
+  "condition_mappings": [
+    {"exported_postcondition_ref": "validation:inputs-valid", "imported_precondition_ref": "rules:inputs-valid", "entailment_status": "PROVEN", "evidence_refs": ["review:replace-me"]}
+  ],
+  "sqlstate_mappings": {},
+  "output_status_mappings": {},
+  "transaction_relationship": "CALLER_CONTROLLED",
+  "failure_disposition": "Downstream execution is prohibited when validation does not establish success.",
+  "authority_ref": "authority:replace-me",
+  "evidence_refs": ["orchestration:replace-me"],
+  "effective_from": "2026-07-29T00:00:00Z",
+  "expires_at": null
+}

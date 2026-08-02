@@ -1,0 +1,70 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "amended_artifact_id": {
+      "title": "Amended Artifact Id",
+      "type": "string"
+    },
+    "amended_at": {
+      "title": "Amended At",
+      "type": "string"
+    },
+    "amendment_id": {
+      "title": "Amendment Id",
+      "type": "string"
+    },
+    "artifact_revision_id": {
+      "title": "Artifact Revision Id",
+      "type": "string"
+    },
+    "behavior_id": {
+      "title": "Behavior Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "editor_ref": {
+      "title": "Editor Ref",
+      "type": "string"
+    },
+    "invalidates_machine_attestation": {
+      "const": true,
+      "default": true,
+      "title": "Invalidates Machine Attestation",
+      "type": "boolean"
+    },
+    "original_artifact_id": {
+      "title": "Original Artifact Id",
+      "type": "string"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "source_symbol_id": {
+      "title": "Source Symbol Id",
+      "type": "string"
+    },
+    "symbol_lineage_id": {
+      "title": "Symbol Lineage Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "amendment_id",
+    "original_artifact_id",
+    "amended_artifact_id",
+    "behavior_id",
+    "source_symbol_id",
+    "symbol_lineage_id",
+    "artifact_revision_id",
+    "editor_ref",
+    "reason",
+    "amended_at",
+    "content_digest"
+  ],
+  "title": "AmendmentRecord",
+  "type": "object"
+}

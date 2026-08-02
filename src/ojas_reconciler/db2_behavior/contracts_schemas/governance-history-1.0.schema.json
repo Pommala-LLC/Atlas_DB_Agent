@@ -1,0 +1,658 @@
+{
+  "$defs": {
+    "AmendmentRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "amended_artifact_id": {
+          "title": "Amended Artifact Id",
+          "type": "string"
+        },
+        "amended_at": {
+          "title": "Amended At",
+          "type": "string"
+        },
+        "amendment_id": {
+          "title": "Amendment Id",
+          "type": "string"
+        },
+        "artifact_revision_id": {
+          "title": "Artifact Revision Id",
+          "type": "string"
+        },
+        "behavior_id": {
+          "title": "Behavior Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "editor_ref": {
+          "title": "Editor Ref",
+          "type": "string"
+        },
+        "invalidates_machine_attestation": {
+          "const": true,
+          "default": true,
+          "title": "Invalidates Machine Attestation",
+          "type": "boolean"
+        },
+        "original_artifact_id": {
+          "title": "Original Artifact Id",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "source_symbol_id": {
+          "title": "Source Symbol Id",
+          "type": "string"
+        },
+        "symbol_lineage_id": {
+          "title": "Symbol Lineage Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "amendment_id",
+        "original_artifact_id",
+        "amended_artifact_id",
+        "behavior_id",
+        "source_symbol_id",
+        "symbol_lineage_id",
+        "artifact_revision_id",
+        "editor_ref",
+        "reason",
+        "amended_at",
+        "content_digest"
+      ],
+      "title": "AmendmentRecord",
+      "type": "object"
+    },
+    "BaselineComparisonResult": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_revision_id": {
+          "title": "Artifact Revision Id",
+          "type": "string"
+        },
+        "baseline_artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Baseline Artifact Id"
+        },
+        "baseline_signature_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Baseline Signature Digest"
+        },
+        "behavior_id": {
+          "title": "Behavior Id",
+          "type": "string"
+        },
+        "candidate_artifact_id": {
+          "title": "Candidate Artifact Id",
+          "type": "string"
+        },
+        "candidate_signature_digest": {
+          "title": "Candidate Signature Digest",
+          "type": "string"
+        },
+        "classification_candidate": {
+          "anyOf": [
+            {
+              "const": "BASELINE_BEHAVIOR_VIOLATION_CANDIDATE",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Classification Candidate"
+        },
+        "compared_at": {
+          "title": "Compared At",
+          "type": "string"
+        },
+        "comparison_id": {
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "source_symbol_id": {
+          "title": "Source Symbol Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/BaselineComparisonStatus"
+        },
+        "symbol_lineage_id": {
+          "title": "Symbol Lineage Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "comparison_id",
+        "candidate_artifact_id",
+        "baseline_artifact_id",
+        "behavior_id",
+        "source_symbol_id",
+        "symbol_lineage_id",
+        "artifact_revision_id",
+        "status",
+        "candidate_signature_digest",
+        "baseline_signature_digest",
+        "compared_at",
+        "content_digest"
+      ],
+      "title": "BaselineComparisonResult",
+      "type": "object"
+    },
+    "BaselineComparisonStatus": {
+      "enum": [
+        "MATCH",
+        "CONFLICT",
+        "NO_BASELINE",
+        "INCONCLUSIVE"
+      ],
+      "title": "BaselineComparisonStatus",
+      "type": "string"
+    },
+    "BaselineRegistration": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "authority_ref": {
+          "title": "Authority Ref",
+          "type": "string"
+        },
+        "behavior_id": {
+          "title": "Behavior Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "effective_from": {
+          "title": "Effective From",
+          "type": "string"
+        },
+        "effective_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective To"
+        },
+        "registration_id": {
+          "title": "Registration Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "registration_id",
+        "artifact_id",
+        "behavior_id",
+        "authority_ref",
+        "effective_from",
+        "content_digest"
+      ],
+      "title": "BaselineRegistration",
+      "type": "object"
+    },
+    "CertificationEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest": {
+          "title": "Artifact Digest",
+          "type": "string"
+        },
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "authority_ref": {
+          "title": "Authority Ref",
+          "type": "string"
+        },
+        "certification_binding_id": {
+          "title": "Certification Binding Id",
+          "type": "string"
+        },
+        "certification_ref": {
+          "title": "Certification Ref",
+          "type": "string"
+        },
+        "certification_type": {
+          "title": "Certification Type",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "valid_from": {
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid To"
+        }
+      },
+      "required": [
+        "certification_binding_id",
+        "artifact_id",
+        "artifact_digest",
+        "certification_ref",
+        "certification_type",
+        "authority_ref",
+        "valid_from",
+        "content_digest"
+      ],
+      "title": "CertificationEnvelope",
+      "type": "object"
+    },
+    "GovernanceArtifactType": {
+      "enum": [
+        "SCENARIO_SPEC_BATCH",
+        "SCENARIO_SPEC",
+        "CLASSIFICATION_OBSERVATION",
+        "EFFECT_CLOSURE",
+        "RESOLUTION_VECTOR",
+        "ANALYSIS_BUDGET_REPORT",
+        "BDD_COMPILATION_BATCH",
+        "CANDIDATE_BDD",
+        "TRACEABILITY_MANIFEST",
+        "GHERKIN_ARTIFACT",
+        "RUNTIME_VERIFICATION_BATCH",
+        "RUNTIME_EXECUTION_RECORD",
+        "RUNTIME_VERIFICATION_RESULT",
+        "PLATFORM_DECISION",
+        "CERTIFICATION_BINDING"
+      ],
+      "title": "GovernanceArtifactType",
+      "type": "string"
+    },
+    "GovernanceAuditEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_ref": {
+          "title": "Actor Ref",
+          "type": "string"
+        },
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "event_at": {
+          "title": "Event At",
+          "type": "string"
+        },
+        "event_id": {
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "$ref": "#/$defs/GovernanceEventType"
+        },
+        "payload_digest": {
+          "title": "Payload Digest",
+          "type": "string"
+        },
+        "previous_event_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Previous Event Digest"
+        },
+        "sequence": {
+          "title": "Sequence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_id",
+        "sequence",
+        "event_type",
+        "artifact_id",
+        "actor_ref",
+        "event_at",
+        "payload_digest",
+        "content_digest"
+      ],
+      "title": "GovernanceAuditEvent",
+      "type": "object"
+    },
+    "GovernanceEventType": {
+      "enum": [
+        "ARTIFACT_CACHED",
+        "REFERENCE_BASELINE_CACHED",
+        "BASELINE_RETIRED",
+        "BASELINE_COMPARED",
+        "REVIEW_AMENDMENT_CACHED",
+        "EXTERNAL_PLATFORM_DECISION_CACHED",
+        "EXTERNAL_CERTIFICATION_CACHED",
+        "ARTIFACT_ADMITTED",
+        "BASELINE_REGISTERED",
+        "ARTIFACT_AMENDED",
+        "PLATFORM_DECISION_BOUND",
+        "CERTIFICATION_BOUND"
+      ],
+      "title": "GovernanceEventType",
+      "type": "string"
+    },
+    "LocalEvidenceAuthorityScope": {
+      "enum": [
+        "LOCAL_NON_AUTHORITATIVE_EVIDENCE"
+      ],
+      "title": "LocalEvidenceAuthorityScope",
+      "type": "string"
+    },
+    "PlatformDecisionEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest": {
+          "title": "Artifact Digest",
+          "type": "string"
+        },
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "authority_ref": {
+          "title": "Authority Ref",
+          "type": "string"
+        },
+        "binding_id": {
+          "title": "Binding Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "decision_type": {
+          "title": "Decision Type",
+          "type": "string"
+        },
+        "effective_at": {
+          "title": "Effective At",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "platform_decision_ref": {
+          "title": "Platform Decision Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "binding_id",
+        "artifact_id",
+        "artifact_digest",
+        "platform_decision_ref",
+        "decision_type",
+        "authority_ref",
+        "effective_at",
+        "content_digest"
+      ],
+      "title": "PlatformDecisionEnvelope",
+      "type": "object"
+    },
+    "StoredArtifactRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_ref": {
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "artifact_revision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Revision Id"
+        },
+        "artifact_type": {
+          "$ref": "#/$defs/GovernanceArtifactType"
+        },
+        "authority_scope": {
+          "$ref": "#/$defs/LocalEvidenceAuthorityScope",
+          "default": "LOCAL_NON_AUTHORITATIVE_EVIDENCE"
+        },
+        "behavior_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Behavior Id"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "invalidates_machine_attestation": {
+          "default": false,
+          "title": "Invalidates Machine Attestation",
+          "type": "boolean"
+        },
+        "parent_artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Artifact Id"
+        },
+        "payload_digest": {
+          "title": "Payload Digest",
+          "type": "string"
+        },
+        "platform_governance_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Platform Governance Ref"
+        },
+        "source_symbol_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Symbol Id"
+        },
+        "symbol_lineage_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Symbol Lineage Id"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "artifact_type",
+        "artifact_ref",
+        "content_digest",
+        "payload_digest",
+        "created_at"
+      ],
+      "title": "StoredArtifactRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "amendments": {
+      "items": {
+        "$ref": "#/$defs/AmendmentRecord"
+      },
+      "title": "Amendments",
+      "type": "array"
+    },
+    "artifact": {
+      "$ref": "#/$defs/StoredArtifactRecord"
+    },
+    "audit_chain_valid": {
+      "title": "Audit Chain Valid",
+      "type": "boolean"
+    },
+    "audit_events": {
+      "items": {
+        "$ref": "#/$defs/GovernanceAuditEvent"
+      },
+      "title": "Audit Events",
+      "type": "array"
+    },
+    "baseline_registrations": {
+      "items": {
+        "$ref": "#/$defs/BaselineRegistration"
+      },
+      "title": "Baseline Registrations",
+      "type": "array"
+    },
+    "certifications": {
+      "items": {
+        "$ref": "#/$defs/CertificationEnvelope"
+      },
+      "title": "Certifications",
+      "type": "array"
+    },
+    "comparisons": {
+      "items": {
+        "$ref": "#/$defs/BaselineComparisonResult"
+      },
+      "title": "Comparisons",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "platform_decisions": {
+      "items": {
+        "$ref": "#/$defs/PlatformDecisionEnvelope"
+      },
+      "title": "Platform Decisions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "artifact",
+    "baseline_registrations",
+    "comparisons",
+    "amendments",
+    "platform_decisions",
+    "certifications",
+    "audit_events",
+    "audit_chain_valid",
+    "content_digest"
+  ],
+  "title": "GovernanceHistory",
+  "type": "object"
+}

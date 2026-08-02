@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "atlas-capability-manifest-1.0.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "release",
+    "overall_commercialization_state",
+    "dialects",
+    "claim_policy",
+    "content_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas-capability-manifest-1.0"
+    },
+    "product": {
+      "const": "Atlas Procedure Intelligence"
+    },
+    "release": {
+      "type": "string"
+    },
+    "overall_commercialization_state": {
+      "enum": [
+        "ORGANIC_VALIDATION_REQUIRED",
+        "COMMERCIALIZATION_CANDIDATE",
+        "COMMERCIALLY_AVAILABLE"
+      ]
+    },
+    "dialects": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dialect",
+          "implementation_state",
+          "validation_state",
+          "commercialization_state",
+          "synthetic_fixture_count",
+          "organic_estate_count",
+          "organic_routine_count",
+          "known_version_bounds",
+          "evidence_refs",
+          "limitations",
+          "organic_validation_state",
+          "public_repository_file_count",
+          "public_repository_routine_count",
+          "public_repository_evidence_refs",
+          "commercialization_blockers"
+        ],
+        "properties": {
+          "dialect": {
+            "enum": [
+              "DB2_SQL_PL",
+              "ORACLE_PLSQL",
+              "SQLSERVER_TSQL",
+              "POSTGRESQL_PLPGSQL",
+              "MYSQL_STORED_PROGRAM"
+            ]
+          },
+          "implementation_state": {
+            "enum": [
+              "DESIGNED",
+              "IMPLEMENTED"
+            ]
+          },
+          "validation_state": {
+            "enum": [
+              "NOT_VALIDATED",
+              "SYNTHETICALLY_VALIDATED",
+              "ORGANICALLY_VALIDATED"
+            ]
+          },
+          "commercialization_state": {
+            "enum": [
+              "ORGANIC_VALIDATION_REQUIRED",
+              "COMMERCIALIZATION_CANDIDATE",
+              "COMMERCIALLY_AVAILABLE"
+            ]
+          },
+          "synthetic_fixture_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "organic_estate_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "organic_routine_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "known_version_bounds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "organic_validation_state": {
+            "enum": [
+              "NOT_ATTEMPTED",
+              "FAILED_INITIAL_SAMPLE",
+              "REVALIDATION_REQUIRED_AFTER_REMEDIATION",
+              "PASSED_PUBLIC_SOURCE_GATE",
+              "ORGANICALLY_VALIDATED"
+            ]
+          },
+          "public_repository_file_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "public_repository_routine_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "public_repository_evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commercialization_blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "claim_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "synthetic_validation_claim",
+        "organic_validation_claim",
+        "commercial_availability_claim"
+      ],
+      "properties": {
+        "synthetic_validation_claim": {
+          "const": "ALLOWED_WITH_FIXTURE_COUNTS"
+        },
+        "organic_validation_claim": {
+          "const": "ALLOWED_ONLY_WITH_EXPLICIT_STATE_AND_EVIDENCE"
+        },
+        "commercial_availability_claim": {
+          "const": "PROHIBITED_UNTIL_GOVERNED_PROMOTION"
+        }
+      }
+    },
+    "content_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

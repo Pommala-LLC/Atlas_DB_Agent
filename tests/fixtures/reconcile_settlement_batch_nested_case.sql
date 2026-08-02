@@ -1,0 +1,212 @@
+CREATE PROCEDURE CLAIMS.RECONCILE_SETTLEMENT_BATCH (
+    IN  P_BATCH_ID        BIGINT,
+    IN  P_TENANT_ID       CHAR(8),
+    IN  P_AS_OF_DATE      DATE,
+    OUT P_STATUS          VARCHAR(30),
+    OUT P_SETTLED_COUNT   INTEGER,
+    OUT P_SETTLED_TOTAL   DECIMAL(15,2)
+)
+LANGUAGE SQL
+MODIFIES SQL DATA
+SPECIFIC RECONCILE_SETTLEMENT_BATCH_V1
+P_RECONCILE: BEGIN
+    DECLARE V_NOW              TIMESTAMP DEFAULT CURRENT TIMESTAMP;
+    DECLARE V_CLAIM_ID         BIGINT;
+    DECLARE V_AMOUNT           DECIMAL(15,2);
+
+    DECLARE V_RESERVE          DECIMAL(
+                                   15,
+                                   2
+                               ) DEFAULT 0;
+
+    DECLARE V_NET              DECIMAL(15,2) DEFAULT 0;
+    DECLARE V_TIER             VARCHAR(10);
+    DECLARE V_BAND             VARCHAR(10);
+    DECLARE V_FEE_RATE         DECIMAL(5,4) DEFAULT 0;
+    DECLARE V_RISK             INTEGER DEFAULT 0;
+    DECLARE V_HOLD_TOTAL       DECIMAL(15,2);
+    DECLARE V_ROWS             INTEGER DEFAULT 0;
+    DECLARE V_SKIPPED          INTEGER DEFAULT 0;
+    DECLARE V_DONE             SMALLINT DEFAULT 0;
+    DECLARE V_ERR_STATE        CHAR(5);
+
+    DECLARE BATCH_SEALED CONDITION FOR SQLSTATE '75001';
+
+    DECLARE C_ITEMS CURSOR FOR
+        SELECT B.CLAIM_ID,
+               C.CLAIM_AMOUNT,
+               C.RESERVE_AMOUNT,
+               CU.CUSTOMER_TIER,
+               COALESCE(R.RISK_SCORE, 0)
+        FROM   BATCH_ITEM B
+        INNER JOIN CLAIM C
+            ON  C.CLAIM_ID  = B.CLAIM_ID
+            AND C.TENANT_ID = B.TENANT_ID
+        INNER JOIN CUSTOMER CU
+            ON  CU.CUSTOMER_ID = C.CUSTOMER_ID
+            AND CU.TENANT_ID   = C.TENANT_ID
+        LEFT JOIN CLAIM_RISK R
+            ON  R.CLAIM_ID     = C.CLAIM_ID
+            AND R.EFFECTIVE_TS <= V_NOW
+            AND R.EXPIRY_TS     > V_NOW
+        WHERE  B.BATCH_ID  = P_BATCH_ID
+          AND  B.TENANT_ID = P_TENANT_ID
+          AND  B.PROCESSED_IND = 'N'
+          AND  C.DELETED_IND   = 'N'
+        ORDER BY B.SEQUENCE_NUMBER;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND
+        SET V_DONE = 1;
+
+    DECLARE EXIT HANDLER FOR BATCH_SEALED
+    BEGIN
+        SET P_STATUS        = 'BATCH_SEALED';
+        SET P_SETTLED_COUNT = 0;
+        SET P_SETTLED_TOTAL = 0;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            V_ERR_STATE = RETURNED_SQLSTATE;
+        SET P_STATUS = 'FAILED_' || V_ERR_STATE;
+        INSERT INTO BATCH_ERROR_LOG
+            (BATCH_ID, TENANT_ID, SQLSTATE_CODE, LOGGED_TS)
+        VALUES
+            (P_BATCH_ID, P_TENANT_ID, V_ERR_STATE, V_NOW);
+    END;
+
+    SET P_STATUS        = 'RUNNING';
+    SET P_SETTLED_COUNT = 0;
+    SET P_SETTLED_TOTAL = 0;
+
+    SELECT COUNT(*)
+    INTO   V_ROWS
+    FROM   BATCH_CONTROL
+    WHERE  BATCH_ID  = P_BATCH_ID
+      AND  TENANT_ID = P_TENANT_ID
+      AND  SEAL_IND  = 'Y';
+
+    IF V_ROWS > 0 THEN
+        SIGNAL BATCH_SEALED
+            SET MESSAGE_TEXT = 'Batch is sealed and cannot be reconciled';
+    END IF;
+
+    SET V_ROWS = 0;
+
+    SELECT CUSTOMER_TIER
+    INTO   V_TIER
+    FROM   BATCH_CONTROL
+    WHERE  BATCH_ID  = P_BATCH_ID
+      AND  TENANT_ID = P_TENANT_ID;
+
+    SET V_FEE_RATE =
+        CASE
+            WHEN V_TIER = 'PLATINUM' THEN 0.0050
+            WHEN V_TIER = 'GOLD'     THEN 0.0075
+            ELSE
+                CASE
+                    WHEN P_AS_OF_DATE < CURRENT DATE - 30 DAYS THEN 0.0125
+                    ELSE 0.0100
+                END
+        END;
+
+    SET V_BAND = CASE V_TIER WHEN 'PLATINUM' THEN 'A' WHEN 'GOLD' THEN 'B' ELSE 'C' END;
+
+    OPEN C_ITEMS;
+
+    settle_loop:
+    WHILE V_DONE = 0 DO
+        FETCH C_ITEMS
+            INTO V_CLAIM_ID, V_AMOUNT, V_RESERVE, V_TIER, V_RISK;
+
+        IF V_DONE = 1 THEN
+            LEAVE settle_loop;
+        END IF;
+
+        SET V_NET = V_AMOUNT - V_RESERVE;
+
+        SELECT SUM(HOLD_AMOUNT)
+        INTO   V_HOLD_TOTAL
+        FROM   CLAIM_HOLD
+        WHERE  CLAIM_ID   = V_CLAIM_ID
+          AND  TENANT_ID  = P_TENANT_ID
+          AND  ACTIVE_IND = 'Y';
+
+        IF V_HOLD_TOTAL IS NOT NULL AND V_HOLD_TOTAL > 0 THEN
+            SET V_SKIPPED = V_SKIPPED + 1;
+            ITERATE settle_loop;
+        END IF;
+
+        SET V_NET =
+            V_NET - (V_NET *
+                CASE
+                    WHEN V_RISK >= 900 THEN 0.0000
+                    WHEN V_RISK >= 700 THEN V_FEE_RATE * 2
+                    ELSE V_FEE_RATE
+                END);
+
+        IF V_NET <= 0 THEN
+            SET V_SKIPPED = V_SKIPPED + 1;
+            ITERATE settle_loop;
+        END IF;
+
+        UPDATE CLAIM
+           SET STATUS     = 'SETTLED',
+               SETTLED_TS = V_NOW,
+               NET_AMOUNT = V_NET
+         WHERE CLAIM_ID  = V_CLAIM_ID
+           AND TENANT_ID = P_TENANT_ID;
+
+        UPDATE BATCH_ITEM
+           SET PROCESSED_IND = 'Y',
+               PROCESSED_TS  = V_NOW
+         WHERE BATCH_ID  = P_BATCH_ID
+           AND CLAIM_ID  = V_CLAIM_ID
+           AND TENANT_ID = P_TENANT_ID;
+
+        INSERT INTO SETTLEMENT_LEDGER
+            (CLAIM_ID, TENANT_ID, NET_AMOUNT, FEE_RATE, BAND, POSTED_TS)
+        VALUES
+            (V_CLAIM_ID, P_TENANT_ID, V_NET, V_FEE_RATE, V_BAND, V_NOW);
+
+        INSERT INTO CLAIM_AUDIT
+            (CLAIM_ID, TENANT_ID, ACTION_CODE, ACTION_TS)
+        VALUES
+            (V_CLAIM_ID, P_TENANT_ID, 'SETTLED', V_NOW);
+
+        SET P_SETTLED_COUNT = P_SETTLED_COUNT + 1;
+        SET P_SETTLED_TOTAL = P_SETTLED_TOTAL + V_NET;
+    END WHILE;
+
+    CLOSE C_ITEMS;
+
+    SELECT COUNT(*)
+    INTO   V_ROWS
+    FROM   BATCH_ITEM
+    WHERE  BATCH_ID      = P_BATCH_ID
+      AND  TENANT_ID     = P_TENANT_ID
+      AND  PROCESSED_IND = 'N'
+    HAVING COUNT(*) > 0;
+
+    ;
+
+    IF P_SETTLED_COUNT = 0 THEN
+        SET P_STATUS = 'NOTHING_SETTLED';
+    ELSEIF V_ROWS > 0 THEN
+        SET P_STATUS = 'PARTIALLY_SETTLED';
+    ELSEIF V_SKIPPED > 0 THEN
+        SET P_STATUS = 'SETTLED_WITH_SKIPS';
+    ELSE
+        SET P_STATUS = 'SETTLED';
+    END IF;
+
+    UPDATE BATCH_CONTROL
+       SET STATUS          = P_STATUS,
+           SETTLED_COUNT   = P_SETTLED_COUNT,
+           SETTLED_TOTAL   = P_SETTLED_TOTAL,
+           COMPLETED_TS    = V_NOW
+     WHERE BATCH_ID  = P_BATCH_ID
+       AND TENANT_ID = P_TENANT_ID;
+
+END P_RECONCILE

@@ -1,0 +1,13 @@
+{
+  "schema_version": "commercial-deletion-request-1.0",
+  "request_id": "delete-replace-me",
+  "tenant_ref": "tenant:replace-me",
+  "scope": "DERIVED_ARTIFACTS",
+  "target_artifact_refs": ["artifacts/category/artifact--digest.json"],
+  "custody_agreement_ref": "custody:replace-me",
+  "requested_by_ref": "actor:requester",
+  "approved_by_ref": "actor:independent-approver",
+  "requested_at": "2026-07-29T00:00:00Z",
+  "execute_after": "2026-07-30T00:00:00Z",
+  "reason": "Customer-authorized deletion request"
+}

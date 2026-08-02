@@ -1,0 +1,145 @@
+{
+  "$defs": {
+    "FixturePlanStatus": {
+      "enum": [
+        "READY_FOR_REVIEW",
+        "BLOCKED"
+      ],
+      "title": "FixturePlanStatus",
+      "type": "string"
+    },
+    "RelationFixtureRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "blocker_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocker Codes",
+          "type": "array"
+        },
+        "check_constraints": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Check Constraints",
+          "type": "array"
+        },
+        "insertion_order": {
+          "minimum": 1,
+          "title": "Insertion Order",
+          "type": "integer"
+        },
+        "omitted_generated_columns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Omitted Generated Columns",
+          "type": "array"
+        },
+        "parent_relation_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Parent Relation Refs",
+          "type": "array"
+        },
+        "relation_ref": {
+          "title": "Relation Ref",
+          "type": "string"
+        },
+        "required_input_columns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Input Columns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "relation_ref",
+        "insertion_order",
+        "required_input_columns",
+        "omitted_generated_columns"
+      ],
+      "title": "RelationFixtureRequirement",
+      "type": "object"
+    }
+  },
+  "$id": "relational-fixture-plan-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalog_provider_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Catalog Provider Refs",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "generated_sql": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Generated Sql",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "plan_id": {
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "procedure_ref": {
+      "title": "Procedure Ref",
+      "type": "string"
+    },
+    "relation_requirements": {
+      "items": {
+        "$ref": "#/$defs/RelationFixtureRequirement"
+      },
+      "title": "Relation Requirements",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "relational-fixture-plan-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/FixturePlanStatus"
+    },
+    "unresolved_relation_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved Relation Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "plan_id",
+    "procedure_ref",
+    "status",
+    "catalog_provider_refs",
+    "relation_requirements",
+    "unresolved_relation_refs",
+    "limitations",
+    "content_digest"
+  ],
+  "title": "RelationalFixturePlan",
+  "type": "object"
+}

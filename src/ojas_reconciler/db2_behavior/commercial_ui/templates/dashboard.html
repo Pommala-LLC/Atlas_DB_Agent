@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block heading %}Commercial readiness overview{% endblock %}
+{% block subheading %}One console for custody, analysis evidence, reviews, contracts and deployment gates.{% endblock %}
+{% block content %}
+<section class="hero">
+  <div><span class="eyebrow">Release boundary</span><h2>Organic validation remains the gate.</h2><p>The console can run the protocol and preserve evidence. It cannot manufacture customer-estate proof or promote the release to GA.</p></div>
+  <div class="hero-status"><span class="pill warning">ORGANIC_VALIDATION_REQUIRED</span><span class="pill neutral">NAMING PROVISIONAL</span><span class="pill neutral">EDITIONS DEFERRED</span></div>
+</section>
+<section class="metric-grid">
+{% for category,count in categories.items() %}<a class="metric" href="/artifacts?category={{ category }}"><strong>{{ count }}</strong><span>{{ category|replace('-', ' ') }}</span></a>{% endfor %}
+</section>
+<div class="two-col">
+<section class="card"><div class="card-head"><h3>Latest readiness</h3><a href="/readiness">Open</a></div>{% if readiness %}<div class="score-row"><span>Blockers</span><strong>{{ readiness.blockers|length }}</strong></div><div class="tag-list">{% for b in readiness.blockers[:8] %}<span class="pill danger">{{ b }}</span>{% endfor %}</div>{% else %}<p class="empty">No readiness assessment stored.</p>{% endif %}</section>
+<section class="card"><div class="card-head"><h3>Latest organic evidence</h3><a href="/organic">Open</a></div>{% if organic %}<div class="score-row"><span>Status</span><strong>{{ organic.status }}</strong></div><div class="mini-grid"><span>Sources <b>{{ organic.source_count }}</b></span><span>Semantic <b>{{ organic.semantic_completed }}</b></span><span>Admitted <b>{{ organic.admitted_scenarios }}</b></span><span>False MUST <b>{{ organic.materially_false_confident_behaviors }}</b></span></div>{% else %}<p class="empty">No organic source has been processed.</p>{% endif %}</section>
+</div>
+<section class="card"><div class="card-head"><h3>Recent immutable audit events</h3><a href="/audit">View all</a></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Action</th><th>Actor</th><th>Artifact</th></tr></thead><tbody>{% for e in audit_events|reverse %}<tr><td>{{ e.occurred_at }}</td><td><code>{{ e.action }}</code></td><td>{{ e.actor_ref }}</td><td>{{ e.artifact_ref or '—' }}</td></tr>{% else %}<tr><td colspan="4" class="empty">No events yet.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

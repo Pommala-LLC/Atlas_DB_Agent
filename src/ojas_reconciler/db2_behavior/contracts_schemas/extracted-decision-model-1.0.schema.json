@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "DecisionOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "effect_kind": {
+          "title": "Effect Kind",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "value_expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Expression"
+        }
+      },
+      "required": [
+        "target",
+        "effect_kind",
+        "evidence_refs"
+      ],
+      "title": "DecisionOutput",
+      "type": "object"
+    },
+    "DecisionPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "expression_text": {
+          "title": "Expression Text",
+          "type": "string"
+        },
+        "predicate_id": {
+          "title": "Predicate Id",
+          "type": "string"
+        },
+        "source_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Line"
+        }
+      },
+      "required": [
+        "predicate_id",
+        "expression_text",
+        "evidence_refs"
+      ],
+      "title": "DecisionPredicate",
+      "type": "object"
+    },
+    "DecisionRule": {
+      "additionalProperties": false,
+      "properties": {
+        "authority": {
+          "default": "EXTRACTED_TECHNICAL_EVIDENCE",
+          "title": "Authority",
+          "type": "string"
+        },
+        "completeness": {
+          "default": "COMPLETE",
+          "title": "Completeness",
+          "type": "string"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/DecisionOutput"
+          },
+          "title": "Outputs",
+          "type": "array"
+        },
+        "predicate_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Predicate Ids",
+          "type": "array"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "integer"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "source_behavior_ref": {
+          "title": "Source Behavior Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "priority",
+        "predicate_ids",
+        "outputs",
+        "source_behavior_ref"
+      ],
+      "title": "DecisionRule",
+      "type": "object"
+    }
+  },
+  "$id": "extracted-decision-model-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "evaluation_semantics": {
+      "default": "FIRST_MATCH_ALL_PREDICATES_TRUE",
+      "title": "Evaluation Semantics",
+      "type": "string"
+    },
+    "limitations": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "predicates": {
+      "items": {
+        "$ref": "#/$defs/DecisionPredicate"
+      },
+      "title": "Predicates",
+      "type": "array"
+    },
+    "procedure_ref": {
+      "title": "Procedure Ref",
+      "type": "string"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/DecisionRule"
+      },
+      "title": "Rules",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "extracted-decision-model-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_digest": {
+      "title": "Semantic Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "model_id",
+    "procedure_ref",
+    "semantic_digest",
+    "predicates",
+    "rules",
+    "content_digest"
+  ],
+  "title": "ExtractedDecisionModel",
+  "type": "object"
+}

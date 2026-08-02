@@ -1,0 +1,440 @@
+{
+  "$id": "https://pommala.com/contracts/readable-bdd-proposal-batch-1.5.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accounting": {
+      "additionalProperties": false,
+      "properties": {
+        "omitted_semantic_behavior_bundles": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "readable_analysis_warning_candidates": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "readable_behavior_candidates": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "readable_suppressed_composed_candidates": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "readable_total": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "readable_unhandled_condition_candidates": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "scenario_admitted": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "scenario_blocked": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "semantic_behavior_bundles": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "semantic_behavior_bundles",
+        "scenario_admitted",
+        "scenario_blocked",
+        "readable_behavior_candidates",
+        "readable_unhandled_condition_candidates",
+        "readable_total",
+        "omitted_semantic_behavior_bundles",
+        "readable_analysis_warning_candidates",
+        "readable_suppressed_composed_candidates"
+      ],
+      "type": "object"
+    },
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_status": {
+            "enum": [
+              "ADMITTED_TECHNICAL_SCENARIO",
+              "PARTIAL_TECHNICAL_CANDIDATE",
+              "CONDITIONAL_TECHNICAL_CANDIDATE",
+              "UNREACHABLE_TECHNICAL_CANDIDATE",
+              "UNHANDLED_CONDITION_CANDIDATE",
+              "ANALYSIS_WARNING"
+            ]
+          },
+          "artifact_revision_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority_scope": {
+            "const": "NON_AUTHORITATIVE_PROPOSAL"
+          },
+          "behavior_effect_bundle_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "behavior_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "behavior_slice_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "blocker_codes": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "blocker_details": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "confidence_class": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "content_digest": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "finding_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "proposal_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "proposal_kind": {
+            "enum": [
+              "BEHAVIOR",
+              "UNHANDLED_CONDITION",
+              "ANALYSIS_WARNING"
+            ]
+          },
+          "renderer_version": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "review_required": {
+            "const": true
+          },
+          "rule_name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "scenario_name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "scenario_spec_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "schema_version": {
+            "const": "readable-bdd-proposal-1.5"
+          },
+          "source_behavior_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "source_bundle_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "source_symbol_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "symbol_lineage_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "technical_gherkin_artifact_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "text": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "variant_key": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "proposal_id",
+          "schema_version",
+          "authority_scope",
+          "review_required",
+          "renderer_version",
+          "proposal_kind",
+          "analysis_status",
+          "confidence_class",
+          "variant_key",
+          "behavior_id",
+          "behavior_effect_bundle_ref",
+          "behavior_slice_ref",
+          "scenario_spec_ref",
+          "technical_gherkin_artifact_ref",
+          "source_symbol_id",
+          "symbol_lineage_id",
+          "artifact_revision_id",
+          "evidence_refs",
+          "finding_refs",
+          "blocker_codes",
+          "blocker_details",
+          "rule_name",
+          "scenario_name",
+          "text",
+          "content_digest",
+          "source_behavior_refs",
+          "source_bundle_refs"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "authority_scope": {
+      "const": "NON_AUTHORITATIVE_PROPOSAL"
+    },
+    "combined_text": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "gherkin_content_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "gherkin_structure_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "lint_report_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "manifest_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "procedure": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "quality": {
+      "additionalProperties": false,
+      "properties": {
+        "error_count": {
+          "const": 0
+        },
+        "feature_validation_report_ref": {
+          "const": "bdd/feature-validation-report.json"
+        },
+        "gherkin_document_ref": {
+          "const": "bdd/gherkin-document.json"
+        },
+        "lint_report_ref": {
+          "const": "bdd/lint-report.json"
+        },
+        "parser_name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "parser_version": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "quality_artifact_digests": {
+          "additionalProperties": false,
+          "properties": {
+            "feature_text": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "feature_validation_report": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "gherkin_document": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "lint_report": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "readable_bdd_document": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "feature_text",
+            "readable_bdd_document",
+            "gherkin_document",
+            "lint_report",
+            "feature_validation_report"
+          ],
+          "type": "object"
+        },
+        "readable_document_ref": {
+          "const": "bdd/readable-bdd-document.json"
+        },
+        "status": {
+          "enum": [
+            "PASSED",
+            "PASSED_WITH_WARNINGS_REVIEW_REQUIRED",
+            "PASSED_WITH_WARNINGS"
+          ]
+        },
+        "warning_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "warning_governance": {
+          "additionalProperties": true,
+          "properties": {
+            "baseline_warning_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "current_warning_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "expired_waiver_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "mode": {
+              "enum": [
+                "REPORT_ONLY",
+                "NO_NEW_WARNINGS"
+              ]
+            },
+            "new_warning_count": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "status": {
+              "enum": [
+                "NOT_EVALUATED",
+                "CLEAN",
+                "REVIEW_REQUIRED",
+                "GOVERNED",
+                "FAILED"
+              ]
+            },
+            "waived_warning_count": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "mode",
+            "status",
+            "baseline_warning_count",
+            "current_warning_count",
+            "new_warning_count",
+            "waived_warning_count",
+            "expired_waiver_count"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "status",
+        "parser_name",
+        "parser_version",
+        "error_count",
+        "warning_count",
+        "readable_document_ref",
+        "gherkin_document_ref",
+        "lint_report_ref",
+        "warning_governance",
+        "feature_validation_report_ref",
+        "quality_artifact_digests"
+      ],
+      "type": "object"
+    },
+    "quality_gate_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "renderer_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "review_required": {
+      "const": true
+    },
+    "schema_version": {
+      "const": "readable-bdd-proposal-batch-1.5"
+    },
+    "semantic_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "authority_scope",
+    "review_required",
+    "renderer_version",
+    "quality_gate_version",
+    "procedure",
+    "accounting",
+    "artifacts",
+    "combined_text",
+    "semantic_digest",
+    "gherkin_content_digest",
+    "gherkin_structure_digest",
+    "quality",
+    "lint_report_digest",
+    "manifest_digest"
+  ],
+  "title": "Readable BDD Proposal Batch 1.5",
+  "type": "object"
+}

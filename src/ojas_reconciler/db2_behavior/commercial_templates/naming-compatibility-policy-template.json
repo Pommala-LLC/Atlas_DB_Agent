@@ -1,0 +1,23 @@
+{
+  "alias_support_until": "3.0.0",
+  "artifact_schema_compatibility": "Existing schema IDs, artifact IDs and content digests are preserved. New Atlas artifacts use versioned Atlas schemas.",
+  "authority_ref": "product-decision:atlas-name-freeze",
+  "cli_aliases": [
+    "atlas-console",
+    "db2-behavior",
+    "ojas-db2-agent",
+    "ojas-db2-gate0",
+    "commercial-behavior-console"
+  ],
+  "cli_primary": "atlas",
+  "commercial_name": "Atlas",
+  "distribution_name": "atlas-procedure-intelligence",
+  "evidence_refs": [
+    "ATLAS_NAMING_MIGRATION.json",
+    "docs/atlas/ARCHITECTURE.md"
+  ],
+  "governance_record_migration": "No governance record is rewritten or rehashed. Canonical Atlas and legacy producer aliases are recorded in migration evidence.",
+  "policy_id": "atlas-naming-policy-2.0.0rc1",
+  "python_namespace": "atlas",
+  "schema_version": "naming-compatibility-policy-1.0"
+}

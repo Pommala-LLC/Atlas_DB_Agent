@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "Db2ObservationProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "effect_ref": {
+          "title": "Effect Ref",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "INSERT",
+            "UPDATE",
+            "DELETE",
+            "MERGE",
+            "UNKNOWN"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "probe_id": {
+          "title": "Probe Id",
+          "type": "string"
+        },
+        "relation_name": {
+          "title": "Relation Name",
+          "type": "string"
+        },
+        "snapshot_query": {
+          "title": "Snapshot Query",
+          "type": "string"
+        }
+      },
+      "required": [
+        "probe_id",
+        "effect_ref",
+        "relation_name",
+        "operation",
+        "snapshot_query"
+      ],
+      "title": "Db2ObservationProbe",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "connection_ref": {
+      "title": "Connection Ref",
+      "type": "string"
+    },
+    "environment_variable": {
+      "default": "OJAS_DB2_CONNECTION_STRING",
+      "title": "Environment Variable",
+      "type": "string"
+    },
+    "execute_live": {
+      "default": false,
+      "title": "Execute Live",
+      "type": "boolean"
+    },
+    "manual_approval_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Manual Approval Ref"
+    },
+    "observation_probes": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Db2ObservationProbe"
+      },
+      "title": "Observation Probes",
+      "type": "array"
+    },
+    "rollback_after_call": {
+      "default": true,
+      "title": "Rollback After Call",
+      "type": "boolean"
+    },
+    "sandbox_attestation": {
+      "title": "Sandbox Attestation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "connection_ref",
+    "sandbox_attestation"
+  ],
+  "title": "Db2SandboxConfig",
+  "type": "object"
+}

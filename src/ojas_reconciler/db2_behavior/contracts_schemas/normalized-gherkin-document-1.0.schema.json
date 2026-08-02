@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pommala.com/contracts/normalized-gherkin-document-1.0.schema.json",
+  "title": "Normalized Gherkin Document 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "parser_name",
+    "parser_version",
+    "feature",
+    "structure_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "normalized-gherkin-document-1.0"
+    },
+    "parser_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parser_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feature": {
+      "$ref": "#/$defs/feature"
+    },
+    "structure_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "tags",
+        "rules"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          }
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "scenarios"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scenario"
+          }
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "tags",
+        "steps",
+        "examples"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "Scenario",
+            "Scenario Outline"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          },
+          "minItems": 1
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/examples"
+          }
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "keyword",
+        "text"
+      ],
+      "properties": {
+        "keyword": {
+          "enum": [
+            "Given",
+            "When",
+            "Then",
+            "And",
+            "But"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "examples": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "headers",
+        "rows"
+      ],
+      "properties": {
+        "headers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

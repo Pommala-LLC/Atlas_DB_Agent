@@ -1,0 +1,197 @@
+{
+  "corpus_version": "1.0",
+  "cases": [
+    {
+      "case_id": "eligible-claim-structured-001",
+      "source_path": "../fixtures/eligible_claim.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "IF",
+        "OUT_ASSIGNMENT"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED"
+      ]
+    },
+    {
+      "case_id": "dynamic-shell-complete-001",
+      "source_path": "../fixtures/dynamic_and_comments.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DYNAMIC_SQL"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED"
+      ]
+    },
+    {
+      "case_id": "settle-customer-claims-structured-001",
+      "source_path": "../fixtures/settle_customer_claims.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DB2_ZOS",
+        "HANDLER",
+        "WHILE",
+        "SELECT_INTO",
+        "MERGE",
+        "COMMIT",
+        "ROLLBACK"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED",
+        "UNBALANCED_COMPOUND_STATEMENT"
+      ]
+    },
+    {
+      "case_id": "process-claim-batch-structured-001",
+      "source_path": "../fixtures/process_claim_batch.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "LABELED_COMPOUND",
+        "HANDLER",
+        "LOOP",
+        "DYNAMIC_SQL",
+        "CTE",
+        "WINDOW",
+        "SELECT_INTO",
+        "MERGE"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED",
+        "UNBALANCED_COMPOUND_STATEMENT"
+      ]
+    },
+    {
+      "case_id": "constraint-contradiction-structured-001",
+      "source_path": "../fixtures/constraint_contradiction.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "IF",
+        "DECIMAL",
+        "LOCAL_CONSTRAINT"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED",
+        "UNBALANCED_COMPOUND_STATEMENT"
+      ]
+    },
+    {
+      "case_id": "dynamic-resolution-structured-001",
+      "source_path": "../fixtures/dynamic_resolution.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DYNAMIC_SQL",
+        "PREPARE",
+        "EXECUTE",
+        "EXECUTE_IMMEDIATE",
+        "ENUMERATED_VARIANTS",
+        "DYNAMIC_RELATION",
+        "DYNAMIC_CALL"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED",
+        "UNBALANCED_COMPOUND_STATEMENT"
+      ]
+    },
+    {
+      "case_id": "dynamic-variant-budget-structured-001",
+      "source_path": "../fixtures/dynamic_variant_budget.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DYNAMIC_SQL",
+        "VARIANT_BUDGET"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED",
+        "UNBALANCED_COMPOUND_STATEMENT"
+      ]
+    },
+    {
+      "case_id": "dynamic-missing-prepare-structured-001",
+      "source_path": "../fixtures/dynamic_missing_prepare.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DYNAMIC_SQL",
+        "MISSING_PREPARE"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED"
+      ]
+    },
+    {
+      "case_id": "dynamic-query-arity-structured-001",
+      "source_path": "../fixtures/dynamic_query_arity.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DYNAMIC_SQL",
+        "EXECUTE_INTO",
+        "ARITY_MISMATCH"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "PROCEDURE_HEADER_PARSE_FAILED"
+      ]
+    },
+    {
+      "case_id": "nested-named-condition-structured-001",
+      "source_path": "../fixtures/nested_named_condition.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "NESTED_COMPOUND",
+        "DECLARE_CONDITION",
+        "NAMED_HANDLER"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "OPAQUE_REGION_EMITTED",
+        "NAMED_CONDITION_UNRESOLVED"
+      ]
+    },
+    {
+      "case_id": "literal-unreachable-structured-001",
+      "source_path": "../fixtures/test_unreachable.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "IF",
+        "UNREACHABLE_BRANCH"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "OPAQUE_REGION_EMITTED"
+      ]
+    },
+    {
+      "case_id": "tenant-missing-structured-001",
+      "source_path": "../fixtures/test_tenant_missing.sql",
+      "construct_tags": [
+        "CREATE_PROCEDURE",
+        "DML",
+        "TENANT_ISOLATION"
+      ],
+      "expected_result": "PARSES_COMPLETE",
+      "expected_findings": [],
+      "forbidden_findings": [
+        "OPAQUE_REGION_EMITTED"
+      ]
+    }
+  ]
+}

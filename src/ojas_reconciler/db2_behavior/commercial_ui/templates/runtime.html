@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block heading %}Runtime evidence{% endblock %}{% block subheading %}Import experimental verification batches as observations; runtime evidence never becomes source authority.{% endblock %}
+{% block content %}<section class="card"><form method="post" action="/runtime/import"><label>RuntimeVerificationBatch path<input name="runtime_path" required></label><button>Import evidence-only batch</button></form></section><section class="card"><h3>Imported batches</h3><pre>{{ batches|tojson(indent=2) }}</pre></section>{% endblock %}

@@ -1,0 +1,84 @@
+{
+  "$defs": {
+    "CommercialGateRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "gate_id": {
+          "title": "Gate Id",
+          "type": "string"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/CommercialGateStatus"
+        }
+      },
+      "required": [
+        "gate_id",
+        "status"
+      ],
+      "title": "CommercialGateRecord",
+      "type": "object"
+    },
+    "CommercialGateStatus": {
+      "enum": [
+        "VERIFIED",
+        "UNVERIFIED",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CommercialGateStatus",
+      "type": "string"
+    }
+  },
+  "$id": "commercial-gate-evidence-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "distribution_name": {
+      "title": "Distribution Name",
+      "type": "string"
+    },
+    "distribution_version": {
+      "title": "Distribution Version",
+      "type": "string"
+    },
+    "gates": {
+      "items": {
+        "$ref": "#/$defs/CommercialGateRecord"
+      },
+      "title": "Gates",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "commercial-gate-evidence-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "distribution_name",
+    "distribution_version",
+    "gates",
+    "content_digest"
+  ],
+  "title": "CommercialGateEvidence",
+  "type": "object"
+}

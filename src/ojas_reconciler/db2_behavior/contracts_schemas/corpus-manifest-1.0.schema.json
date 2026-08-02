@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ojas:db2-behavior:corpus-manifest:1.0",
+  "type": "object",
+  "required": ["corpus_version", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "corpus_version": {"const": "1.0"},
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["case_id", "source_path", "construct_tags", "expected_result"],
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "source_path": {"type": "string", "minLength": 1},
+          "construct_tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "expected_result": {
+            "enum": ["PARSES_COMPLETE", "PARSES_PARTIAL", "REFUSES_EXPECTED", "REFUSES_UNEXPECTED"]
+          },
+          "expected_findings": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "forbidden_findings": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        }
+      }
+    }
+  }
+}

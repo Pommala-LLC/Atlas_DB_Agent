@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "atlas-naming-compatibility-policy-1.0.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "policy_id", "status", "effective_release", "canonical",
+    "legacy_compatibility", "support_window", "artifact_policy",
+    "governance_resolution", "serialization_policy", "authority_ref",
+    "evidence_refs", "content_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "atlas-naming-compatibility-policy-1.0"},
+    "policy_id": {"type": "string", "minLength": 1},
+    "status": {"const": "FROZEN_WITH_COMPATIBILITY_POLICY"},
+    "effective_release": {"type": "string"},
+    "canonical": {
+      "type": "object", "additionalProperties": false,
+      "required": ["product_name", "distribution_name", "python_namespace", "cli", "ui_cli"],
+      "properties": {
+        "product_name": {"const": "Atlas"},
+        "distribution_name": {"const": "atlas-procedure-intelligence"},
+        "python_namespace": {"const": "atlas"},
+        "cli": {"const": "atlas"},
+        "ui_cli": {"const": "atlas-console"}
+      }
+    },
+    "legacy_compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["distribution_name", "python_namespace", "cli_aliases", "role", "new_api_policy"],
+      "properties": {
+        "distribution_name": {"const": "db2-behavior-extraction-framework"},
+        "python_namespace": {"const": "ojas_reconciler.db2_behavior"},
+        "cli_aliases": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+        "role": {"const": "COMPATIBILITY_FACADE"},
+        "new_api_policy": {"const": "NO_NEW_PUBLIC_APIS"}
+      }
+    },
+    "support_window": {
+      "type": "object", "additionalProperties": false,
+      "required": ["supported_until", "minimum_supported_major_releases", "removal_requires", "removal_notice"],
+      "properties": {
+        "supported_until": {"const": "3.0.0"},
+        "minimum_supported_major_releases": {"type": "integer", "minimum": 1},
+        "removal_requires": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+        "removal_notice": {"type": "string", "minLength": 1}
+      }
+    },
+    "artifact_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["existing_schema_ids", "existing_artifact_ids", "existing_content_digests", "historical_producer_identities", "new_artifacts", "migration_mode"],
+      "properties": {
+        "existing_schema_ids": {"const": "PRESERVED"},
+        "existing_artifact_ids": {"const": "PRESERVED"},
+        "existing_content_digests": {"const": "NEVER_REWRITTEN"},
+        "historical_producer_identities": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+        "new_artifacts": {"const": "ATLAS_PRODUCER_IDENTITY"},
+        "migration_mode": {"const": "ALIAS_MAPPING_ONLY_NO_REHASH"}
+      }
+    },
+    "governance_resolution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["legacy_records_resolvable", "lookup_order", "mutation_allowed", "digest_verification"],
+      "properties": {
+        "legacy_records_resolvable": {"const": true},
+        "lookup_order": {"type": "array", "items": {"enum": ["ORIGINAL_IDENTITY", "REGISTERED_ALIAS"]}, "minItems": 2, "maxItems": 2},
+        "mutation_allowed": {"const": false},
+        "digest_verification": {"const": "VERIFY_ORIGINAL_SERIALIZED_CONTENT"}
+      }
+    },
+    "serialization_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["read", "write", "round_trip", "schema_id_rewrite"],
+      "properties": {
+        "read": {"const": "ACCEPT_CANONICAL_AND_LEGACY"},
+        "write": {"const": "WRITE_CANONICAL_FOR_NEW_ARTIFACTS"},
+        "round_trip": {"const": "PRESERVE_LEGACY_IDENTITY_FOR_EXISTING_ARTIFACTS"},
+        "schema_id_rewrite": {"const": "PROHIBITED"}
+      }
+    },
+    "authority_ref": {"type": "string", "minLength": 1},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "content_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "$defs": {
+    "DialectId": {
+      "enum": [
+        "DB2_SQL_PL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL",
+        "POSTGRESQL_PLPGSQL",
+        "MYSQL_STORED_PROGRAM"
+      ],
+      "title": "DialectId",
+      "type": "string"
+    },
+    "DialectSemanticCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_id": {
+          "title": "Adapter Id",
+          "type": "string"
+        },
+        "common_constructs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Common Constructs",
+          "type": "array"
+        },
+        "dialect": {
+          "$ref": "#/$defs/DialectId"
+        },
+        "explicit_boundaries": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Explicit Boundaries",
+          "type": "array"
+        },
+        "reference_urls": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Reference Urls",
+          "type": "array"
+        },
+        "routine_kinds": {
+          "items": {
+            "$ref": "#/$defs/RoutineKind"
+          },
+          "title": "Routine Kinds",
+          "type": "array"
+        },
+        "status": {
+          "const": "DIALECT_BOUNDED_SEMANTICS",
+          "default": "DIALECT_BOUNDED_SEMANTICS",
+          "title": "Status",
+          "type": "string"
+        },
+        "vendor_constructs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Vendor Constructs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "dialect",
+        "adapter_id",
+        "routine_kinds",
+        "common_constructs",
+        "vendor_constructs",
+        "explicit_boundaries"
+      ],
+      "title": "DialectSemanticCoverage",
+      "type": "object"
+    },
+    "RoutineKind": {
+      "enum": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER",
+        "PACKAGE_ROUTINE"
+      ],
+      "title": "RoutineKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "atlas_version": {
+      "title": "Atlas Version",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dialects": {
+      "items": {
+        "$ref": "#/$defs/DialectSemanticCoverage"
+      },
+      "title": "Dialects",
+      "type": "array"
+    },
+    "product_name": {
+      "const": "Atlas",
+      "default": "Atlas",
+      "title": "Product Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "atlas-semantic-coverage-manifest-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_contract": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Semantic Contract",
+      "type": "array"
+    }
+  },
+  "required": [
+    "atlas_version",
+    "semantic_contract",
+    "dialects",
+    "content_digest"
+  ],
+  "title": "AtlasSemanticCoverageManifest",
+  "type": "object"
+}
