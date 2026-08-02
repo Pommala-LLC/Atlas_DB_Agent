@@ -9,7 +9,6 @@ from ojas_reconciler.db2_behavior.semantic_models import SemanticFindingCode
 from ojas_reconciler.db2_behavior.spikes.lark_sqlpl.parser import LarkSqlPlSpikeParser
 from ojas_reconciler.db2_behavior.tenant_isolation import load_tenant_isolation_catalog
 
-
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check the Phase 1 target acceptance gates.")
     parser.add_argument("source", type=Path)
