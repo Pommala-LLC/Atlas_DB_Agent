@@ -1,0 +1,8 @@
+{
+  "schema_version": "readable-bdd-warning-policy-1.0",
+  "mode": "NO_NEW_WARNINGS",
+  "procedure": "SCHEMA.PROCEDURE",
+  "baseline_fingerprints": [],
+  "max_warning_count": 0,
+  "waivers": []
+}
