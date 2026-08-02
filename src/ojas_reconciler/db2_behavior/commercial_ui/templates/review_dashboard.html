@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ review.procedure }} · Procedure Review</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="review-body" data-selected-group="{{ selected_group }}" data-selected-tab="{{ selected_tab }}">
+  <header class="review-topbar">
+    <div class="review-procedure">
+      <div class="review-title-row">
+        <strong>Procedure:</strong> <code>{{ review.procedure }}</code>
+        <span class="review-badge candidate">{{ review.candidate_status }}</span>
+        <span class="review-badge vocabulary">{{ review.vocabulary_status|replace('_',' ') }}</span>
+        <span class="review-badge quality">{{ review.quality_status or 'NOT EVALUATED' }}</span>
+        <span class="review-badge commercial {% if controls.overall_status == 'BLOCKED' %}blocked{% endif %}">{{ controls.capability.commercial_maturity|replace('_',' ') }}</span>
+      </div>
+      <div class="review-meta">
+        <span>{{ review.authority_scope }}</span><span>Parser: {{ review.parser }}</span><span>Warnings: {{ review.warning_count }}</span>
+      </div>
+    </div>
+    <div class="review-actions">
+      <label>Procedure
+        <select id="review-run-select">
+          {% for run in runs %}<option value="{{ run.run_name }}" {% if run.run_name == review.run_name %}selected{% endif %}>{{ run.procedure }}</option>{% endfor %}
+        </select>
+      </label>
+      <button class="review-open-controls" type="button" data-open-controls>Commercial controls</button>
+      <a href="/commercial">Full console</a>
+      <span>Atlas 2.0.0rc5</span>
+    </div>
+  </header>
+
+  <main class="review-layout">
+    <aside class="review-drd">
+      <h3>Decision Requirements</h3>
+      <p class="review-drd-note">Extracted review sections—not an authoritative DMN model.</p>
+      {% for node in review.decision_requirements %}
+        <button class="review-dr-node {% if node.id == selected_group %}active{% endif %}" data-review-group="{{ node.id }}">
+          <span class="review-node-icon">{{ node.icon }}</span>
+          <span>{{ node.label }}</span>
+          <b>{{ node.count }}</b>
+        </button>
+        {% if not loop.last %}<div class="review-arrow">↓</div>{% endif %}
+      {% endfor %}
+      <section class="review-boundary-card">
+        <strong>Evidence boundary</strong>
+        <span>{{ review.candidate_status }}</span>
+        <span>{{ review.vocabulary_status|replace('_',' ') }}</span>
+        <span>Semantic digest <code>{{ review.semantic_digest|truncate(28, True, '…') }}</code></span>
+        <span>Custody: <b>{{ controls.custody.status|replace('_',' ') }}</b></span>
+        <span>Organic: <b>{{ controls.organic.status|replace('_',' ') }}</b></span>
+        <span>Readiness blockers: <b>{{ controls.readiness.blockers|length }}</b></span>
+      </section>
+    </aside>
+
+    <section class="review-panel">
+      <nav class="review-tabs" aria-label="Procedure review tabs">
+        <button class="review-tab active" data-review-tab="decision">Decision Table</button>
+        <button class="review-tab" data-review-tab="scenarios">Scenarios</button>
+        <button class="review-tab" data-review-tab="lineage">Lineage</button>
+        <button class="review-tab" data-review-tab="effects">Side Effects</button>
+        <button class="review-tab" data-review-tab="audit">Audit Trail</button>
+        <button class="review-tab commercial-control-tab" data-review-tab="controls">Commercial Controls <span>{{ controls.readiness.blockers|length }}</span></button>
+        <label class="review-what-if" title="{{ review.what_if_reason }}">
+          <input type="checkbox" id="review-what-if-toggle" {% if not review.what_if_supported %}disabled{% endif %}> What‑If Mode
+          <span>{% if review.what_if_supported %}Model driven{% else %}Not admitted{% endif %}</span>
+        </label>
+      </nav>
+
+      <div class="review-content active" id="review-tab-decision">
+        <div class="review-section-head">
+          <div><span class="eyebrow">Ordered semantic projection</span><h2>Main Decision Table</h2></div>
+          <div class="review-status-note">FIRST-like precedence is shown from extracted scenario order. This is not a DMN execution artifact.</div>
+        </div>
+        {% if review.what_if_supported and review.decision_model %}
+        <section class="review-what-if-panel" id="review-what-if-panel" hidden
+                 data-run-name="{{ review.run_name }}">
+          <div class="review-section-head">
+            <div><span class="eyebrow">Digest-bound technical evaluator</span><h3>Model-driven What‑If</h3></div>
+            <div class="review-status-note">Assign TRUE, FALSE or UNKNOWN to extracted predicate evidence. The browser contains no decision ladder.</div>
+          </div>
+          <div class="review-predicate-grid">
+            {% for predicate in review.decision_model.predicates %}
+            <label>
+              <span>{{ predicate.expression_text }}</span>
+              <small>{{ predicate.predicate_id }}{% if predicate.source_line %} · line {{ predicate.source_line }}{% endif %}</small>
+              <select data-predicate-id="{{ predicate.predicate_id }}">
+                <option value="UNKNOWN">UNKNOWN</option>
+                <option value="TRUE">TRUE</option>
+                <option value="FALSE">FALSE</option>
+              </select>
+            </label>
+            {% endfor %}
+          </div>
+          <button type="button" id="review-what-if-evaluate" class="button">Evaluate extracted model</button>
+          <pre id="review-what-if-result" class="review-what-if-result">No evaluation has run.</pre>
+        </section>
+        {% endif %}
+
+        <div class="review-table-wrap">
+          <table class="review-decision-table">
+            <thead><tr><th>#</th><th>Rule / scenario</th><th>Preconditions</th><th>Outcome</th><th>Exception</th><th>Evidence</th></tr></thead>
+            <tbody>
+              {% for row in review.decision_rows %}
+              <tr class="{{ row.class }}" data-review-group="decision" data-review-row="{{ row.id }}">
+                <td>{{ row.order }}</td>
+                <td><strong>{{ row.rule }}</strong><small>{{ row.scenario }}</small><span class="review-state">{{ row.status }}</span></td>
+                <td><ul>{% for condition in row.conditions %}<li>{{ condition }}</li>{% endfor %}</ul></td>
+                <td><code>{{ row.outcome }}</code></td>
+                <td>{{ row.exception_flag or '—' }}</td>
+                <td><button class="review-evidence-button" data-evidence-target="evidence-{{ row.id }}">{{ row.evidence_refs|length }} refs</button></td>
+              </tr>
+              <tr class="review-evidence-row" id="evidence-{{ row.id }}"><td colspan="6">
+                <div class="review-evidence-grid">
+                  <div><strong>Proposal</strong><code>{{ row.proposal_id }}</code></div>
+                  {% for evidence in row.source_evidence %}<div><strong>{{ evidence.kind or 'Evidence' }}</strong><code>{{ evidence.ref }}</code>{% if evidence.start_line %}<span>Lines {{ evidence.start_line }}–{{ evidence.end_line }}</span>{% endif %}{% if evidence.text %}<pre>{{ evidence.text }}</pre>{% endif %}</div>{% endfor %}
+                </div>
+              </td></tr>
+              {% else %}<tr><td colspan="6" class="empty">No ordered decision rows were admitted for this procedure.</td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="review-content" id="review-tab-scenarios">
+        <div class="review-section-head"><div><span class="eyebrow">Readable technical candidates</span><h2>Scenarios</h2></div><span>{{ review.scenarios|length }} scenarios and outlines</span></div>
+        <div class="review-scenario-list">
+          {% for scenario in review.scenarios %}
+          <article class="review-scenario" data-review-group="{{ scenario.group }}">
+            <header><div><span class="review-rule">Rule: {{ scenario.rule }}</span><h3>{{ scenario.name }}</h3></div><div><span class="review-state">{{ scenario.analysis_status }}</span><span class="review-state secondary">{{ scenario.proposal_kind }}</span></div></header>
+            <div class="review-steps">{% for step in scenario.steps %}<div><b>{{ step.keyword }}</b> {{ step.text }}</div>{% endfor %}</div>
+            {% for examples in scenario.examples %}<div class="review-table-wrap"><table><thead><tr>{% for h in examples.headers %}<th>{{ h }}</th>{% endfor %}</tr></thead><tbody>{% for r in examples.rows %}<tr>{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div>{% endfor %}
+            <footer><code>{{ scenario.proposal_id }}</code>{% for blocker in scenario.blocker_codes %}<span class="pill warning">{{ blocker }}</span>{% endfor %}</footer>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="review-content" id="review-tab-lineage">
+        <div class="review-section-head"><div><span class="eyebrow">Query and relation evidence</span><h2>Lineage</h2></div><span>{{ review.relations|length }} relations</span></div>
+        <div class="review-lineage-root">
+          <div class="review-lineage-node output"><b>{{ review.procedure }}</b><span>procedure</span></div>
+          <div class="review-lineage-branches">
+            {% for relation in review.relations %}<details class="review-lineage-card" open><summary><span class="review-lineage-node relation">{{ relation.relation }}</span><span class="review-state">{{ relation.status }}</span></summary>
+              {% for query in relation.queries %}<div class="review-query-card"><strong>{{ query.kind }}</strong>{% for clause in query.clauses %}<div><b>{{ clause.clause_kind }}</b> <code>{{ clause.expression_text }}</code></div>{% endfor %}{% for join in query.joins %}<div><b>{{ join.join_kind }} JOIN</b> <code>{{ join.condition_text }}</code></div>{% endfor %}<div class="review-tag-row">{% for p in query.projections %}<span>{{ p }}</span>{% endfor %}</div></div>{% endfor %}
+            </details>{% else %}<p class="empty">Relation lineage is not established for this run.</p>{% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="review-content" id="review-tab-effects">
+        <div class="review-section-head"><div><span class="eyebrow">Observable and unresolved effects</span><h2>Side‑Effect Register</h2></div><span>{{ review.effects|length }} effects</span></div>
+        <div class="review-table-wrap"><table class="review-effect-table"><thead><tr><th>Effect</th><th>Target</th><th>Value</th><th>Modality</th><th>Observability</th><th>Evidence</th></tr></thead><tbody>
+          {% for effect in review.effects %}<tr data-review-group="{{ effect.group or 'persistence' }}"><td>{{ effect.kind }}</td><td><code>{{ effect.target }}</code></td><td>{{ effect.value or '—' }}</td><td><span class="review-state">{{ effect.modality }}</span></td><td>{{ effect.observability }}</td><td>{% for evidence in effect.source_evidence %}<div><code>{{ evidence.ref }}</code>{% if evidence.start_line %} · lines {{ evidence.start_line }}–{{ evidence.end_line }}{% endif %}</div>{% endfor %}</td></tr>{% endfor %}
+        </tbody></table></div>
+      </div>
+
+      <div class="review-content" id="review-tab-audit">
+        <div class="review-section-head"><div><span class="eyebrow">Scenario → evidence → source</span><h2>Traceability Manifest</h2></div><span>{{ review.source_name }}</span></div>
+        <div class="review-audit-tree">
+          {% for scenario in review.scenarios %}<details data-review-group="{{ scenario.group }}"><summary><strong>{{ scenario.name }}</strong><span>{{ scenario.rule }}</span></summary>
+            <div class="review-audit-body"><div class="review-audit-identities"><code>{{ scenario.proposal_id }}</code>{% for b in scenario.source_behavior_refs %}<code>{{ b }}</code>{% endfor %}{% for b in scenario.source_bundle_refs %}<code>{{ b }}</code>{% endfor %}</div>
+              {% for evidence in scenario.source_evidence %}<div class="review-audit-evidence"><strong>{{ evidence.kind or 'Evidence' }}</strong><code>{{ evidence.ref }}</code>{% if evidence.start_line %}<span>Source lines {{ evidence.start_line }}–{{ evidence.end_line }}</span>{% endif %}{% if evidence.text %}<pre>{{ evidence.text }}</pre>{% endif %}</div>{% else %}<p>No parser-node evidence was attached to this readable proposal.</p>{% endfor %}
+            </div>
+          </details>{% endfor %}
+        </div>
+      </div>
+
+      <div class="review-content" id="review-tab-controls">
+        <div class="review-section-head">
+          <div><span class="eyebrow">Claims, custody, authority and deployment gates</span><h2>Commercial Control Center</h2></div>
+          <div class="review-status-note control-status-{{ controls.overall_status|lower }}">
+            <strong>{{ controls.overall_status|replace('_',' ') }}</strong><br>
+            This procedure remains technical evidence until its required customer, authority and deployment controls are satisfied.
+          </div>
+        </div>
+
+        {% if message %}<div class="review-control-message success">{{ message }}</div>{% endif %}
+        {% if error %}<div class="review-control-message error">{{ error }}</div>{% endif %}
+
+        <section class="review-control-grid review-control-summary">
+          <article class="review-control-card">
+            <header><span>Commercial maturity</span><b class="control-chip preview">{{ controls.capability.commercial_maturity|replace('_',' ') }}</b></header>
+            <dl>
+              <div><dt>Naming</dt><dd>{{ controls.capability.naming_status|replace('_',' ') }}</dd></div>
+              <div><dt>Editions</dt><dd>{{ controls.capability.edition_model_status|replace('_',' ') }}</dd></div>
+              <div><dt>GA capabilities</dt><dd>{{ controls.capability.state_counts.get('GENERALLY_AVAILABLE', 0) }}</dd></div>
+              <div><dt>Datasheet eligible</dt><dd>{{ controls.capability.datasheet_eligible_count }} / {{ controls.capability.capability_count }}</dd></div>
+              <div><dt>Prohibited claims</dt><dd>{{ controls.capability.prohibited_claim_count }}</dd></div>
+            </dl>
+            <footer><a href="/capabilities">Manage capability claims</a><span>{{ controls.capability.source|replace('_',' ') }}</span></footer>
+          </article>
+
+          <article class="review-control-card {% if not controls.custody.ready %}control-blocked{% endif %}">
+            <header><span>Organic source custody</span><b class="control-chip {% if controls.custody.ready %}pass{% else %}blocked{% endif %}">{{ controls.custody.status|replace('_',' ') }}</b></header>
+            <dl>
+              <div><dt>Agreement</dt><dd>{{ controls.custody.agreement_id or 'Not supplied' }}</dd></div>
+              <div><dt>Approval evidence</dt><dd>{{ controls.custody.approval_evidence_mode|replace('_',' ') }}</dd></div>
+              <div><dt>Processing</dt><dd>{{ controls.custody.processing_location|replace('_',' ') }}</dd></div>
+              <div><dt>Approved roots</dt><dd>{{ controls.custody.allowed_source_root_count }}</dd></div>
+              <div><dt>Derived retention</dt><dd>{% if controls.custody.derived_artifact_retention_days is not none %}{{ controls.custody.derived_artifact_retention_days }} days{% else %}Not set{% endif %}</dd></div>
+              <div><dt>Backup policy</dt><dd>{{ controls.custody.backup_policy or 'Not set' }}</dd></div>
+              <div><dt>Deletion SLA</dt><dd>{% if controls.custody.deletion_request_sla_days is not none %}{{ controls.custody.deletion_request_sla_days }} days{% else %}Not set{% endif %}</dd></div>
+            </dl>
+            <footer><a href="/custody">Validate custody</a><span>Required before organic source is read</span></footer>
+          </article>
+
+          <article class="review-control-card {% if controls.organic.status == 'NOT_PERFORMED' %}control-blocked{% endif %}">
+            <header><span>Organic estate evidence</span><b class="control-chip {% if controls.organic.status == 'NOT_PERFORMED' %}blocked{% else %}review{% endif %}">{{ controls.organic.status|replace('_',' ') }}</b></header>
+            <dl>
+              <div><dt>Level</dt><dd>{{ controls.organic.validation_level|default('Not performed', true)|replace('_',' ') }}</dd></div>
+              <div><dt>Sources</dt><dd>{{ controls.organic.source_count }}</dd></div>
+              <div><dt>Semantic complete</dt><dd>{{ controls.organic.semantic_completed }}</dd></div>
+              <div><dt>Admitted scenarios</dt><dd>{{ controls.organic.admitted_scenarios }}</dd></div>
+              <div><dt>Blocked scenarios</dt><dd>{{ controls.organic.blocked_scenarios }}</dd></div>
+              <div><dt>False confident MUSTs</dt><dd>{{ controls.organic.materially_false_confident_behaviors }}</dd></div>
+            </dl>
+            {% if controls.organic.pause_reasons %}<div class="review-control-alert"><b>Pause reasons</b>{% for value in controls.organic.pause_reasons %}<span>{{ value }}</span>{% endfor %}</div>{% endif %}
+            <footer><a href="/organic">Run organic validation</a><span>Smoke ≠ estate evidence</span></footer>
+          </article>
+
+          <article class="review-control-card {% if controls.readiness.blockers %}control-blocked{% endif %}">
+            <header><span>Commercial readiness</span><b class="control-chip {% if controls.readiness.blockers %}blocked{% else %}pass{% endif %}">{{ controls.readiness.status|replace('_',' ') }}</b></header>
+            <dl>
+              <div><dt>Verified gates</dt><dd>{{ controls.readiness.verified_gate_ids|length }}</dd></div>
+              <div><dt>Open blockers</dt><dd>{{ controls.readiness.blockers|length }}</dd></div>
+              <div><dt>Deployment gates</dt><dd>{{ controls.readiness.deployment_gates|length }}</dd></div>
+              <div><dt>Customer-boundary gates</dt><dd>{{ controls.readiness.customer_boundary_gates|length }}</dd></div>
+            </dl>
+            <div class="review-control-blockers">{% for blocker in controls.readiness.blockers[:8] %}<span>{{ blocker }}</span>{% endfor %}{% if controls.readiness.blockers|length > 8 %}<span>+{{ controls.readiness.blockers|length - 8 }} more</span>{% endif %}</div>
+            <footer><a href="/readiness">Assess readiness</a><span>Cannot self-promote to GA</span></footer>
+          </article>
+        </section>
+
+        <section class="review-control-section">
+          <div class="review-section-head compact"><div><span class="eyebrow">No finding does not equal pass</span><h3>Procedure Check Matrix</h3></div><code>{{ controls.procedure_checks.content_digest or 'not sealed' }}</code></div>
+          {% if controls.procedure_checks.error %}<div class="review-control-message error">{{ controls.procedure_checks.error }}</div>{% endif %}
+          <div class="review-check-counts">{% for state, count in controls.procedure_checks.counts_by_state.items() %}<span class="check-state state-{{ state|lower }}"><b>{{ count }}</b>{{ state|replace('_',' ') }}</span>{% endfor %}</div>
+          <div class="review-table-wrap"><table class="review-control-table"><thead><tr><th>Check</th><th>State</th><th>Summary</th><th>Conditions / blockers</th></tr></thead><tbody>
+            {% for check in controls.procedure_checks.checks %}<tr><td><strong>{{ check.display_name }}</strong><code>{{ check.check_id }}</code></td><td><span class="check-state state-{{ check.state|lower }}">{{ check.state|replace('_',' ') }}</span></td><td>{{ check.summary }}</td><td>{% for code in check.blocker_codes %}<span class="control-code">{{ code }}</span>{% endfor %}{% for ref in check.condition_refs %}<span class="control-code condition">{{ ref }}</span>{% endfor %}</td></tr>{% else %}<tr><td colspan="4" class="empty">Procedure checks could not be evaluated from this run.</td></tr>{% endfor %}
+          </tbody></table></div>
+        </section>
+
+        <section class="review-control-grid two-column">
+          <article class="review-control-card">
+            <header><span>Authority and governance</span><b class="control-chip review">REVIEW REQUIRED</b></header>
+            <dl>
+              <div><dt>Proposal authority</dt><dd>{{ controls.authority.proposal_authority_scope }}</dd></div>
+              <div><dt>Vocabulary</dt><dd>{{ controls.authority.vocabulary_status|replace('_',' ') }}</dd></div>
+              <div><dt>Authority validation</dt><dd>{{ controls.authority.authority_validation.status|replace('_',' ') }}</dd></div>
+              <div><dt>SME review</dt><dd>{{ controls.authority.sme_review.status|replace('_',' ') }}</dd></div>
+              <div><dt>Baseline comparison</dt><dd>{{ controls.authority.baseline.status|replace('_',' ') }}</dd></div>
+              <div><dt>Composition</dt><dd>{{ controls.authority.composition.status|replace('_',' ') }}</dd></div>
+            </dl>
+            <footer><span><a href="/reviews">SME review</a> · <a href="/authority">Authority</a> · <a href="/baseline">Baseline</a> · <a href="/composition">Composition</a></span></footer>
+          </article>
+          <article class="review-control-card">
+            <header><span>Evidence inventory</span><b class="control-chip neutral">TENANT SCOPED</b></header>
+            <div class="review-artifact-counts">{% for category, count in controls.artifact_counts.items() %}<div><span>{{ category|replace('-',' ')|title }}</span><b>{{ count }}</b></div>{% endfor %}</div>
+            <footer><a href="/artifacts">Browse immutable artifacts</a><a href="/audit">Verify audit chain</a></footer>
+          </article>
+        </section>
+
+        <section class="review-control-section">
+          <div class="review-section-head compact"><div><span class="eyebrow">Role-gated operations</span><h3>Quick Controls</h3></div><span>Current role: {{ identity.role.value }}</span></div>
+          <div class="review-quick-controls">
+            <form method="post" action="/review/{{ review.run_name }}/controls/checks"><button type="submit">Evaluate & store checks</button><small>ANALYST+</small></form>
+            <form method="post" action="/review/{{ review.run_name }}/controls/graph"><button type="submit">Build evidence graph</button><small>ANALYST+</small></form>
+            <form method="post" action="/review/{{ review.run_name }}/controls/support-bundle"><button type="submit">Generate source-free support bundle</button><small>ADMIN</small></form>
+            {% for action in controls.quick_actions %}<a href="{{ action.href }}"><span>{{ action.label }}</span><small>{{ action.minimum_role }}</small></a>{% endfor %}
+          </div>
+        </section>
+
+        <section class="review-control-section">
+          <div class="review-section-head compact"><div><span class="eyebrow">Hash-chained tenant history</span><h3>Recent Commercial Audit Events</h3></div><a href="/audit">Full audit</a></div>
+          <div class="review-audit-events">{% for event in controls.audit_events|reverse %}<article><div><strong>{{ event.action }}</strong><span>{{ event.occurred_at }}</span></div><code>{{ event.actor_ref }} · {{ event.role }}</code><small>{{ event.artifact_ref or 'no artifact' }}</small></article>{% else %}<p class="empty">No commercial write events have been recorded.</p>{% endfor %}</div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="/static/review.js"></script>
+</body>
+</html>

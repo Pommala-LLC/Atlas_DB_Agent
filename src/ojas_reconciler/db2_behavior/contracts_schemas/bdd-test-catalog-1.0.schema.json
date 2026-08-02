@@ -1,0 +1,428 @@
+{
+  "$defs": {
+    "CanonicalSqlType": {
+      "additionalProperties": false,
+      "properties": {
+        "code_page": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code Page"
+        },
+        "completeness": {
+          "$ref": "#/$defs/ResolutionCompleteness"
+        },
+        "database_type": {
+          "title": "Database Type",
+          "type": "string"
+        },
+        "distinct_type_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distinct Type Name"
+        },
+        "family": {
+          "$ref": "#/$defs/SqlTypeFamily"
+        },
+        "for_bit_data": {
+          "default": false,
+          "title": "For Bit Data",
+          "type": "boolean"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length"
+        },
+        "nullable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nullable"
+        },
+        "precision": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Precision"
+        },
+        "resolution_status": {
+          "$ref": "#/$defs/TypeResolutionStatus"
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scale"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "family",
+        "database_type",
+        "resolution_status",
+        "completeness",
+        "source_refs"
+      ],
+      "title": "CanonicalSqlType",
+      "type": "object"
+    },
+    "ColumnDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "column_name": {
+          "title": "Column Name",
+          "type": "string"
+        },
+        "default_expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default Expression"
+        },
+        "generated": {
+          "default": false,
+          "title": "Generated",
+          "type": "boolean"
+        },
+        "generated_expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generated Expression"
+        },
+        "identity_column": {
+          "default": false,
+          "title": "Identity Column",
+          "type": "boolean"
+        },
+        "nullable": {
+          "title": "Nullable",
+          "type": "boolean"
+        },
+        "relation_name": {
+          "title": "Relation Name",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "sql_type": {
+          "$ref": "#/$defs/CanonicalSqlType"
+        },
+        "temporal_role": {
+          "$ref": "#/$defs/TemporalRole",
+          "default": "NONE"
+        },
+        "tenant_isolation": {
+          "default": false,
+          "title": "Tenant Isolation",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "relation_name",
+        "column_name",
+        "sql_type",
+        "nullable",
+        "source_refs"
+      ],
+      "title": "ColumnDefinition",
+      "type": "object"
+    },
+    "ForeignKeyDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "constraint_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Constraint Name"
+        },
+        "local_columns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Local Columns",
+          "type": "array"
+        },
+        "referenced_columns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Referenced Columns",
+          "type": "array"
+        },
+        "referenced_relation": {
+          "title": "Referenced Relation",
+          "type": "string"
+        },
+        "referenced_schema": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Referenced Schema"
+        },
+        "source_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "local_columns",
+        "referenced_relation",
+        "referenced_columns"
+      ],
+      "title": "ForeignKeyDefinition",
+      "type": "object"
+    },
+    "RelationDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "check_constraints": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Check Constraints",
+          "type": "array"
+        },
+        "columns": {
+          "items": {
+            "$ref": "#/$defs/ColumnDefinition"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "foreign_keys": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ForeignKeyDefinition"
+          },
+          "title": "Foreign Keys",
+          "type": "array"
+        },
+        "primary_key": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Primary Key",
+          "type": "array"
+        },
+        "provider_ref": {
+          "title": "Provider Ref",
+          "type": "string"
+        },
+        "relation_name": {
+          "title": "Relation Name",
+          "type": "string"
+        },
+        "schema_name": {
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "temporal_kind": {
+          "default": "NONE",
+          "enum": [
+            "NONE",
+            "SYSTEM_PERIOD_TEMPORAL",
+            "APPLICATION_PERIOD_TEMPORAL",
+            "BITEMPORAL"
+          ],
+          "title": "Temporal Kind",
+          "type": "string"
+        },
+        "unique_constraints": {
+          "default": [],
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Unique Constraints",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_name",
+        "relation_name",
+        "columns",
+        "provider_ref",
+        "content_digest"
+      ],
+      "title": "RelationDefinition",
+      "type": "object"
+    },
+    "ResolutionCompleteness": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "UNKNOWN"
+      ],
+      "title": "ResolutionCompleteness",
+      "type": "string"
+    },
+    "SqlTypeFamily": {
+      "enum": [
+        "SMALL_INTEGER",
+        "INTEGER",
+        "BIG_INTEGER",
+        "DECIMAL",
+        "FLOATING_POINT",
+        "CHARACTER",
+        "GRAPHIC",
+        "DATE",
+        "TIME",
+        "TIMESTAMP",
+        "BOOLEAN",
+        "BINARY",
+        "LOB",
+        "XML",
+        "DISTINCT",
+        "UNKNOWN"
+      ],
+      "title": "SqlTypeFamily",
+      "type": "string"
+    },
+    "TemporalRole": {
+      "enum": [
+        "NONE",
+        "SYSTEM_TIME_START",
+        "SYSTEM_TIME_END",
+        "BUSINESS_TIME_START",
+        "BUSINESS_TIME_END"
+      ],
+      "title": "TemporalRole",
+      "type": "string"
+    },
+    "TypeResolutionStatus": {
+      "enum": [
+        "DECLARED",
+        "CATALOG_RESOLVED",
+        "DDL_RESOLVED",
+        "AUTHORITY_OVERRIDE",
+        "DIALECT_INFERRED",
+        "CONFLICT",
+        "UNKNOWN"
+      ],
+      "title": "TypeResolutionStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "provider_ref": {
+      "title": "Provider Ref",
+      "type": "string"
+    },
+    "relations": {
+      "items": {
+        "$ref": "#/$defs/RelationDefinition"
+      },
+      "title": "Relations",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "bdd-test-catalog-1.0",
+      "default": "bdd-test-catalog-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "provider_ref",
+    "relations",
+    "content_digest"
+  ],
+  "title": "BddTestCatalog",
+  "type": "object"
+}

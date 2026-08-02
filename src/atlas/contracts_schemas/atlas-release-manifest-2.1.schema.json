@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "atlas-release-manifest-2.1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "release",
+    "status",
+    "implementation_scope",
+    "gate_summary",
+    "blocking_conditions",
+    "test_execution",
+    "naming_governance",
+    "capability_governance",
+    "commercialization_claim",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "atlas-release-manifest-2.1"
+    },
+    "product": {
+      "const": "Atlas Procedure Intelligence"
+    },
+    "release": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "CONDITIONAL",
+        "FAIL"
+      ]
+    },
+    "implementation_scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "gate_summary": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "PASS",
+          "INCOMPLETE",
+          "NOT_EXECUTED",
+          "FAIL",
+          "NOT_APPLICABLE"
+        ]
+      }
+    },
+    "blocking_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "test_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collected",
+        "passed",
+        "failed",
+        "skipped",
+        "errors",
+        "required_assurance_complete",
+        "evidence_ref"
+      ],
+      "properties": {
+        "collected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skipped": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "errors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "required_assurance_complete": {
+          "type": "boolean"
+        },
+        "evidence_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "naming_governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "policy_ref",
+        "canonical_namespace",
+        "legacy_namespace",
+        "legacy_role",
+        "historical_digests_rewritten"
+      ],
+      "properties": {
+        "status": {
+          "const": "FROZEN_WITH_COMPATIBILITY_POLICY"
+        },
+        "policy_ref": {
+          "const": "ATLAS_NAMING_COMPATIBILITY_POLICY.json"
+        },
+        "canonical_namespace": {
+          "const": "atlas"
+        },
+        "legacy_namespace": {
+          "const": "ojas_reconciler.db2_behavior"
+        },
+        "legacy_role": {
+          "const": "COMPATIBILITY_FACADE"
+        },
+        "historical_digests_rewritten": {
+          "const": false
+        }
+      }
+    },
+    "capability_governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_ref",
+        "overall_state",
+        "synthetic_fixture_count",
+        "organic_estate_count",
+        "organic_routine_count",
+        "public_repository_file_count",
+        "public_repository_routine_count",
+        "db2_organic_validation_state"
+      ],
+      "properties": {
+        "manifest_ref": {
+          "const": "ATLAS_CAPABILITY_MANIFEST.json"
+        },
+        "overall_state": {
+          "enum": [
+            "ORGANIC_VALIDATION_REQUIRED",
+            "COMMERCIALIZATION_CANDIDATE",
+            "COMMERCIALLY_AVAILABLE"
+          ]
+        },
+        "synthetic_fixture_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "organic_estate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "organic_routine_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "public_repository_file_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "public_repository_routine_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "db2_organic_validation_state": {
+          "enum": [
+            "NOT_ATTEMPTED",
+            "FAILED_INITIAL_SAMPLE",
+            "REVALIDATION_REQUIRED_AFTER_REMEDIATION",
+            "PASSED_PUBLIC_SOURCE_GATE",
+            "ORGANICALLY_VALIDATED"
+          ]
+        }
+      }
+    },
+    "commercialization_claim": {
+      "enum": [
+        "NOT_COMMERCIALLY_AVAILABLE",
+        "COMMERCIALIZATION_CANDIDATE",
+        "COMMERCIALLY_AVAILABLE"
+      ]
+    },
+    "environment_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sha256",
+          "size_bytes"
+        ],
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}

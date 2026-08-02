@@ -1,0 +1,308 @@
+{
+  "$defs": {
+    "AssertionKind": {
+      "enum": [
+        "OUTPUT_EQUALS",
+        "SQLSTATE_EQUALS",
+        "ROW_EQUALS",
+        "ROW_ABSENT",
+        "EVENT_OCCURRED",
+        "EVENT_NOT_OCCURRED"
+      ],
+      "title": "AssertionKind",
+      "type": "string"
+    },
+    "AssertionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_id": {
+          "title": "Assertion Id",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/AssertionKind"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "assertion_id",
+        "kind",
+        "passed",
+        "detail"
+      ],
+      "title": "AssertionResult",
+      "type": "object"
+    },
+    "ExecutionMode": {
+      "enum": [
+        "GENERATE_ONLY",
+        "SCRIPTED_MODEL",
+        "DB2_LUW",
+        "DB2_ZOS_EXTERNAL"
+      ],
+      "title": "ExecutionMode",
+      "type": "string"
+    },
+    "ProcedureExecutionObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "after_relations": {
+          "additionalProperties": {
+            "items": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "title": "After Relations",
+          "type": "object"
+        },
+        "before_relations": {
+          "additionalProperties": {
+            "items": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "title": "Before Relations",
+          "type": "object"
+        },
+        "events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "output_parameters": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Output Parameters",
+          "type": "object"
+        },
+        "sqlstate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sqlstate"
+        }
+      },
+      "required": [
+        "output_parameters"
+      ],
+      "title": "ProcedureExecutionObservation",
+      "type": "object"
+    },
+    "TestCaseExecutionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_status": {
+          "$ref": "#/$defs/TestCaseStatus"
+        },
+        "assertion_results": {
+          "items": {
+            "$ref": "#/$defs/AssertionResult"
+          },
+          "title": "Assertion Results",
+          "type": "array"
+        },
+        "blockers": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blockers",
+          "type": "array"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "expectation_matched": {
+          "title": "Expectation Matched",
+          "type": "boolean"
+        },
+        "expected_status": {
+          "$ref": "#/$defs/TestCaseStatus"
+        },
+        "observation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProcedureExecutionObservation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "scenario_name": {
+          "title": "Scenario Name",
+          "type": "string"
+        },
+        "test_case_id": {
+          "title": "Test Case Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "test_case_id",
+        "scenario_name",
+        "actual_status",
+        "expected_status",
+        "expectation_matched",
+        "assertion_results",
+        "content_digest"
+      ],
+      "title": "TestCaseExecutionResult",
+      "type": "object"
+    },
+    "TestCaseStatus": {
+      "enum": [
+        "PASSED",
+        "FAILED",
+        "BLOCKED",
+        "INCONCLUSIVE",
+        "NOT_EXECUTED"
+      ],
+      "title": "TestCaseStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actual_blocked": {
+      "title": "Actual Blocked",
+      "type": "integer"
+    },
+    "actual_failed": {
+      "title": "Actual Failed",
+      "type": "integer"
+    },
+    "actual_passed": {
+      "title": "Actual Passed",
+      "type": "integer"
+    },
+    "case_results": {
+      "items": {
+        "$ref": "#/$defs/TestCaseExecutionResult"
+      },
+      "title": "Case Results",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "execution_mode": {
+      "$ref": "#/$defs/ExecutionMode"
+    },
+    "expectation_mismatches": {
+      "title": "Expectation Mismatches",
+      "type": "integer"
+    },
+    "live_database_executed": {
+      "title": "Live Database Executed",
+      "type": "boolean"
+    },
+    "package_id": {
+      "title": "Package Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "bdd-test-execution-result-1.0",
+      "default": "bdd-test-execution-result-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "suite_status": {
+      "enum": [
+        "PASSED",
+        "FAILED"
+      ],
+      "title": "Suite Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "package_id",
+    "execution_mode",
+    "case_results",
+    "actual_passed",
+    "actual_failed",
+    "actual_blocked",
+    "expectation_mismatches",
+    "suite_status",
+    "live_database_executed",
+    "content_digest"
+  ],
+  "title": "TestPackageExecutionResult",
+  "type": "object"
+}

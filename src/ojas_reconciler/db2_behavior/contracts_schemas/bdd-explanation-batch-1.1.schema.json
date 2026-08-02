@@ -1,0 +1,231 @@
+{
+  "$defs": {
+    "BddBlockerCode": {
+      "enum": [
+        "SCENARIO_SPEC_BATCH_DIGEST_INVALID",
+        "SCENARIO_SPEC_DIGEST_INVALID",
+        "SCENARIO_NESTED_ARTIFACT_DIGEST_INVALID",
+        "VOCABULARY_SNAPSHOT_DIGEST_INVALID",
+        "CLASSIFICATION_SNAPSHOT_DIGEST_INVALID",
+        "AUTHORITY_SCOPE_MISMATCH",
+        "MISSING_CLASSIFICATION_APPROVAL",
+        "AMBIGUOUS_CLASSIFICATION_APPROVAL",
+        "CLASSIFICATION_CANDIDATE_MISMATCH",
+        "CLASSIFICATION_OBSERVATION_DIGEST_MISMATCH",
+        "CLASSIFICATION_APPROVAL_NOT_EFFECTIVE",
+        "NO_APPROVED_BUSINESS_TERM",
+        "AMBIGUOUS_APPROVED_BUSINESS_TERM",
+        "MAPPING_NOT_EFFECTIVE",
+        "MAPPING_REQUIREMENT_MISMATCH",
+        "MAPPING_KIND_SEMANTICS_INVALID",
+        "NON_PROMOTABLE_MAPPING_KIND",
+        "PLACEHOLDER_BINDING_INVALID",
+        "MODALITY_NOT_APPROVED_BY_MAPPING",
+        "NON_DEFINITIVE_EFFECT",
+        "EFFECT_CLOSURE_INSUFFICIENT",
+        "DEPENDENCY_RESOLUTION_INCOMPLETE",
+        "TRACEABILITY_MANIFEST_FAILED",
+        "GHERKIN_STRUCTURE_INVALID",
+        "COMPILATION_INTERNAL_ERROR"
+      ],
+      "title": "BddBlockerCode",
+      "type": "string"
+    },
+    "BddGateExplanation": {
+      "additionalProperties": false,
+      "properties": {
+        "affected_outputs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Affected Outputs",
+          "type": "array"
+        },
+        "ambiguous_classification_observation_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ambiguous Classification Observation Refs",
+          "type": "array"
+        },
+        "ambiguous_vocabulary_slots": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ambiguous Vocabulary Slots",
+          "type": "array"
+        },
+        "blocker_codes": {
+          "items": {
+            "$ref": "#/$defs/BddBlockerCode"
+          },
+          "title": "Blocker Codes",
+          "type": "array"
+        },
+        "consequence": {
+          "title": "Consequence",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "dependency_resolution": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ResolutionStatus"
+          },
+          "title": "Dependency Resolution",
+          "type": "object"
+        },
+        "effect_closure_completeness": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EffectClosureCompleteness"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "explanation_id": {
+          "title": "Explanation Id",
+          "type": "string"
+        },
+        "missing_classification_observation_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Classification Observation Refs",
+          "type": "array"
+        },
+        "missing_vocabulary_slots": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Vocabulary Slots",
+          "type": "array"
+        },
+        "recommended_actions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Recommended Actions",
+          "type": "array"
+        },
+        "result": {
+          "enum": [
+            "SUCCEEDED",
+            "BLOCKED",
+            "FAILED"
+          ],
+          "title": "Result",
+          "type": "string"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "withheld_outputs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Withheld Outputs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "explanation_id",
+        "scenario_spec_ref",
+        "result",
+        "blocker_codes",
+        "consequence",
+        "recommended_actions",
+        "content_digest"
+      ],
+      "title": "BddGateExplanation",
+      "type": "object"
+    },
+    "EffectClosureCompleteness": {
+      "enum": [
+        "DIRECT_EFFECT_ONLY",
+        "PARTIAL_TRANSITIVE_CLOSURE",
+        "CLOSED_WITHIN_SCOPE",
+        "UNKNOWN"
+      ],
+      "title": "EffectClosureCompleteness",
+      "type": "string"
+    },
+    "ResolutionStatus": {
+      "enum": [
+        "RESOLVED",
+        "RESOLVED_SOURCE_ONLY",
+        "NOT_APPLICABLE",
+        "NOT_ASSESSED",
+        "UNRESOLVED"
+      ],
+      "title": "ResolutionStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "bdd_compilation_batch_digest": {
+      "title": "Bdd Compilation Batch Digest",
+      "type": "string"
+    },
+    "classification_snapshot_digest": {
+      "title": "Classification Snapshot Digest",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "explanations": {
+      "items": {
+        "$ref": "#/$defs/BddGateExplanation"
+      },
+      "title": "Explanations",
+      "type": "array"
+    },
+    "scenario_spec_batch_digest": {
+      "title": "Scenario Spec Batch Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "bdd-explanation-batch-1.1",
+      "default": "bdd-explanation-batch-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "vocabulary_snapshot_digest": {
+      "title": "Vocabulary Snapshot Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "bdd_compilation_batch_digest",
+    "scenario_spec_batch_digest",
+    "vocabulary_snapshot_digest",
+    "classification_snapshot_digest",
+    "explanations",
+    "content_digest"
+  ],
+  "title": "BddExplanationBatch",
+  "type": "object"
+}

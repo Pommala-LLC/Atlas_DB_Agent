@@ -1,0 +1,150 @@
+{
+  "claim_policy": {
+    "commercial_availability_claim": "PROHIBITED_UNTIL_GOVERNED_PROMOTION",
+    "organic_validation_claim": "ALLOWED_ONLY_WITH_EXPLICIT_STATE_AND_EVIDENCE",
+    "synthetic_validation_claim": "ALLOWED_WITH_FIXTURE_COUNTS"
+  },
+  "content_digest": "sha256:885be91b5d6935b6d683c895c5aadd0c6322774ea4116193ab4922d77823aa3a",
+  "dialects": [
+    {
+      "commercialization_blockers": [
+        "PINNED_IBM_DB2_SAMPLES_POST_FIX_REVALIDATION_NOT_EXECUTED",
+        "ORGANIC_CUSTOMER_ESTATE_VALIDATION_NOT_COMPLETED"
+      ],
+      "commercialization_state": "ORGANIC_VALIDATION_REQUIRED",
+      "dialect": "DB2_SQL_PL",
+      "evidence_refs": [
+        "acceptance/dialect-acceptance.json#db2_advanced",
+        "acceptance/dialect-acceptance.json#db2_atomic_undo",
+        "organic/IBM_DB2_SAMPLES_PUBLIC_MANIFEST.json",
+        "tests/test_db2_organic_recovery_rc5.py"
+      ],
+      "implementation_state": "IMPLEMENTED",
+      "known_version_bounds": [],
+      "limitations": [
+        "The first five IBM/db2-samples files exposed CASE, CLP source-unit, header-trivia, and returned-result-set gaps; remediation is implemented but exact pinned post-fix repository revalidation was not executed in this build runtime.",
+        "Public third-party source is organic parser evidence but is not a customer estate and does not establish commercial availability.",
+        "Version-specific catalog and runtime behavior remains outside source-only parser acceptance."
+      ],
+      "organic_estate_count": 0,
+      "organic_routine_count": 0,
+      "organic_validation_state": "REVALIDATION_REQUIRED_AFTER_REMEDIATION",
+      "public_repository_evidence_refs": [
+        "organic/IBM_DB2_SAMPLES_PUBLIC_MANIFEST.json",
+        "docs/DB2_ORGANIC_RECOVERY_RC5.md",
+        "tests/test_db2_organic_recovery_rc5.py"
+      ],
+      "public_repository_file_count": 5,
+      "public_repository_routine_count": 15,
+      "synthetic_fixture_count": 2,
+      "validation_state": "SYNTHETICALLY_VALIDATED"
+    },
+    {
+      "commercialization_blockers": [
+        "ORGANIC_CUSTOMER_ESTATE_VALIDATION_NOT_COMPLETED"
+      ],
+      "commercialization_state": "ORGANIC_VALIDATION_REQUIRED",
+      "dialect": "ORACLE_PLSQL",
+      "evidence_refs": [
+        "acceptance/dialect-acceptance.json#oracle_primary",
+        "acceptance/dialect-acceptance.json#oracle_extended"
+      ],
+      "implementation_state": "IMPLEMENTED",
+      "known_version_bounds": [],
+      "limitations": [
+        "No customer-estate Oracle routine has been admitted as organic validation evidence.",
+        "Package state and catalog-dependent resolution require external evidence."
+      ],
+      "organic_estate_count": 0,
+      "organic_routine_count": 0,
+      "organic_validation_state": "NOT_ATTEMPTED",
+      "public_repository_evidence_refs": [],
+      "public_repository_file_count": 0,
+      "public_repository_routine_count": 0,
+      "synthetic_fixture_count": 2,
+      "validation_state": "SYNTHETICALLY_VALIDATED"
+    },
+    {
+      "commercialization_blockers": [
+        "ORGANIC_CUSTOMER_ESTATE_VALIDATION_NOT_COMPLETED"
+      ],
+      "commercialization_state": "ORGANIC_VALIDATION_REQUIRED",
+      "dialect": "SQLSERVER_TSQL",
+      "evidence_refs": [
+        "acceptance/dialect-acceptance.json#sqlserver_primary",
+        "acceptance/dialect-acceptance.json#sqlserver_extended"
+      ],
+      "implementation_state": "IMPLEMENTED",
+      "known_version_bounds": [],
+      "limitations": [
+        "No customer-estate SQL Server routine has been admitted as organic validation evidence.",
+        "Metadata-dependent name binding requires customer catalog evidence."
+      ],
+      "organic_estate_count": 0,
+      "organic_routine_count": 0,
+      "organic_validation_state": "NOT_ATTEMPTED",
+      "public_repository_evidence_refs": [],
+      "public_repository_file_count": 0,
+      "public_repository_routine_count": 0,
+      "synthetic_fixture_count": 2,
+      "validation_state": "SYNTHETICALLY_VALIDATED"
+    },
+    {
+      "commercialization_blockers": [
+        "ORGANIC_CUSTOMER_ESTATE_VALIDATION_NOT_COMPLETED"
+      ],
+      "commercialization_state": "ORGANIC_VALIDATION_REQUIRED",
+      "dialect": "POSTGRESQL_PLPGSQL",
+      "evidence_refs": [
+        "acceptance/dialect-acceptance.json#postgresql_primary",
+        "acceptance/dialect-acceptance.json#postgresql_extended",
+        "acceptance/dialect-acceptance.json#postgresql_signature"
+      ],
+      "implementation_state": "IMPLEMENTED",
+      "known_version_bounds": [],
+      "limitations": [
+        "No customer-estate PostgreSQL routine has been admitted as organic validation evidence.",
+        "Trigger context and catalog-dependent overload resolution require external evidence."
+      ],
+      "organic_estate_count": 0,
+      "organic_routine_count": 0,
+      "organic_validation_state": "NOT_ATTEMPTED",
+      "public_repository_evidence_refs": [],
+      "public_repository_file_count": 0,
+      "public_repository_routine_count": 0,
+      "synthetic_fixture_count": 3,
+      "validation_state": "SYNTHETICALLY_VALIDATED"
+    },
+    {
+      "commercialization_blockers": [
+        "ORGANIC_CUSTOMER_ESTATE_VALIDATION_NOT_COMPLETED"
+      ],
+      "commercialization_state": "ORGANIC_VALIDATION_REQUIRED",
+      "dialect": "MYSQL_STORED_PROGRAM",
+      "evidence_refs": [
+        "acceptance/dialect-acceptance.json#mysql_primary",
+        "acceptance/dialect-acceptance.json#mysql_extended",
+        "acceptance/dialect-acceptance.json#mysql_simple_function",
+        "acceptance/dialect-acceptance.json#mysql_simple_trigger"
+      ],
+      "implementation_state": "IMPLEMENTED",
+      "known_version_bounds": [],
+      "limitations": [
+        "No customer-estate MySQL stored program has been admitted as organic validation evidence.",
+        "Definer privileges and prepared-statement runtime values require external evidence."
+      ],
+      "organic_estate_count": 0,
+      "organic_routine_count": 0,
+      "organic_validation_state": "NOT_ATTEMPTED",
+      "public_repository_evidence_refs": [],
+      "public_repository_file_count": 0,
+      "public_repository_routine_count": 0,
+      "synthetic_fixture_count": 4,
+      "validation_state": "SYNTHETICALLY_VALIDATED"
+    }
+  ],
+  "overall_commercialization_state": "ORGANIC_VALIDATION_REQUIRED",
+  "product": "Atlas Procedure Intelligence",
+  "release": "2.0.0rc5",
+  "schema_version": "atlas-capability-manifest-1.0"
+}

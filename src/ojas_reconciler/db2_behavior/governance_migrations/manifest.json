@@ -1,0 +1,17 @@
+{
+  "migrations": [
+    {
+      "digest": "sha256:562061ff48f4cb3b5934733b4dfd68902555abbbb59448e11e5c5460144edd04",
+      "filename": "0001_initial.sql",
+      "migration_id": "0001_initial",
+      "previous_migration_digest": null
+    },
+    {
+      "digest": "sha256:b9669503cf6830c2c939fa0e11e2a2b2c56085df0aef4a9da0184b8ff0bc46fb",
+      "filename": "0002_local_non_authoritative_scope.sql",
+      "migration_id": "0002_local_non_authoritative_scope",
+      "previous_migration_digest": "sha256:562061ff48f4cb3b5934733b4dfd68902555abbbb59448e11e5c5460144edd04"
+    }
+  ],
+  "schema_version": "governance-migrations-1.1"
+}

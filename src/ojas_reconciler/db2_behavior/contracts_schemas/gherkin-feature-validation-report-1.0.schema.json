@@ -1,0 +1,112 @@
+{
+  "$id": "https://pommala.com/contracts/gherkin-feature-validation-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "error_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "feature_validation_report_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "features": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_ref": {
+            "type": "string"
+          },
+          "feature_name": {
+            "type": "string"
+          },
+          "gherkin_content_digest": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "gherkin_structure_digest": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "parser_name": {
+            "type": "string"
+          },
+          "parser_version": {
+            "type": "string"
+          },
+          "scenario_count": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "artifact_ref",
+          "parser_name",
+          "parser_version",
+          "gherkin_content_digest",
+          "gherkin_structure_digest",
+          "feature_name",
+          "scenario_count"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "parser_identities": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "parser_name": {
+            "type": "string"
+          },
+          "parser_version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "parser_name",
+          "parser_version"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "quality_gate_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "gherkin-feature-validation-report-1.0"
+    },
+    "status": {
+      "enum": [
+        "PASSED",
+        "FAILED"
+      ]
+    },
+    "validated_feature_count": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "quality_gate_version",
+    "status",
+    "error_count",
+    "validated_feature_count",
+    "parser_identities",
+    "features",
+    "issues",
+    "feature_validation_report_digest"
+  ],
+  "title": "Gherkin Feature Validation Report 1.0",
+  "type": "object"
+}

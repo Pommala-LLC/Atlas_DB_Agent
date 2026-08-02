@@ -1,0 +1,6 @@
+{% extends "procedure_shell.html" %}
+{% block content %}
+{% set selected_analysis = analysis %}
+{% include "procedure_dashboard.html" %}
+{% endblock %}
+{% block scripts %}<script src="/static/procedure_intake.js"></script><script src="/static/procedure_results.js"></script>{% endblock %}

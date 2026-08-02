@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "RuntimeEvidencePlatform": {
+      "enum": [
+        "DB2_LUW",
+        "DB2_ZOS"
+      ],
+      "title": "RuntimeEvidencePlatform",
+      "type": "string"
+    },
+    "RuntimeEvidenceSource": {
+      "enum": [
+        "LIVE_PROBE",
+        "IFCID_EXTRACT"
+      ],
+      "title": "RuntimeEvidenceSource",
+      "type": "string"
+    },
+    "SqlDialect": {
+      "enum": [
+        "DB2_SQL_PL",
+        "POSTGRESQL_PLPGSQL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL"
+      ],
+      "title": "SqlDialect",
+      "type": "string"
+    }
+  },
+  "$id": "runtime-evidence-properties-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Optional runtime evidence selection; static analysis never depends on it.",
+  "properties": {
+    "availability_attestation_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Availability Attestation Ref"
+    },
+    "connection_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Connection Ref"
+    },
+    "dialect": {
+      "$ref": "#/$defs/SqlDialect",
+      "default": "DB2_SQL_PL"
+    },
+    "enabled": {
+      "default": false,
+      "title": "Enabled",
+      "type": "boolean"
+    },
+    "ifcid_adapter_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ifcid Adapter Ref"
+    },
+    "platform": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RuntimeEvidencePlatform"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "source": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RuntimeEvidenceSource"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "Db2RuntimeEvidenceProperties",
+  "type": "object"
+}

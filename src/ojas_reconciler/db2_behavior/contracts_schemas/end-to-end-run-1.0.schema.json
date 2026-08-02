@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "AuthorityMode": {
+      "enum": [
+        "NONE",
+        "TEST_FIXTURE_ONLY",
+        "EXTERNAL_SNAPSHOT"
+      ],
+      "title": "AuthorityMode",
+      "type": "string"
+    },
+    "PipelineStageRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Digest"
+        },
+        "artifact_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Path"
+        },
+        "blocker_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocker Codes",
+          "type": "array"
+        },
+        "details": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PipelineStageStatus"
+        }
+      },
+      "required": [
+        "stage",
+        "status"
+      ],
+      "title": "PipelineStageRecord",
+      "type": "object"
+    },
+    "PipelineStageStatus": {
+      "enum": [
+        "SUCCEEDED",
+        "BLOCKED",
+        "SKIPPED",
+        "FAILED"
+      ],
+      "title": "PipelineStageStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority_mode": {
+      "$ref": "#/$defs/AuthorityMode"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "emitted_artifact_paths": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Emitted Artifact Paths",
+      "type": "array"
+    },
+    "governance_mode": {
+      "title": "Governance Mode",
+      "type": "string"
+    },
+    "input_dependent_checks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Input Dependent Checks",
+      "type": "array"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "db2-e2e-run-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_digest": {
+      "title": "Source Digest",
+      "type": "string"
+    },
+    "source_path": {
+      "title": "Source Path",
+      "type": "string"
+    },
+    "stage_records": {
+      "items": {
+        "$ref": "#/$defs/PipelineStageRecord"
+      },
+      "title": "Stage Records",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "source_path",
+    "source_digest",
+    "authority_mode",
+    "governance_mode",
+    "stage_records",
+    "emitted_artifact_paths",
+    "input_dependent_checks",
+    "content_digest"
+  ],
+  "title": "EndToEndRunManifest",
+  "type": "object"
+}

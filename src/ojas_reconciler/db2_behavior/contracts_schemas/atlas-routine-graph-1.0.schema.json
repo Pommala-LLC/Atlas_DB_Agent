@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "dialect": {
+      "type": "string"
+    },
+    "edges": {
+      "type": "array"
+    },
+    "nodes": {
+      "type": "array"
+    },
+    "routine_ref": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "atlas-routine-graph-1.0"
+    },
+    "source_ir_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "routine_ref",
+    "dialect",
+    "source_ir_digest",
+    "nodes",
+    "edges",
+    "content_digest"
+  ],
+  "title": "atlas-routine-graph-1.0",
+  "type": "object"
+}

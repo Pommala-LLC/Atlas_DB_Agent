@@ -1,0 +1,184 @@
+{
+  "$defs": {
+    "AssertionModality": {
+      "enum": [
+        "MUST",
+        "MUST_IF_CONTRACT_HOLDS",
+        "MAY",
+        "UNKNOWN"
+      ],
+      "title": "AssertionModality",
+      "type": "string"
+    },
+    "AssertionReview": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_ref": {
+          "title": "Assertion Ref",
+          "type": "string"
+        },
+        "classification": {
+          "$ref": "#/$defs/ReviewClassification"
+        },
+        "comments": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comments"
+        },
+        "modality": {
+          "$ref": "#/$defs/AssertionModality"
+        },
+        "observable_kind": {
+          "title": "Observable Kind",
+          "type": "string"
+        },
+        "source_contradiction_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Contradiction Ref"
+        }
+      },
+      "required": [
+        "assertion_ref",
+        "observable_kind",
+        "modality",
+        "classification"
+      ],
+      "title": "AssertionReview",
+      "type": "object"
+    },
+    "OrganicProcedureReview": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_reviews": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AssertionReview"
+          },
+          "title": "Assertion Reviews",
+          "type": "array"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "decision_arms_confirmed": {
+          "$ref": "#/$defs/ReviewConfirmation",
+          "default": "NOT_REVIEWED"
+        },
+        "handler_effects_confirmed": {
+          "$ref": "#/$defs/ReviewConfirmation",
+          "default": "NOT_REVIEWED"
+        },
+        "major_mutations_confirmed": {
+          "$ref": "#/$defs/ReviewConfirmation",
+          "default": "NOT_REVIEWED"
+        },
+        "precedence_confirmed": {
+          "$ref": "#/$defs/ReviewConfirmation",
+          "default": "NOT_REVIEWED"
+        },
+        "review_effort_minutes": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Review Effort Minutes",
+          "type": "integer"
+        },
+        "review_notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Review Notes"
+        },
+        "reviewer_ref": {
+          "title": "Reviewer Ref",
+          "type": "string"
+        },
+        "terminal_outcomes_confirmed": {
+          "$ref": "#/$defs/ReviewConfirmation",
+          "default": "NOT_REVIEWED"
+        }
+      },
+      "required": [
+        "case_id",
+        "reviewer_ref"
+      ],
+      "title": "OrganicProcedureReview",
+      "type": "object"
+    },
+    "ReviewClassification": {
+      "enum": [
+        "CORRECT",
+        "CORRECT_BUT_TECHNICAL",
+        "INCOMPLETE",
+        "MISLEADING",
+        "FALSE",
+        "UNREVIEWABLE_WITHOUT_MORE_EVIDENCE"
+      ],
+      "title": "ReviewClassification",
+      "type": "string"
+    },
+    "ReviewConfirmation": {
+      "enum": [
+        "CONFIRMED",
+        "DISAGREED",
+        "NOT_APPLICABLE",
+        "NOT_REVIEWED"
+      ],
+      "title": "ReviewConfirmation",
+      "type": "string"
+    }
+  },
+  "$id": "organic-review-batch-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "reviews": {
+      "items": {
+        "$ref": "#/$defs/OrganicProcedureReview"
+      },
+      "title": "Reviews",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "organic-review-batch-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "validation_id": {
+      "title": "Validation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "validation_id",
+    "reviews",
+    "content_digest"
+  ],
+  "title": "OrganicReviewBatch",
+  "type": "object"
+}

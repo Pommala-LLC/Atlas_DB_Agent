@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "EnterpriseRole": {
+      "enum": [
+        "VIEWER",
+        "ANALYST",
+        "REVIEWER",
+        "ADMIN"
+      ],
+      "title": "EnterpriseRole",
+      "type": "string"
+    },
+    "IdentityMode": {
+      "enum": [
+        "FIXED_LOCAL",
+        "SIGNED_TRUSTED_HEADERS",
+        "OIDC_JWT"
+      ],
+      "title": "IdentityMode",
+      "type": "string"
+    }
+  },
+  "$id": "oidc-identity-config-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actor_claim": {
+      "default": "sub",
+      "title": "Actor Claim",
+      "type": "string"
+    },
+    "algorithms": {
+      "default": [
+        "RS256"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Algorithms",
+      "type": "array"
+    },
+    "audience": {
+      "title": "Audience",
+      "type": "string"
+    },
+    "issuer": {
+      "title": "Issuer",
+      "type": "string"
+    },
+    "jwks_file": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Jwks File"
+    },
+    "mode": {
+      "$ref": "#/$defs/IdentityMode",
+      "default": "OIDC_JWT"
+    },
+    "public_key_file": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Public Key File"
+    },
+    "required_claims": {
+      "default": [
+        "exp",
+        "iat",
+        "sub"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Required Claims",
+      "type": "array"
+    },
+    "role_mapping": {
+      "additionalProperties": {
+        "$ref": "#/$defs/EnterpriseRole"
+      },
+      "title": "Role Mapping",
+      "type": "object"
+    },
+    "roles_claim": {
+      "default": "roles",
+      "title": "Roles Claim",
+      "type": "string"
+    },
+    "tenant_claim": {
+      "default": "tenant",
+      "title": "Tenant Claim",
+      "type": "string"
+    }
+  },
+  "required": [
+    "issuer",
+    "audience",
+    "role_mapping"
+  ],
+  "title": "OidcIdentityConfig",
+  "type": "object"
+}

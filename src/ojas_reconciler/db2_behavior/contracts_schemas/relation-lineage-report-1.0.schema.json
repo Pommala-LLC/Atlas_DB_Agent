@@ -1,0 +1,175 @@
+{
+  "$defs": {
+    "LineageEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "edge_kind": {
+          "title": "Edge Kind",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "target_ref": {
+          "title": "Target Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source_ref",
+        "target_ref",
+        "edge_kind"
+      ],
+      "title": "LineageEdge",
+      "type": "object"
+    },
+    "LineageNode": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Attributes",
+          "type": "object"
+        },
+        "depth": {
+          "minimum": 0,
+          "title": "Depth",
+          "type": "integer"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "relation_kind": {
+          "$ref": "#/$defs/RelationKind"
+        },
+        "relation_ref": {
+          "title": "Relation Ref",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "relation_ref",
+        "relation_kind",
+        "status",
+        "depth"
+      ],
+      "title": "LineageNode",
+      "type": "object"
+    },
+    "RelationKind": {
+      "enum": [
+        "TABLE",
+        "VIEW",
+        "MATERIALIZED_QUERY_TABLE",
+        "SYNONYM",
+        "NICKNAME",
+        "TABLE_FUNCTION",
+        "TEMPORARY_TABLE",
+        "UNKNOWN"
+      ],
+      "title": "RelationKind",
+      "type": "string"
+    }
+  },
+  "$id": "relation-lineage-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "base_relation_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Base Relation Refs",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "cycles": {
+      "default": [],
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Cycles",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/LineageEdge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "max_depth_reached": {
+      "default": false,
+      "title": "Max Depth Reached",
+      "type": "boolean"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/LineageNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "report_id": {
+      "title": "Report Id",
+      "type": "string"
+    },
+    "root_relation_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Root Relation Refs",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "relation-lineage-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unresolved_boundaries": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved Boundaries",
+      "type": "array"
+    }
+  },
+  "required": [
+    "report_id",
+    "root_relation_refs",
+    "nodes",
+    "edges",
+    "base_relation_refs",
+    "unresolved_boundaries",
+    "content_digest"
+  ],
+  "title": "RelationLineageReport",
+  "type": "object"
+}

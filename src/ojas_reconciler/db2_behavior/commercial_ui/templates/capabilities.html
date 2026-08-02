@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block heading %}Capability claims{% endblock %}{% block subheading %}Validate product claims against six enforceable availability states.{% endblock %}
+{% block content %}
+{% if capability %}<section class="card"><div class="card-head"><h3>Validated manifest</h3><span class="pill warning">{{ capability.commercial_maturity }}</span></div><div class="table-wrap"><table><thead><tr><th>Capability</th><th>State</th><th>Datasheet</th><th>Limitations</th></tr></thead><tbody>{% for c in capability.capabilities %}<tr><td><strong>{{ c.display_name }}</strong><small>{{ c.claim_text }}</small></td><td><span class="pill state-{{ c.state|lower }}">{{ c.state }}</span></td><td>{{ 'Eligible' if c.datasheet_eligible else 'Prohibited' }}</td><td>{{ c.limitations|join('; ') or '—' }}</td></tr>{% endfor %}</tbody></table></div></section>{% endif %}
+<section class="card"><h3>Validate and store manifest</h3><form method="post" action="/capabilities/validate"><label>Manifest JSON<textarea name="manifest_text" rows="22">{{ manifest_text }}</textarea></label><button>Validate capability boundary</button></form></section>
+{% endblock %}

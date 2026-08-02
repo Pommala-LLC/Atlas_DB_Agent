@@ -1,0 +1,143 @@
+{
+  "$id": "https://pommala.com/contracts/readable-bdd-lint-report-1.1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "error_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "issues": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          },
+          "fingerprint": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "ERROR",
+              "WARNING"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "severity",
+          "message",
+          "details",
+          "fingerprint"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "lint_report_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "parser_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "parser_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "quality_gate_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "readable-bdd-lint-report-1.1"
+    },
+    "status": {
+      "enum": [
+        "PASSED",
+        "PASSED_WITH_WARNINGS_REVIEW_REQUIRED",
+        "PASSED_WITH_WARNINGS",
+        "FAILED"
+      ]
+    },
+    "warning_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "warning_governance": {
+      "additionalProperties": true,
+      "properties": {
+        "baseline_warning_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "current_warning_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "expired_waiver_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "mode": {
+          "enum": [
+            "REPORT_ONLY",
+            "NO_NEW_WARNINGS"
+          ]
+        },
+        "new_warning_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "NOT_EVALUATED",
+            "CLEAN",
+            "REVIEW_REQUIRED",
+            "GOVERNED",
+            "FAILED"
+          ]
+        },
+        "waived_warning_count": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "mode",
+        "status",
+        "baseline_warning_count",
+        "current_warning_count",
+        "new_warning_count",
+        "waived_warning_count",
+        "expired_waiver_count"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "quality_gate_version",
+    "parser_name",
+    "parser_version",
+    "status",
+    "error_count",
+    "warning_count",
+    "issues",
+    "warning_governance",
+    "lint_report_digest"
+  ],
+  "title": "Readable BDD Lint Report 1.1",
+  "type": "object"
+}

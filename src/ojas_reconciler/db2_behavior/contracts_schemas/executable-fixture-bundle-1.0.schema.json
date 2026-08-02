@@ -1,0 +1,123 @@
+{
+  "$defs": {
+    "FixtureBundleStatus": {
+      "enum": [
+        "EXECUTABLE",
+        "BLOCKED"
+      ],
+      "title": "FixtureBundleStatus",
+      "type": "string"
+    },
+    "FixtureRow": {
+      "additionalProperties": false,
+      "properties": {
+        "relation_ref": {
+          "title": "Relation Ref",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": true,
+          "title": "Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "relation_ref",
+        "values",
+        "source"
+      ],
+      "title": "FixtureRow",
+      "type": "object"
+    }
+  },
+  "$id": "executable-fixture-bundle-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blockers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "bundle_id": {
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "catalog_digest": {
+      "title": "Catalog Digest",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "input_authority_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Input Authority Refs",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "procedure_ref": {
+      "title": "Procedure Ref",
+      "type": "string"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/FixtureRow"
+      },
+      "title": "Rows",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "executable-fixture-bundle-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "setup_sql": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Setup Sql",
+      "type": "array"
+    },
+    "status": {
+      "$ref": "#/$defs/FixtureBundleStatus"
+    },
+    "teardown_sql": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Teardown Sql",
+      "type": "array"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "procedure_ref",
+    "status",
+    "catalog_digest",
+    "input_authority_refs",
+    "rows",
+    "setup_sql",
+    "teardown_sql",
+    "blockers",
+    "limitations",
+    "content_digest"
+  ],
+  "title": "ExecutableFixtureBundle",
+  "type": "object"
+}

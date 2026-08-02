@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "AuthorityScope": {
+      "enum": [
+        "TEST_FIXTURE_ONLY",
+        "PLATFORM"
+      ],
+      "title": "AuthorityScope",
+      "type": "string"
+    },
+    "AuthorityValidationIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "code": {
+          "$ref": "#/$defs/AuthorityValidationIssueCode"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "artifact_ref",
+        "message"
+      ],
+      "title": "AuthorityValidationIssue",
+      "type": "object"
+    },
+    "AuthorityValidationIssueCode": {
+      "enum": [
+        "VOCABULARY_SNAPSHOT_DIGEST_INVALID",
+        "CLASSIFICATION_SNAPSHOT_DIGEST_INVALID",
+        "MAPPING_DIGEST_INVALID",
+        "CLASSIFICATION_APPROVAL_DIGEST_INVALID",
+        "AUTHORITY_SCOPE_MISMATCH",
+        "DUPLICATE_MAPPING_ID",
+        "DUPLICATE_APPROVAL_ID",
+        "DUPLICATE_ACTIVE_MAPPING_BINDING",
+        "DUPLICATE_CLASSIFICATION_APPROVAL",
+        "NON_PROMOTABLE_PLATFORM_MAPPING",
+        "MAPPING_KIND_SEMANTICS_INVALID",
+        "INVALID_VALIDITY_INTERVAL",
+        "MAPPING_NOT_EFFECTIVE_AT_SNAPSHOT",
+        "APPROVAL_NOT_EFFECTIVE_AT_SNAPSHOT",
+        "EMPTY_APPROVAL_REFERENCE",
+        "EMPTY_MAPPING_EVIDENCE",
+        "EMPTY_CLASSIFICATION_EVIDENCE"
+      ],
+      "title": "AuthorityValidationIssueCode",
+      "type": "string"
+    },
+    "AuthorityValidationStatus": {
+      "enum": [
+        "VALID",
+        "INVALID"
+      ],
+      "title": "AuthorityValidationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority_scope": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AuthorityScope"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "classification_snapshot_digest": {
+      "title": "Classification Snapshot Digest",
+      "type": "string"
+    },
+    "classification_snapshot_ref": {
+      "title": "Classification Snapshot Ref",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/AuthorityValidationIssue"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "authority-validation-1.1",
+      "default": "authority-validation-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "validation_status": {
+      "$ref": "#/$defs/AuthorityValidationStatus"
+    },
+    "vocabulary_snapshot_digest": {
+      "title": "Vocabulary Snapshot Digest",
+      "type": "string"
+    },
+    "vocabulary_snapshot_ref": {
+      "title": "Vocabulary Snapshot Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "validation_status",
+    "vocabulary_snapshot_ref",
+    "vocabulary_snapshot_digest",
+    "classification_snapshot_ref",
+    "classification_snapshot_digest",
+    "authority_scope",
+    "issues",
+    "content_digest"
+  ],
+  "title": "AuthoritySnapshotValidationResult",
+  "type": "object"
+}

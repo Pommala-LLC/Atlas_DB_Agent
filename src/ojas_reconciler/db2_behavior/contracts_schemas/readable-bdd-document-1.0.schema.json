@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pommala.com/contracts/readable-bdd-document-1.0.schema.json",
+  "title": "Ojas Readable BDD Document 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "feature",
+    "semantic_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "readable-bdd-document-1.0"
+    },
+    "semantic_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "feature": {
+      "$ref": "#/$defs/feature"
+    }
+  },
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "tags",
+        "rules"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          }
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "scenarios"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scenario"
+          }
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "tags",
+        "steps",
+        "examples",
+        "proposal_id",
+        "proposal_kind",
+        "analysis_status",
+        "source_behavior_refs",
+        "source_bundle_refs"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "Scenario",
+            "Scenario Outline"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          },
+          "minItems": 1
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/examples"
+          }
+        },
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposal_kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "analysis_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_behavior_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_bundle_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "keyword",
+        "text"
+      ],
+      "properties": {
+        "keyword": {
+          "enum": [
+            "Given",
+            "When",
+            "Then",
+            "And",
+            "But"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "examples": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "headers",
+        "rows"
+      ],
+      "properties": {
+        "headers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

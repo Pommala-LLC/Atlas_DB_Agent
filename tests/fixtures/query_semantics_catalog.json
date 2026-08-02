@@ -1,0 +1,1 @@
+{"catalog_id":"process-claim-query-semantics-v1","content_digest":"sha256:518893f421b57fc8bf1d5e4605650febc75498b87c11b438f14388fb853956dc","schema_version":"query-semantics-catalog-1.0","unique_keys":[{"column_names":["CLAIM_ID"],"relation_name":"CLAIM"}]}

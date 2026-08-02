@@ -1,0 +1,354 @@
+{
+  "$defs": {
+    "ObservedParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Canonical Value"
+        },
+        "parameter_name": {
+          "title": "Parameter Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter_name",
+        "canonical_value"
+      ],
+      "title": "ObservedParameter",
+      "type": "object"
+    },
+    "ObservedStatement": {
+      "additionalProperties": false,
+      "description": "One observed statement; text may be absent when only identity is captured.",
+      "properties": {
+        "capture_qualifier": {
+          "default": "EXACT",
+          "enum": [
+            "EXACT",
+            "POSSIBLE_METRICS_UNAVAILABLE",
+            "POSSIBLE_CACHE_EVICTION_UNDERCOUNT"
+          ],
+          "title": "Capture Qualifier",
+          "type": "string"
+        },
+        "executions": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Executions"
+        },
+        "section_kind": {
+          "default": "UNKNOWN",
+          "enum": [
+            "DYNAMIC",
+            "STATIC",
+            "UNKNOWN"
+          ],
+          "title": "Section Kind",
+          "type": "string"
+        },
+        "statement_identity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementIdentity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "statement_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Statement Text"
+        },
+        "text_resolution": {
+          "$ref": "#/$defs/TextResolution",
+          "default": "RESOLVED"
+        }
+      },
+      "required": [
+        "statement_text",
+        "executions"
+      ],
+      "title": "ObservedStatement",
+      "type": "object"
+    },
+    "ObservedTableDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "digest_after": {
+          "title": "Digest After",
+          "type": "string"
+        },
+        "digest_before": {
+          "title": "Digest Before",
+          "type": "string"
+        },
+        "rows_after": {
+          "title": "Rows After",
+          "type": "integer"
+        },
+        "rows_before": {
+          "title": "Rows Before",
+          "type": "integer"
+        },
+        "table_name": {
+          "title": "Table Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "table_name",
+        "rows_before",
+        "rows_after",
+        "digest_before",
+        "digest_after"
+      ],
+      "title": "ObservedTableDelta",
+      "type": "object"
+    },
+    "ProbePlatform": {
+      "enum": [
+        "DB2_LUW",
+        "DB2_ZOS"
+      ],
+      "title": "ProbePlatform",
+      "type": "string"
+    },
+    "StatementIdentity": {
+      "additionalProperties": false,
+      "description": "Statement identity independent of captured SQL text.",
+      "properties": {
+        "collection": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collection"
+        },
+        "package": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Package"
+        },
+        "package_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Package Version"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "statement_number": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Statement Number"
+        },
+        "stmt_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stmt Id"
+        }
+      },
+      "title": "StatementIdentity",
+      "type": "object"
+    },
+    "TextResolution": {
+      "enum": [
+        "RESOLVED",
+        "CATALOG_LOOKUP_REQUIRED",
+        "NOT_AVAILABLE"
+      ],
+      "title": "TextResolution",
+      "type": "string"
+    }
+  },
+  "$id": "runtime-observation-record-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority_scope": {
+      "const": "RUNTIME_EVIDENCE_ONLY",
+      "default": "RUNTIME_EVIDENCE_ONLY",
+      "title": "Authority Scope",
+      "type": "string"
+    },
+    "capture_complete": {
+      "title": "Capture Complete",
+      "type": "boolean"
+    },
+    "capture_gaps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Capture Gaps",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dynamic_statements": {
+      "items": {
+        "$ref": "#/$defs/ObservedStatement"
+      },
+      "title": "Dynamic Statements",
+      "type": "array"
+    },
+    "invocation_ref": {
+      "title": "Invocation Ref",
+      "type": "string"
+    },
+    "observation_id": {
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "observed_at": {
+      "title": "Observed At",
+      "type": "string"
+    },
+    "output_parameters": {
+      "items": {
+        "$ref": "#/$defs/ObservedParameter"
+      },
+      "title": "Output Parameters",
+      "type": "array"
+    },
+    "plan_digest": {
+      "title": "Plan Digest",
+      "type": "string"
+    },
+    "plan_ref": {
+      "title": "Plan Ref",
+      "type": "string"
+    },
+    "platform": {
+      "$ref": "#/$defs/ProbePlatform"
+    },
+    "platform_governance_ref": {
+      "default": null,
+      "title": "Platform Governance Ref",
+      "type": "null"
+    },
+    "probe_name": {
+      "title": "Probe Name",
+      "type": "string"
+    },
+    "probe_version": {
+      "title": "Probe Version",
+      "type": "string"
+    },
+    "rolled_back": {
+      "title": "Rolled Back",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "runtime-observation-record-1.0",
+      "default": "runtime-observation-record-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sqlstate": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Sqlstate"
+    },
+    "table_deltas": {
+      "items": {
+        "$ref": "#/$defs/ObservedTableDelta"
+      },
+      "title": "Table Deltas",
+      "type": "array"
+    }
+  },
+  "required": [
+    "observation_id",
+    "plan_ref",
+    "plan_digest",
+    "invocation_ref",
+    "platform",
+    "observed_at",
+    "sqlstate",
+    "output_parameters",
+    "dynamic_statements",
+    "table_deltas",
+    "rolled_back",
+    "capture_complete",
+    "capture_gaps",
+    "probe_name",
+    "probe_version",
+    "content_digest"
+  ],
+  "title": "RuntimeObservationRecord",
+  "type": "object"
+}

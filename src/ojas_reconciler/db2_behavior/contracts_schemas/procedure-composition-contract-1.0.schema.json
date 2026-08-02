@@ -1,0 +1,251 @@
+{
+  "$defs": {
+    "CompositionKind": {
+      "enum": [
+        "DIRECT_CALL",
+        "EXTERNAL_SEQUENCE",
+        "EVENT_DRIVEN",
+        "BATCH_ORCHESTRATION",
+        "APPLICATION_TRANSACTION"
+      ],
+      "title": "CompositionKind",
+      "type": "string"
+    },
+    "CompositionTransactionRelationship": {
+      "enum": [
+        "SAME_UOW",
+        "SEPARATE_COMMITTED_UOW",
+        "CALLER_CONTROLLED",
+        "UNKNOWN"
+      ],
+      "title": "CompositionTransactionRelationship",
+      "type": "string"
+    },
+    "ConditionMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "entailment_status": {
+          "title": "Entailment Status",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "exported_postcondition_ref": {
+          "title": "Exported Postcondition Ref",
+          "type": "string"
+        },
+        "imported_precondition_ref": {
+          "title": "Imported Precondition Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exported_postcondition_ref",
+        "imported_precondition_ref",
+        "entailment_status"
+      ],
+      "title": "ConditionMapping",
+      "type": "object"
+    },
+    "ParameterMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "downstream_ref": {
+          "title": "Downstream Ref",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "mapping_expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mapping Expression"
+        },
+        "upstream_ref": {
+          "title": "Upstream Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "upstream_ref",
+        "downstream_ref"
+      ],
+      "title": "ParameterMapping",
+      "type": "object"
+    }
+  },
+  "$id": "procedure-composition-contract-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority_ref": {
+      "title": "Authority Ref",
+      "type": "string"
+    },
+    "composition_kind": {
+      "$ref": "#/$defs/CompositionKind"
+    },
+    "condition_mappings": {
+      "items": {
+        "$ref": "#/$defs/ConditionMapping"
+      },
+      "title": "Condition Mappings",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "contract_id": {
+      "title": "Contract Id",
+      "type": "string"
+    },
+    "downstream_procedure_ref": {
+      "title": "Downstream Procedure Ref",
+      "type": "string"
+    },
+    "downstream_semantic_digest": {
+      "title": "Downstream Semantic Digest",
+      "type": "string"
+    },
+    "effective_from": {
+      "title": "Effective From",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expires At"
+    },
+    "failure_disposition": {
+      "title": "Failure Disposition",
+      "type": "string"
+    },
+    "invocation_site_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Invocation Site Ref"
+    },
+    "orchestration_definition_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Orchestration Definition Digest"
+    },
+    "output_status_mappings": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Output Status Mappings",
+      "type": "object"
+    },
+    "parameter_mappings": {
+      "items": {
+        "$ref": "#/$defs/ParameterMapping"
+      },
+      "title": "Parameter Mappings",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "procedure-composition-contract-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sqlstate_mappings": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Sqlstate Mappings",
+      "type": "object"
+    },
+    "transaction_contract_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Transaction Contract Digest"
+    },
+    "transaction_relationship": {
+      "$ref": "#/$defs/CompositionTransactionRelationship"
+    },
+    "upstream_procedure_ref": {
+      "title": "Upstream Procedure Ref",
+      "type": "string"
+    },
+    "upstream_semantic_digest": {
+      "title": "Upstream Semantic Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract_id",
+    "composition_kind",
+    "upstream_procedure_ref",
+    "downstream_procedure_ref",
+    "upstream_semantic_digest",
+    "downstream_semantic_digest",
+    "parameter_mappings",
+    "condition_mappings",
+    "transaction_relationship",
+    "failure_disposition",
+    "authority_ref",
+    "evidence_refs",
+    "effective_from",
+    "content_digest"
+  ],
+  "title": "ProcedureCompositionContract",
+  "type": "object"
+}

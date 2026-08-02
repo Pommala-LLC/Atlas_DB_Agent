@@ -1,0 +1,56 @@
+<section class="analysis-summary-strip">
+  <div class="analysis-summary-left">
+    <div class="analysis-heading"><span class="db-icon">◫</span><div><strong>Stored Procedure Analysis</strong>
+      <div class="analysis-counts">
+        <span><b>{{ selected_analysis.counts.routines if selected_analysis else 0 }}</b> procedures discovered</span>
+        <span class="complete">✓ <b>{{ selected_analysis.counts.complete if selected_analysis else 0 }}</b> Complete</span>
+        <span class="partial">△ <b>{{ selected_analysis.counts.partial if selected_analysis else 0 }}</b> Partial</span>
+        <span class="error">⊗ <b>{{ (selected_analysis.counts.file_errors + selected_analysis.counts.blocked) if selected_analysis else 0 }}</b> Error</span>
+      </div>
+    </div></div>
+  </div>
+  <div class="analysis-current">
+    <span>Current:</span>
+    <b id="procedure-current-name-inline">{{ selected_analysis.routines[0].routine_ref if selected_analysis and selected_analysis.routines else '—' }}</b>
+    <span id="procedure-current-dialect-inline">({{ selected_analysis.declared_dialect if selected_analysis else 'select a database' }})</span>
+  </div>
+  <label class="analysis-dialect-lock">Dialect
+    <select disabled><option>{{ (selected_analysis.declared_dialect ~ ' · selected explicitly') if selected_analysis else 'Not selected' }}</option></select>
+  </label>
+</section>
+
+<section class="analysis-intake-strip">
+  <div class="intake-intro"><strong>Analyze stored procedures</strong><span>User must select the database type before analysis. No auto-detect. Atlas does not infer or switch the dialect.</span></div>
+  <form method="post" action="/runs/analyze" enctype="multipart/form-data" id="procedure-analysis-form" class="analysis-intake-form">
+    <div class="intake-database">
+      <label>Database
+        <select name="database_type" id="database-type" required>
+          <option value="">Select database…</option>
+          {% for database in databases %}<option value="{{ database.database_type.value }}" data-dialect="{{ database.dialect.value }}" {% if selected_analysis and selected_analysis.declared_dialect == database.dialect.value %}selected{% endif %}>{{ database.display_name }} · {{ database.dialect.value }}</option>{% endfor %}
+        </select>
+      </label>
+      <input id="declared-dialect" type="hidden" value="{{ selected_analysis.declared_dialect if selected_analysis else '' }}">
+    </div>
+    <div class="intake-paste">
+      <div class="intake-mode-buttons"><button type="button" class="mode-button active" data-focus-target="sql-text">Paste SQL</button><button type="button" class="mode-button" data-focus-target="files">Upload SQL files</button></div>
+      <label class="sr-only" for="sql-text">Stored procedure SQL</label>
+      <textarea name="sql_text" id="sql-text" spellcheck="false" placeholder="Paste one stored procedure or a script containing multiple procedures…"></textarea>
+      <div class="input-foot"><span>Multiple procedures in one script are supported.</span><span id="sql-count">0 characters</span></div>
+    </div>
+    <div class="intake-upload">
+      <label class="compact-dropzone" id="dropzone">
+        <span class="upload-icon">⇧</span>
+        <strong>Upload SQL files</strong>
+        <span>One file with multiple procedures or multiple files</span>
+        <span>Drag & drop or click to browse</span>
+        <input type="file" name="files" id="files" multiple accept=".sql,.db2,.ddl,.txt">
+      </label>
+      <div id="file-list" class="compact-file-list"></div>
+    </div>
+    <div class="intake-submit"><button type="submit">Analyze</button></div>
+  </form>
+</section>
+
+<div class="source-explanation">ⓘ Errors and gaps are shown directly in the stored procedure source.</div>
+
+{% include "procedure_workbench.html" %}

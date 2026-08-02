@@ -1,0 +1,57 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_digest": {
+      "title": "Artifact Digest",
+      "type": "string"
+    },
+    "artifact_id": {
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "authority_ref": {
+      "title": "Authority Ref",
+      "type": "string"
+    },
+    "binding_id": {
+      "title": "Binding Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "decision_type": {
+      "title": "Decision Type",
+      "type": "string"
+    },
+    "effective_at": {
+      "title": "Effective At",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "platform_decision_ref": {
+      "title": "Platform Decision Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "binding_id",
+    "artifact_id",
+    "artifact_digest",
+    "platform_decision_ref",
+    "decision_type",
+    "authority_ref",
+    "effective_at",
+    "content_digest"
+  ],
+  "title": "PlatformDecisionEnvelope",
+  "type": "object"
+}

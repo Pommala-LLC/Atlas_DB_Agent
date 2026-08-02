@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "DeletionScope": {
+      "enum": [
+        "DERIVED_ARTIFACTS",
+        "TENANT_WORKSPACE"
+      ],
+      "title": "DeletionScope",
+      "type": "string"
+    }
+  },
+  "$id": "commercial-deletion-request-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approved_by_ref": {
+      "title": "Approved By Ref",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "custody_agreement_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Custody Agreement Ref"
+    },
+    "execute_after": {
+      "title": "Execute After",
+      "type": "string"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "requested_at": {
+      "title": "Requested At",
+      "type": "string"
+    },
+    "requested_by_ref": {
+      "title": "Requested By Ref",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "commercial-deletion-request-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/DeletionScope"
+    },
+    "target_artifact_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Target Artifact Refs",
+      "type": "array"
+    },
+    "tenant_ref": {
+      "title": "Tenant Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "tenant_ref",
+    "scope",
+    "target_artifact_refs",
+    "requested_by_ref",
+    "approved_by_ref",
+    "requested_at",
+    "execute_after",
+    "reason",
+    "content_digest"
+  ],
+  "title": "CommercialDeletionRequest",
+  "type": "object"
+}

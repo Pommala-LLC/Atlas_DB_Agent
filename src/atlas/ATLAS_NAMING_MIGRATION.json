@@ -1,0 +1,43 @@
+{
+  "artifact_policy": {
+    "existing_artifact_ids": "PRESERVED",
+    "existing_content_digests": "NEVER_REWRITTEN",
+    "existing_schema_ids": "PRESERVED",
+    "governance_records": "NO_MIGRATION_BY_REHASH",
+    "new_artifacts": "ATLAS_PRODUCER_IDENTITY",
+    "serialization": "READ_BOTH_WRITE_CANONICAL_PRESERVE_LEGACY_ON_ROUND_TRIP"
+  },
+  "canonical": {
+    "cli": "atlas",
+    "distribution_name": "atlas-procedure-intelligence",
+    "product_name": "Atlas",
+    "python_namespace": "atlas",
+    "ui_cli": "atlas-console"
+  },
+  "compatibility_policy_ref": "ATLAS_NAMING_COMPATIBILITY_POLICY.json",
+  "effective_release": "2.0.0rc4",
+  "legacy_compatibility": {
+    "behavior": "DEPRECATED_BUT_FUNCTIONAL",
+    "cli_aliases": [
+      "db2-behavior",
+      "ojas-db2-agent",
+      "ojas-db2-gate0",
+      "commercial-behavior-console"
+    ],
+    "distribution_name": "db2-behavior-extraction-framework",
+    "new_public_api_policy": "NO_NEW_PUBLIC_APIS",
+    "python_namespace": "ojas_reconciler.db2_behavior",
+    "role": "COMPATIBILITY_FACADE",
+    "supported_until": "3.0.0"
+  },
+  "module_design": {
+    "application_services": "atlas.application",
+    "database_neutral_core": "atlas.core",
+    "dialect_adapters": "atlas.dialects",
+    "legacy_db2_module": "compatibility_adapter",
+    "renderers": "atlas.renderers",
+    "web_adapter": "atlas.web"
+  },
+  "schema_version": "atlas-naming-migration-1.0",
+  "status": "FROZEN"
+}

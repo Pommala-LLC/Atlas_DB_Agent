@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "RuntimeFalsificationCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "authority_scope": {
+          "default": "RUNTIME_EVIDENCE_ONLY",
+          "title": "Authority Scope",
+          "type": "string"
+        },
+        "candidate_id": {
+          "title": "Candidate Id",
+          "type": "string"
+        },
+        "classification": {
+          "default": "STATIC_RUNTIME_CONTRADICTION_CANDIDATE",
+          "title": "Classification",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "finding_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Finding Refs",
+          "type": "array"
+        },
+        "promotion_status": {
+          "default": "HUMAN_GOVERNANCE_REQUIRED",
+          "title": "Promotion Status",
+          "type": "string"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "verification_result_digest": {
+          "title": "Verification Result Digest",
+          "type": "string"
+        },
+        "verification_result_ref": {
+          "title": "Verification Result Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "verification_result_ref",
+        "verification_result_digest",
+        "scenario_spec_ref",
+        "finding_refs",
+        "content_digest"
+      ],
+      "title": "RuntimeFalsificationCandidate",
+      "type": "object"
+    }
+  },
+  "$id": "runtime-reconciliation-report-1.0.schema.json",
+  "additionalProperties": false,
+  "properties": {
+    "automatic_promotion": {
+      "default": false,
+      "title": "Automatic Promotion",
+      "type": "boolean"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "counts_by_status": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Counts By Status",
+      "type": "object"
+    },
+    "falsification_candidates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RuntimeFalsificationCandidate"
+      },
+      "title": "Falsification Candidates",
+      "type": "array"
+    },
+    "plan_batch_digest": {
+      "title": "Plan Batch Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "runtime-reconciliation-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unmatched_execution_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unmatched Execution Refs",
+      "type": "array"
+    },
+    "verification_batch_digest": {
+      "title": "Verification Batch Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "plan_batch_digest",
+    "verification_batch_digest",
+    "counts_by_status",
+    "content_digest"
+  ],
+  "title": "RuntimeReconciliationReport",
+  "type": "object"
+}

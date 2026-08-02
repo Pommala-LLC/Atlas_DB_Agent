@@ -1,0 +1,62 @@
+{
+  "$defs": {
+    "IdentityMode": {
+      "enum": [
+        "FIXED_LOCAL",
+        "SIGNED_TRUSTED_HEADERS",
+        "OIDC_JWT"
+      ],
+      "title": "IdentityMode",
+      "type": "string"
+    }
+  },
+  "$id": "trusted-header-identity-config-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actor_header": {
+      "default": "x-ojas-actor",
+      "title": "Actor Header",
+      "type": "string"
+    },
+    "max_clock_skew_seconds": {
+      "default": 300,
+      "exclusiveMinimum": 0,
+      "title": "Max Clock Skew Seconds",
+      "type": "integer"
+    },
+    "mode": {
+      "$ref": "#/$defs/IdentityMode",
+      "default": "SIGNED_TRUSTED_HEADERS"
+    },
+    "roles_header": {
+      "default": "x-ojas-roles",
+      "title": "Roles Header",
+      "type": "string"
+    },
+    "shared_secret_env": {
+      "title": "Shared Secret Env",
+      "type": "string"
+    },
+    "signature_header": {
+      "default": "x-ojas-signature",
+      "title": "Signature Header",
+      "type": "string"
+    },
+    "tenant_header": {
+      "default": "x-ojas-tenant",
+      "title": "Tenant Header",
+      "type": "string"
+    },
+    "timestamp_header": {
+      "default": "x-ojas-timestamp",
+      "title": "Timestamp Header",
+      "type": "string"
+    }
+  },
+  "required": [
+    "shared_secret_env"
+  ],
+  "title": "TrustedHeaderIdentityConfig",
+  "type": "object"
+}

@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "DialectId": {
+      "enum": [
+        "DB2_SQL_PL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL",
+        "POSTGRESQL_PLPGSQL",
+        "MYSQL_STORED_PROGRAM"
+      ],
+      "title": "DialectId",
+      "type": "string"
+    },
+    "RoutineParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "title": "Mode",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "type_text": {
+          "title": "Type Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "mode",
+        "type_text"
+      ],
+      "title": "RoutineParameter",
+      "type": "object"
+    }
+  },
+  "$id": "routine-inventory-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blockers": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "body_status": {
+      "title": "Body Status",
+      "type": "string"
+    },
+    "body_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Body Text"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dialect": {
+      "$ref": "#/$defs/DialectId"
+    },
+    "evidence_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "parameters": {
+      "items": {
+        "$ref": "#/$defs/RoutineParameter"
+      },
+      "title": "Parameters",
+      "type": "array"
+    },
+    "routine_kind": {
+      "title": "Routine Kind",
+      "type": "string"
+    },
+    "routine_name": {
+      "title": "Routine Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Schema Name"
+    },
+    "schema_version": {
+      "default": "routine-inventory-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_digest": {
+      "title": "Source Digest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dialect",
+    "routine_name",
+    "routine_kind",
+    "parameters",
+    "source_digest",
+    "body_status",
+    "content_digest"
+  ],
+  "title": "RoutineInventory",
+  "type": "object"
+}

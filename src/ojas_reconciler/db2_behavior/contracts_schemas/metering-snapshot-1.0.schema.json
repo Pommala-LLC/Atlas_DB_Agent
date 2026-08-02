@@ -1,0 +1,82 @@
+{
+  "$id": "metering-snapshot-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "analysis_runs": {
+      "minimum": 0,
+      "title": "Analysis Runs",
+      "type": "integer"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "environment_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Environment Refs",
+      "type": "array"
+    },
+    "estate_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Estate Refs",
+      "type": "array"
+    },
+    "generated_artifacts": {
+      "minimum": 0,
+      "title": "Generated Artifacts",
+      "type": "integer"
+    },
+    "period_end": {
+      "title": "Period End",
+      "type": "string"
+    },
+    "period_start": {
+      "title": "Period Start",
+      "type": "string"
+    },
+    "runtime_observations": {
+      "minimum": 0,
+      "title": "Runtime Observations",
+      "type": "integer"
+    },
+    "schema_version": {
+      "default": "metering-snapshot-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_lines_processed": {
+      "minimum": 0,
+      "title": "Source Lines Processed",
+      "type": "integer"
+    },
+    "tenant_ref": {
+      "title": "Tenant Ref",
+      "type": "string"
+    },
+    "unique_procedure_digests": {
+      "minimum": 0,
+      "title": "Unique Procedure Digests",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "tenant_ref",
+    "estate_refs",
+    "environment_refs",
+    "unique_procedure_digests",
+    "analysis_runs",
+    "source_lines_processed",
+    "generated_artifacts",
+    "runtime_observations",
+    "period_start",
+    "period_end",
+    "content_digest"
+  ],
+  "title": "MeteringSnapshot",
+  "type": "object"
+}

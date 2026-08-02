@@ -1,0 +1,215 @@
+{
+  "$defs": {
+    "CustodyAgreementStatus": {
+      "enum": [
+        "DRAFT",
+        "APPROVED",
+        "EXPIRED",
+        "REVOKED"
+      ],
+      "title": "CustodyAgreementStatus",
+      "type": "string"
+    },
+    "CustodyApprovalEvidenceMode": {
+      "enum": [
+        "CUSTOMER_ENVIRONMENT_SELF_ASSERTED",
+        "VERIFIED_EXTERNAL_ENVELOPE"
+      ],
+      "title": "CustodyApprovalEvidenceMode",
+      "type": "string"
+    },
+    "ProcessingLocation": {
+      "enum": [
+        "CUSTOMER_ENVIRONMENT",
+        "VENDOR_ISOLATED_WORKSPACE",
+        "CUSTOMER_APPROVED_CLOUD_WORKSPACE"
+      ],
+      "title": "ProcessingLocation",
+      "type": "string"
+    },
+    "RegressionFixturePermission": {
+      "enum": [
+        "NO_RETENTION",
+        "RETAIN_DERIVED_NON_REVERSIBLE_PATTERN",
+        "RETAIN_CUSTOMER_PRIVATE_REGRESSION_FIXTURE",
+        "LICENSE_ANONYMIZED_REDUCED_FIXTURE"
+      ],
+      "title": "RegressionFixturePermission",
+      "type": "string"
+    }
+  },
+  "$id": "organic-source-custody-agreement-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "access_logging_required": {
+      "default": true,
+      "title": "Access Logging Required",
+      "type": "boolean"
+    },
+    "agreement_id": {
+      "title": "Agreement Id",
+      "type": "string"
+    },
+    "allowed_source_roots": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Source Roots",
+      "type": "array"
+    },
+    "approval_envelope_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approval Envelope Digest"
+    },
+    "approval_evidence_mode": {
+      "$ref": "#/$defs/CustodyApprovalEvidenceMode"
+    },
+    "approval_evidence_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Approval Evidence Refs",
+      "type": "array"
+    },
+    "asserted_approver_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Asserted Approver Ref"
+    },
+    "authorized_role_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Authorized Role Refs",
+      "type": "array"
+    },
+    "backup_policy": {
+      "title": "Backup Policy",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "cross_border_processing": {
+      "title": "Cross Border Processing",
+      "type": "string"
+    },
+    "customer_ref": {
+      "title": "Customer Ref",
+      "type": "string"
+    },
+    "deletion_attestation_required": {
+      "default": true,
+      "title": "Deletion Attestation Required",
+      "type": "boolean"
+    },
+    "deletion_request_sla_days": {
+      "minimum": 0,
+      "title": "Deletion Request Sla Days",
+      "type": "integer"
+    },
+    "derived_artifact_retention_days": {
+      "minimum": 0,
+      "title": "Derived Artifact Retention Days",
+      "type": "integer"
+    },
+    "effective_from": {
+      "title": "Effective From",
+      "type": "string"
+    },
+    "encryption_at_rest_required": {
+      "default": true,
+      "title": "Encryption At Rest Required",
+      "type": "boolean"
+    },
+    "encryption_in_transit_required": {
+      "default": true,
+      "title": "Encryption In Transit Required",
+      "type": "boolean"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expires At"
+    },
+    "incident_notification_hours": {
+      "exclusiveMinimum": 0,
+      "title": "Incident Notification Hours",
+      "type": "integer"
+    },
+    "model_training_use": {
+      "default": "PROHIBITED",
+      "title": "Model Training Use",
+      "type": "string"
+    },
+    "processing_location": {
+      "$ref": "#/$defs/ProcessingLocation"
+    },
+    "regression_fixture_permission": {
+      "$ref": "#/$defs/RegressionFixturePermission"
+    },
+    "schema_version": {
+      "default": "organic-source-custody-agreement-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_retention_days": {
+      "minimum": 0,
+      "title": "Source Retention Days",
+      "type": "integer"
+    },
+    "status": {
+      "$ref": "#/$defs/CustodyAgreementStatus"
+    },
+    "subprocessor_policy": {
+      "title": "Subprocessor Policy",
+      "type": "string"
+    }
+  },
+  "required": [
+    "agreement_id",
+    "customer_ref",
+    "status",
+    "approval_evidence_mode",
+    "effective_from",
+    "processing_location",
+    "authorized_role_refs",
+    "source_retention_days",
+    "derived_artifact_retention_days",
+    "deletion_request_sla_days",
+    "backup_policy",
+    "regression_fixture_permission",
+    "cross_border_processing",
+    "incident_notification_hours",
+    "subprocessor_policy",
+    "allowed_source_roots",
+    "content_digest"
+  ],
+  "title": "OrganicSourceCustodyAgreement",
+  "type": "object"
+}

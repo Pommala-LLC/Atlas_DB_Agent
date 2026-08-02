@@ -1,0 +1,73 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dataset_id": {
+      "title": "Dataset Id",
+      "type": "string"
+    },
+    "facts": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Facts",
+      "type": "object"
+    },
+    "relations": {
+      "additionalProperties": {
+        "items": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "title": "Relations",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "bdd-test-dataset-1.0",
+      "default": "bdd-test-dataset-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dataset_id",
+    "facts",
+    "relations",
+    "content_digest"
+  ],
+  "title": "BddTestDataset",
+  "type": "object"
+}

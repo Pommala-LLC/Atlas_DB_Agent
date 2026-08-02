@@ -1,0 +1,958 @@
+{
+  "$defs": {
+    "DecisionArm": {
+      "additionalProperties": false,
+      "properties": {
+        "arm_id": {
+          "title": "Arm Id",
+          "type": "string"
+        },
+        "condition_text": {
+          "title": "Condition Text",
+          "type": "string"
+        },
+        "effect_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Effect Node Refs",
+          "type": "array"
+        },
+        "precedence": {
+          "minimum": 0,
+          "title": "Precedence",
+          "type": "integer"
+        },
+        "predicate_node_ref": {
+          "title": "Predicate Node Ref",
+          "type": "string"
+        },
+        "terminal": {
+          "title": "Terminal",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "arm_id",
+        "precedence",
+        "predicate_node_ref",
+        "condition_text",
+        "effect_node_refs",
+        "terminal"
+      ],
+      "title": "DecisionArm",
+      "type": "object"
+    },
+    "DialectId": {
+      "enum": [
+        "DB2_SQL_PL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL",
+        "POSTGRESQL_PLPGSQL",
+        "MYSQL_STORED_PROGRAM"
+      ],
+      "title": "DialectId",
+      "type": "string"
+    },
+    "EdgeKind": {
+      "enum": [
+        "NEXT",
+        "TRUE",
+        "FALSE",
+        "BRANCH",
+        "LOOP_BODY",
+        "LOOP_BACK",
+        "EXCEPTION",
+        "CALLS",
+        "DATA_DEPENDENCY"
+      ],
+      "title": "EdgeKind",
+      "type": "string"
+    },
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MAY",
+        "CONDITIONAL",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "EffectSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "condition_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Condition Refs",
+          "type": "array"
+        },
+        "effect_id": {
+          "title": "Effect Id",
+          "type": "string"
+        },
+        "expression": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expression"
+        },
+        "kind": {
+          "$ref": "#/$defs/SemanticNodeKind"
+        },
+        "modality": {
+          "$ref": "#/$defs/EffectModality"
+        },
+        "node_ref": {
+          "title": "Node Ref",
+          "type": "string"
+        },
+        "relation_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Relation Refs",
+          "type": "array"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        }
+      },
+      "required": [
+        "effect_id",
+        "node_ref",
+        "kind",
+        "modality"
+      ],
+      "title": "EffectSummary",
+      "type": "object"
+    },
+    "RoutineAnalysisBundle": {
+      "additionalProperties": false,
+      "properties": {
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "routine_ir": {
+          "$ref": "#/$defs/RoutineIR"
+        },
+        "routine_ref": {
+          "title": "Routine Ref",
+          "type": "string"
+        },
+        "scenario_candidates": {
+          "$ref": "#/$defs/ScenarioCandidateBatch"
+        },
+        "schema_version": {
+          "default": "atlas-routine-analysis-bundle-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "semantic_report": {
+          "$ref": "#/$defs/RoutineSemanticReport"
+        }
+      },
+      "required": [
+        "routine_ref",
+        "routine_ir",
+        "semantic_report",
+        "scenario_candidates",
+        "content_digest"
+      ],
+      "title": "RoutineAnalysisBundle",
+      "type": "object"
+    },
+    "RoutineIR": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_id": {
+          "title": "Adapter Id",
+          "type": "string"
+        },
+        "atlas_version": {
+          "title": "Atlas Version",
+          "type": "string"
+        },
+        "body_digest": {
+          "title": "Body Digest",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "dialect": {
+          "$ref": "#/$defs/DialectId"
+        },
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/SemanticEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        },
+        "entry_node_ref": {
+          "title": "Entry Node Ref",
+          "type": "string"
+        },
+        "exit_node_ref": {
+          "title": "Exit Node Ref",
+          "type": "string"
+        },
+        "findings": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SemanticFinding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/SemanticNode"
+          },
+          "title": "Nodes",
+          "type": "array"
+        },
+        "parameters": {
+          "items": {
+            "$ref": "#/$defs/RoutineParameter"
+          },
+          "title": "Parameters",
+          "type": "array"
+        },
+        "routine_attributes": {
+          "additionalProperties": true,
+          "title": "Routine Attributes",
+          "type": "object"
+        },
+        "routine_kind": {
+          "$ref": "#/$defs/RoutineKind"
+        },
+        "routine_name": {
+          "title": "Routine Name",
+          "type": "string"
+        },
+        "schema_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schema Name"
+        },
+        "schema_version": {
+          "default": "atlas-routine-ir-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_digest": {
+          "title": "Source Digest",
+          "type": "string"
+        },
+        "source_name": {
+          "title": "Source Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "atlas_version",
+        "dialect",
+        "adapter_id",
+        "routine_kind",
+        "routine_name",
+        "parameters",
+        "source_name",
+        "source_digest",
+        "body_digest",
+        "nodes",
+        "edges",
+        "entry_node_ref",
+        "exit_node_ref",
+        "content_digest"
+      ],
+      "title": "RoutineIR",
+      "type": "object"
+    },
+    "RoutineKind": {
+      "enum": [
+        "PROCEDURE",
+        "FUNCTION",
+        "TRIGGER",
+        "PACKAGE_ROUTINE"
+      ],
+      "title": "RoutineKind",
+      "type": "string"
+    },
+    "RoutineParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "default_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default Text"
+        },
+        "mode": {
+          "enum": [
+            "IN",
+            "OUT",
+            "INOUT",
+            "VARIADIC",
+            "RETURN"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "type_text": {
+          "title": "Type Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "mode",
+        "type_text"
+      ],
+      "title": "RoutineParameter",
+      "type": "object"
+    },
+    "RoutineSemanticReport": {
+      "additionalProperties": false,
+      "properties": {
+        "atlas_version": {
+          "title": "Atlas Version",
+          "type": "string"
+        },
+        "call_targets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Call Targets",
+          "type": "array"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "decision_arms": {
+          "items": {
+            "$ref": "#/$defs/DecisionArm"
+          },
+          "title": "Decision Arms",
+          "type": "array"
+        },
+        "dialect": {
+          "$ref": "#/$defs/DialectId"
+        },
+        "dynamic_sql_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dynamic Sql Node Refs",
+          "type": "array"
+        },
+        "effects": {
+          "items": {
+            "$ref": "#/$defs/EffectSummary"
+          },
+          "title": "Effects",
+          "type": "array"
+        },
+        "finding_counts": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Finding Counts",
+          "type": "object"
+        },
+        "handler_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Handler Node Refs",
+          "type": "array"
+        },
+        "opaque_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Opaque Node Refs",
+          "type": "array"
+        },
+        "parse_status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "BLOCKED"
+          ],
+          "title": "Parse Status",
+          "type": "string"
+        },
+        "relation_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Relation Refs",
+          "type": "array"
+        },
+        "result_set_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Result Set Node Refs",
+          "type": "array"
+        },
+        "routine_ir_digest": {
+          "title": "Routine Ir Digest",
+          "type": "string"
+        },
+        "routine_ref": {
+          "title": "Routine Ref",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "atlas-routine-semantic-report-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "transaction_node_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Transaction Node Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "atlas_version",
+        "dialect",
+        "routine_ref",
+        "routine_ir_digest",
+        "parse_status",
+        "decision_arms",
+        "effects",
+        "call_targets",
+        "relation_refs",
+        "dynamic_sql_node_refs",
+        "result_set_node_refs",
+        "transaction_node_refs",
+        "handler_node_refs",
+        "opaque_node_refs",
+        "finding_counts",
+        "content_digest"
+      ],
+      "title": "RoutineSemanticReport",
+      "type": "object"
+    },
+    "ScenarioCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "authority_scope": {
+          "const": "NON_AUTHORITATIVE_TECHNICAL_CANDIDATE",
+          "default": "NON_AUTHORITATIVE_TECHNICAL_CANDIDATE",
+          "title": "Authority Scope",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "given": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Given",
+          "type": "array"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "scenario_id": {
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "then": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Then",
+          "type": "array"
+        },
+        "when": {
+          "title": "When",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "name",
+        "given",
+        "when",
+        "then",
+        "evidence_refs"
+      ],
+      "title": "ScenarioCandidate",
+      "type": "object"
+    },
+    "ScenarioCandidateBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "dialect": {
+          "$ref": "#/$defs/DialectId"
+        },
+        "routine_ref": {
+          "title": "Routine Ref",
+          "type": "string"
+        },
+        "scenarios": {
+          "items": {
+            "$ref": "#/$defs/ScenarioCandidate"
+          },
+          "title": "Scenarios",
+          "type": "array"
+        },
+        "schema_version": {
+          "default": "atlas-scenario-candidate-batch-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_ir_digest": {
+          "title": "Source Ir Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "routine_ref",
+        "dialect",
+        "scenarios",
+        "source_ir_digest",
+        "content_digest"
+      ],
+      "title": "ScenarioCandidateBatch",
+      "type": "object"
+    },
+    "SemanticEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "condition_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition Text"
+        },
+        "edge_id": {
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EdgeKind"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "target_ref": {
+          "title": "Target Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source_ref",
+        "target_ref",
+        "kind"
+      ],
+      "title": "SemanticEdge",
+      "type": "object"
+    },
+    "SemanticFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "consequence": {
+          "title": "Consequence",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "source_span": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceSpan"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "consequence"
+      ],
+      "title": "SemanticFinding",
+      "type": "object"
+    },
+    "SemanticNode": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": true,
+          "title": "Attributes",
+          "type": "object"
+        },
+        "call_target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Call Target"
+        },
+        "condition_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition Text"
+        },
+        "cursor_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cursor Name"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Code"
+        },
+        "expression_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expression Text"
+        },
+        "kind": {
+          "$ref": "#/$defs/SemanticNodeKind"
+        },
+        "modality": {
+          "$ref": "#/$defs/EffectModality",
+          "default": "MUST"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "parent_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Ref"
+        },
+        "relation_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Relation Refs",
+          "type": "array"
+        },
+        "source_span": {
+          "$ref": "#/$defs/SourceSpan"
+        },
+        "target_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Name"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "variable_reads": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Variable Reads",
+          "type": "array"
+        },
+        "variable_writes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Variable Writes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id",
+        "kind",
+        "text",
+        "source_span"
+      ],
+      "title": "SemanticNode",
+      "type": "object"
+    },
+    "SemanticNodeKind": {
+      "enum": [
+        "ENTRY",
+        "EXIT",
+        "BLOCK",
+        "DECLARE",
+        "ASSIGNMENT",
+        "CONDITION",
+        "CASE",
+        "LOOP",
+        "LOOP_CONTROL",
+        "QUERY",
+        "SELECT_INTO",
+        "RESULT_SET",
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "MERGE",
+        "UPSERT",
+        "CALL",
+        "DYNAMIC_SQL",
+        "CURSOR_DECLARE",
+        "CURSOR_OPEN",
+        "CURSOR_FETCH",
+        "CURSOR_CLOSE",
+        "ERROR_RAISE",
+        "ERROR_HANDLER",
+        "DIAGNOSTICS",
+        "TRANSACTION_BEGIN",
+        "COMMIT",
+        "ROLLBACK",
+        "SAVEPOINT",
+        "RETURN",
+        "TEMP_OBJECT",
+        "SECURITY_CONTEXT",
+        "CONDITION_DECLARE",
+        "PRAGMA",
+        "ASSERT",
+        "BULK_OPERATION",
+        "LABEL",
+        "GOTO",
+        "LOCK",
+        "TRANSACTION_SETTING",
+        "MESSAGE",
+        "TRUNCATE",
+        "DDL",
+        "CALL_TARGET",
+        "OPAQUE"
+      ],
+      "title": "SemanticNodeKind",
+      "type": "string"
+    },
+    "SourceSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "end_column": {
+          "minimum": 1,
+          "title": "End Column",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "end_offset": {
+          "minimum": 0,
+          "title": "End Offset",
+          "type": "integer"
+        },
+        "start_column": {
+          "minimum": 1,
+          "title": "Start Column",
+          "type": "integer"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "start_offset": {
+          "minimum": 0,
+          "title": "Start Offset",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_line",
+        "start_column",
+        "end_line",
+        "end_column",
+        "start_offset",
+        "end_offset"
+      ],
+      "title": "SourceSpan",
+      "type": "object"
+    }
+  },
+  "$id": "atlas-source-unit-analysis-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "atlas_version": {
+      "title": "Atlas Version",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dialect": {
+      "$ref": "#/$defs/DialectId"
+    },
+    "discovery_findings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SemanticFinding"
+      },
+      "title": "Discovery Findings",
+      "type": "array"
+    },
+    "routines": {
+      "items": {
+        "$ref": "#/$defs/RoutineAnalysisBundle"
+      },
+      "title": "Routines",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "atlas-source-unit-analysis-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_digest": {
+      "title": "Source Digest",
+      "type": "string"
+    },
+    "source_name": {
+      "title": "Source Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "atlas_version",
+    "dialect",
+    "source_name",
+    "source_digest",
+    "routines",
+    "content_digest"
+  ],
+  "title": "SourceUnitAnalysis",
+  "type": "object"
+}

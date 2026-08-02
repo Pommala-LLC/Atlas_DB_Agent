@@ -1,0 +1,69 @@
+{
+  "artifact_policy": {
+    "existing_artifact_ids": "PRESERVED",
+    "existing_content_digests": "NEVER_REWRITTEN",
+    "existing_schema_ids": "PRESERVED",
+    "historical_producer_identities": [
+      "ojas_reconciler.db2_behavior",
+      "db2-behavior-extraction-framework"
+    ],
+    "migration_mode": "ALIAS_MAPPING_ONLY_NO_REHASH",
+    "new_artifacts": "ATLAS_PRODUCER_IDENTITY"
+  },
+  "authority_ref": "product-decision:atlas-naming-baseline-2.0.0rc4",
+  "canonical": {
+    "cli": "atlas",
+    "distribution_name": "atlas-procedure-intelligence",
+    "product_name": "Atlas",
+    "python_namespace": "atlas",
+    "ui_cli": "atlas-console"
+  },
+  "content_digest": "sha256:f5535bbea5ada27cb0dc8deef43e7f6974275a4d6d9eafd4967754b9854da8c4",
+  "effective_release": "2.0.0rc4",
+  "evidence_refs": [
+    "ATLAS_NAMING_MIGRATION.json",
+    "docs/atlas/MIGRATION_GUIDE.md",
+    "tests/test_atlas_release_governance.py"
+  ],
+  "governance_resolution": {
+    "digest_verification": "VERIFY_ORIGINAL_SERIALIZED_CONTENT",
+    "legacy_records_resolvable": true,
+    "lookup_order": [
+      "ORIGINAL_IDENTITY",
+      "REGISTERED_ALIAS"
+    ],
+    "mutation_allowed": false
+  },
+  "legacy_compatibility": {
+    "cli_aliases": [
+      "db2-behavior",
+      "ojas-db2-agent",
+      "ojas-db2-gate0",
+      "commercial-behavior-console"
+    ],
+    "distribution_name": "db2-behavior-extraction-framework",
+    "new_api_policy": "NO_NEW_PUBLIC_APIS",
+    "python_namespace": "ojas_reconciler.db2_behavior",
+    "role": "COMPATIBILITY_FACADE"
+  },
+  "policy_id": "atlas-naming-compatibility-2.0.0rc4",
+  "schema_version": "atlas-naming-compatibility-policy-1.0",
+  "serialization_policy": {
+    "read": "ACCEPT_CANONICAL_AND_LEGACY",
+    "round_trip": "PRESERVE_LEGACY_IDENTITY_FOR_EXISTING_ARTIFACTS",
+    "schema_id_rewrite": "PROHIBITED",
+    "write": "WRITE_CANONICAL_FOR_NEW_ARTIFACTS"
+  },
+  "status": "FROZEN_WITH_COMPATIBILITY_POLICY",
+  "support_window": {
+    "minimum_supported_major_releases": 1,
+    "removal_notice": "Removal cannot occur before Atlas 3.0.0 and requires an explicit governed release decision.",
+    "removal_requires": [
+      "PUBLISHED_DEPRECATION_NOTICE",
+      "MIGRATION_GUIDE_AVAILABLE",
+      "LEGACY_RECORD_RESOLUTION_TESTS_PASS",
+      "NO_SUPPORTED_CUSTOMER_DEPENDENCY_REMAINS"
+    ],
+    "supported_until": "3.0.0"
+  }
+}

@@ -1,0 +1,1 @@
+{"catalog_id":"mock-tenant-catalog-001","content_digest":"sha256:d3c198918b703e7e23070121ca7f50305097cf2709ee142bc3e71fb7d588f16e","rules":[{"accepted_parameter_names":["P_TENANT_ID"],"relation_name":"CLAIM","required_scope":"WRITE","tenant_column":"TENANT_ID"}],"schema_version":"tenant-isolation-catalog-1.0","source_kind":"MOCK"}

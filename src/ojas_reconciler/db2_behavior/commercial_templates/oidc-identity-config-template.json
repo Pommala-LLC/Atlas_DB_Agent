@@ -1,0 +1,18 @@
+{
+  "mode": "OIDC_JWT",
+  "issuer": "https://customer-idp.example",
+  "audience": "ojas-commercial-console",
+  "algorithms": ["RS256"],
+  "public_key_file": "customer-idp-public-key.pem",
+  "jwks_file": null,
+  "actor_claim": "sub",
+  "tenant_claim": "tenant",
+  "roles_claim": "roles",
+  "role_mapping": {
+    "ojas-viewer": "VIEWER",
+    "ojas-analyst": "ANALYST",
+    "ojas-reviewer": "REVIEWER",
+    "ojas-admin": "ADMIN"
+  },
+  "required_claims": ["exp", "iat", "sub"]
+}

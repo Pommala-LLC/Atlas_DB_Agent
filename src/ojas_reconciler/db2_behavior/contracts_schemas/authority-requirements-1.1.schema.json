@@ -1,0 +1,233 @@
+{
+  "$defs": {
+    "ClassificationRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "title": "Candidate",
+          "type": "string"
+        },
+        "classification_evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Classification Evidence Refs",
+          "type": "array"
+        },
+        "classification_observation_digest": {
+          "title": "Classification Observation Digest",
+          "type": "string"
+        },
+        "classification_observation_ref": {
+          "title": "Classification Observation Ref",
+          "type": "string"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "method_version": {
+          "title": "Method Version",
+          "type": "string"
+        },
+        "requirement_id": {
+          "title": "Requirement Id",
+          "type": "string"
+        },
+        "scenario_spec_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Scenario Spec Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "requirement_id",
+        "scenario_spec_refs",
+        "classification_observation_ref",
+        "classification_observation_digest",
+        "candidate",
+        "method",
+        "method_version"
+      ],
+      "title": "ClassificationRequirement",
+      "type": "object"
+    },
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MUST_IF_CALLER_CONTRACT_HOLDS",
+        "MAY",
+        "MUST_NOT",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "PlaceholderValue": {
+      "additionalProperties": false,
+      "properties": {
+        "placeholder": {
+          "title": "Placeholder",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "placeholder",
+        "value"
+      ],
+      "title": "PlaceholderValue",
+      "type": "object"
+    },
+    "VocabularyRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "normalized_technical_pattern_ref": {
+          "title": "Normalized Technical Pattern Ref",
+          "type": "string"
+        },
+        "placeholder_values": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PlaceholderValue"
+          },
+          "title": "Placeholder Values",
+          "type": "array"
+        },
+        "required_modality": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EffectModality"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "requirement_id": {
+          "title": "Requirement Id",
+          "type": "string"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "slot_id": {
+          "title": "Slot Id",
+          "type": "string"
+        },
+        "slot_kind": {
+          "$ref": "#/$defs/VocabularySlotKind"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "structural_context_digest": {
+          "title": "Structural Context Digest",
+          "type": "string"
+        },
+        "symbol_binding_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Symbol Binding Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "requirement_id",
+        "scenario_spec_ref",
+        "slot_id",
+        "slot_kind",
+        "source_ref",
+        "normalized_technical_pattern_ref",
+        "structural_context_digest"
+      ],
+      "title": "VocabularyRequirement",
+      "type": "object"
+    },
+    "VocabularySlotKind": {
+      "enum": [
+        "FEATURE_TITLE",
+        "SCENARIO_NAME",
+        "ACTION",
+        "PRECONDITION",
+        "EFFECT"
+      ],
+      "title": "VocabularySlotKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "classification_requirements": {
+      "items": {
+        "$ref": "#/$defs/ClassificationRequirement"
+      },
+      "title": "Classification Requirements",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "manifest_id": {
+      "title": "Manifest Id",
+      "type": "string"
+    },
+    "procedure_identity_ref": {
+      "title": "Procedure Identity Ref",
+      "type": "string"
+    },
+    "required_authority_scope": {
+      "const": "PLATFORM",
+      "default": "PLATFORM",
+      "title": "Required Authority Scope",
+      "type": "string"
+    },
+    "scenario_spec_batch_digest": {
+      "title": "Scenario Spec Batch Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "authority-requirements-1.1",
+      "default": "authority-requirements-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "vocabulary_requirements": {
+      "items": {
+        "$ref": "#/$defs/VocabularyRequirement"
+      },
+      "title": "Vocabulary Requirements",
+      "type": "array"
+    }
+  },
+  "required": [
+    "manifest_id",
+    "scenario_spec_batch_digest",
+    "procedure_identity_ref",
+    "vocabulary_requirements",
+    "classification_requirements",
+    "content_digest"
+  ],
+  "title": "AuthorityRequirementsManifest",
+  "type": "object"
+}

@@ -1,0 +1,86 @@
+{
+  "$defs": {
+    "DeletedArtifactRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_digest_before_deletion": {
+          "title": "Artifact Digest Before Deletion",
+          "type": "string"
+        },
+        "artifact_ref": {
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "artifact_digest_before_deletion",
+        "size_bytes"
+      ],
+      "title": "DeletedArtifactRecord",
+      "type": "object"
+    }
+  },
+  "$id": "commercial-deletion-attestation-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "attestation_id": {
+      "title": "Attestation Id",
+      "type": "string"
+    },
+    "completed_at": {
+      "title": "Completed At",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "deleted_artifacts": {
+      "items": {
+        "$ref": "#/$defs/DeletedArtifactRecord"
+      },
+      "title": "Deleted Artifacts",
+      "type": "array"
+    },
+    "executed_by_ref": {
+      "title": "Executed By Ref",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "retained_audit_ref": {
+      "title": "Retained Audit Ref",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "commercial-deletion-attestation-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "tenant_ref": {
+      "title": "Tenant Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "attestation_id",
+    "request_id",
+    "tenant_ref",
+    "deleted_artifacts",
+    "retained_audit_ref",
+    "completed_at",
+    "executed_by_ref",
+    "content_digest"
+  ],
+  "title": "CommercialDeletionAttestation",
+  "type": "object"
+}

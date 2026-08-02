@@ -1,0 +1,7 @@
+{
+  "schema_version": "decision-evaluation-request-1.0",
+  "model_digest": "sha256:REPLACE_WITH_EXTRACTED_DECISION_MODEL_DIGEST",
+  "predicate_values": {
+    "predicate-REPLACE": "UNKNOWN"
+  }
+}

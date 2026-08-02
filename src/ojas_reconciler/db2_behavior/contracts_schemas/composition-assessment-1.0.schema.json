@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "CheckState": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "CONDITIONAL",
+        "INCONCLUSIVE",
+        "NOT_EVALUATED",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CheckState",
+      "type": "string"
+    },
+    "CompositionResolution": {
+      "enum": [
+        "PROVEN_BY_SOURCE_CALL",
+        "PROVEN_BY_COMPOSITION_CONTRACT",
+        "CONDITIONAL_ON_COMPOSITION_CONTRACT",
+        "CONFLICTING_COMPOSITION_EVIDENCE",
+        "UNRESOLVED_COMPOSITION_BOUNDARY",
+        "STALE_CONTRACT_DIGEST"
+      ],
+      "title": "CompositionResolution",
+      "type": "string"
+    }
+  },
+  "$id": "composition-assessment-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blockers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Blockers",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "contract_id": {
+      "title": "Contract Id",
+      "type": "string"
+    },
+    "downstream_digest_matches": {
+      "title": "Downstream Digest Matches",
+      "type": "boolean"
+    },
+    "orchestration_digest_matches": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Orchestration Digest Matches"
+    },
+    "proof_obligations": {
+      "additionalProperties": {
+        "$ref": "#/$defs/CheckState"
+      },
+      "title": "Proof Obligations",
+      "type": "object"
+    },
+    "resolution": {
+      "$ref": "#/$defs/CompositionResolution"
+    },
+    "schema_version": {
+      "default": "composition-assessment-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "transaction_contract_digest_matches": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Transaction Contract Digest Matches"
+    },
+    "upstream_digest_matches": {
+      "title": "Upstream Digest Matches",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "contract_id",
+    "resolution",
+    "upstream_digest_matches",
+    "downstream_digest_matches",
+    "proof_obligations",
+    "blockers",
+    "content_digest"
+  ],
+  "title": "CompositionAssessment",
+  "type": "object"
+}

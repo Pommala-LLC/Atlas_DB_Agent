@@ -1,0 +1,141 @@
+{
+  "$defs": {
+    "AuthorityScope": {
+      "enum": [
+        "TEST_FIXTURE_ONLY",
+        "PLATFORM"
+      ],
+      "title": "AuthorityScope",
+      "type": "string"
+    },
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MAY",
+        "MUST_NOT",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "MappingKind": {
+      "enum": [
+        "EXACT_APPROVED_MAPPING",
+        "STRUCTURAL_APPROVED_MAPPING",
+        "SYMBOL_BOUND_APPROVED_MAPPING",
+        "MANUALLY_APPROVED_MAPPING",
+        "MAPPING_CANDIDATE_ONLY"
+      ],
+      "title": "MappingKind",
+      "type": "string"
+    },
+    "VocabularyMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_ref": {
+          "title": "Approval Ref",
+          "type": "string"
+        },
+        "authority_scope": {
+          "$ref": "#/$defs/AuthorityScope"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "mapping_id": {
+          "title": "Mapping Id",
+          "type": "string"
+        },
+        "mapping_kind": {
+          "$ref": "#/$defs/MappingKind"
+        },
+        "phrase_template": {
+          "title": "Phrase Template",
+          "type": "string"
+        },
+        "slot_id": {
+          "title": "Slot Id",
+          "type": "string"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "supported_modalities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EffectModality"
+          },
+          "title": "Supported Modalities",
+          "type": "array"
+        }
+      },
+      "required": [
+        "mapping_id",
+        "slot_id",
+        "source_ref",
+        "mapping_kind",
+        "phrase_template",
+        "approval_ref",
+        "authority_scope",
+        "content_digest"
+      ],
+      "title": "VocabularyMapping",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "authority_scope": {
+      "$ref": "#/$defs/AuthorityScope"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "effective_timestamp": {
+      "title": "Effective Timestamp",
+      "type": "string"
+    },
+    "mappings": {
+      "items": {
+        "$ref": "#/$defs/VocabularyMapping"
+      },
+      "title": "Mappings",
+      "type": "array"
+    },
+    "registry_version": {
+      "title": "Registry Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "vocabulary-snapshot-1.0",
+      "default": "vocabulary-snapshot-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "registry_version",
+    "effective_timestamp",
+    "authority_scope",
+    "mappings",
+    "content_digest"
+  ],
+  "title": "VocabularySnapshot",
+  "type": "object"
+}

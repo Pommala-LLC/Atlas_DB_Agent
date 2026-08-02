@@ -1,0 +1,86 @@
+{
+  "$defs": {
+    "DatabasePlatform": {
+      "enum": [
+        "DB2_LUW",
+        "DB2_ZOS",
+        "POSTGRESQL",
+        "ORACLE",
+        "SQLSERVER",
+        "UNSPECIFIED"
+      ],
+      "title": "DatabasePlatform",
+      "type": "string"
+    },
+    "SqlDialect": {
+      "enum": [
+        "DB2_SQL_PL",
+        "POSTGRESQL_PLPGSQL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL"
+      ],
+      "title": "SqlDialect",
+      "type": "string"
+    }
+  },
+  "$id": "database-profile-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "dialect": {
+      "$ref": "#/$defs/SqlDialect"
+    },
+    "function_level": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Function Level"
+    },
+    "major_version": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Major Version"
+    },
+    "minor_version": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Minor Version"
+    },
+    "platform": {
+      "$ref": "#/$defs/DatabasePlatform"
+    },
+    "product_name": {
+      "title": "Product Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dialect",
+    "platform",
+    "product_name"
+  ],
+  "title": "DatabaseProfile",
+  "type": "object"
+}

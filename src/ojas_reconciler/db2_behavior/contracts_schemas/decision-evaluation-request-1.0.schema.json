@@ -1,0 +1,40 @@
+{
+  "$defs": {
+    "TruthValue": {
+      "enum": [
+        "TRUE",
+        "FALSE",
+        "UNKNOWN"
+      ],
+      "title": "TruthValue",
+      "type": "string"
+    }
+  },
+  "$id": "decision-evaluation-request-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "model_digest": {
+      "title": "Model Digest",
+      "type": "string"
+    },
+    "predicate_values": {
+      "additionalProperties": {
+        "$ref": "#/$defs/TruthValue"
+      },
+      "title": "Predicate Values",
+      "type": "object"
+    },
+    "schema_version": {
+      "default": "decision-evaluation-request-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "model_digest",
+    "predicate_values"
+  ],
+  "title": "DecisionEvaluationRequest",
+  "type": "object"
+}

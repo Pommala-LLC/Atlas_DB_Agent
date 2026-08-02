@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "IfcidId": {
+      "enum": [
+        "IFCID_0002",
+        "IFCID_0003",
+        "IFCID_0021",
+        "IFCID_0058",
+        "IFCID_0063",
+        "IFCID_0172",
+        "IFCID_0196",
+        "IFCID_0316",
+        "IFCID_0317",
+        "IFCID_0350",
+        "IFCID_0361",
+        "IFCID_0401"
+      ],
+      "title": "IfcidId",
+      "type": "string"
+    }
+  },
+  "$id": "ifcid-trace-declaration-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "What was actually turned on. Declared by the site, never inferred.",
+  "properties": {
+    "attestation_ref": {
+      "title": "Attestation Ref",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "db2_version": {
+      "title": "Db2 Version",
+      "type": "string"
+    },
+    "declaration_id": {
+      "title": "Declaration Id",
+      "type": "string"
+    },
+    "destination": {
+      "enum": [
+        "SMF",
+        "GTF",
+        "OPX",
+        "OPN",
+        "VENDOR_EXTRACT"
+      ],
+      "title": "Destination",
+      "type": "string"
+    },
+    "enabled_ifcids": {
+      "items": {
+        "$ref": "#/$defs/IfcidId"
+      },
+      "title": "Enabled Ifcids",
+      "type": "array"
+    },
+    "normalization_adapter_ref": {
+      "title": "Normalization Adapter Ref",
+      "type": "string"
+    },
+    "records_possibly_lost": {
+      "title": "Records Possibly Lost",
+      "type": "boolean"
+    },
+    "subsystem_id": {
+      "title": "Subsystem Id",
+      "type": "string"
+    },
+    "trace_started_at": {
+      "title": "Trace Started At",
+      "type": "string"
+    },
+    "trace_stopped_at": {
+      "title": "Trace Stopped At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "declaration_id",
+    "subsystem_id",
+    "db2_version",
+    "enabled_ifcids",
+    "trace_started_at",
+    "trace_stopped_at",
+    "destination",
+    "records_possibly_lost",
+    "normalization_adapter_ref",
+    "attestation_ref",
+    "content_digest"
+  ],
+  "title": "IfcidTraceDeclaration",
+  "type": "object"
+}

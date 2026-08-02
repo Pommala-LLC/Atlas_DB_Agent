@@ -1,0 +1,46 @@
+start: create_procedure
+create_procedure: CREATE replace_clause? PROCEDURE qualified_name PARAM_BLOCK
+replace_clause: OR REPLACE
+qualified_name: identifier (DOT identifier)?
+identifier: IDENTIFIER | QUOTED_IDENTIFIER
+
+CREATE: /CREATE/i
+OR: /OR/i
+REPLACE: /REPLACE/i
+DECLARE: /DECLARE/i
+PROCEDURE: /PROCEDURE/i
+DOT: "."
+IDENTIFIER: /[A-Za-z_#$@][A-Za-z0-9_#$@]*/
+QUOTED_IDENTIFIER: /"([^"\n]|"")*"/
+PARAM_BLOCK: /(?s:\(.*\))/
+%import common.WS
+%ignore WS
+
+// Phase 1 lexical-scope extensions. The main procedural shell remains a
+// deterministic token-region parser; these rules validate condition syntax.
+condition_decl_stmt: DECLARE identifier CONDITION FOR SQLSTATE STRING SEMICOLON?
+handler_condition: NOT FOUND
+                 | SQLEXCEPTION
+                 | SQLWARNING
+                 | SQLSTATE STRING
+                 | identifier
+handler_type: EXIT | CONTINUE | UNDO
+handler_decl_stmt: DECLARE handler_type HANDLER FOR handler_condition handler_body
+handler_body: compound_stmt
+compound_stmt: BEGIN (condition_decl_stmt | handler_decl_stmt | compound_stmt)* END identifier? SEMICOLON?
+
+CONDITION: /CONDITION/i
+FOR: /FOR/i
+SQLSTATE: /SQLSTATE/i
+NOT: /NOT/i
+FOUND: /FOUND/i
+SQLEXCEPTION: /SQLEXCEPTION/i
+SQLWARNING: /SQLWARNING/i
+EXIT: /EXIT/i
+CONTINUE: /CONTINUE/i
+UNDO: /UNDO/i
+HANDLER: /HANDLER/i
+BEGIN: /BEGIN/i
+END: /END/i
+SEMICOLON: ";"
+STRING: /'(?:''|[^'])*'/

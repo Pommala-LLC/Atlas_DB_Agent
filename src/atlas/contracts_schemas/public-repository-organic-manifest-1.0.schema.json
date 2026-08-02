@@ -1,0 +1,107 @@
+{
+  "$defs": {
+    "PublicRepositorySourceCase": {
+      "additionalProperties": false,
+      "properties": {
+        "authored_for_tool": {
+          "const": false,
+          "default": false,
+          "title": "Authored For Tool",
+          "type": "boolean"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "expected_procedure_count": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Procedure Count"
+        },
+        "git_blob_sha": {
+          "title": "Git Blob Sha",
+          "type": "string"
+        },
+        "relative_path": {
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "source_must_remain_unmodified": {
+          "const": true,
+          "default": true,
+          "title": "Source Must Remain Unmodified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "case_id",
+        "relative_path",
+        "git_blob_sha"
+      ],
+      "title": "PublicRepositorySourceCase",
+      "type": "object"
+    }
+  },
+  "$id": "https://pommala.com/contracts/public-repository-organic-manifest-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/PublicRepositorySourceCase"
+      },
+      "title": "Cases",
+      "type": "array"
+    },
+    "commit_sha": {
+      "title": "Commit Sha",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "dialect": {
+      "const": "db2",
+      "default": "db2",
+      "title": "Dialect",
+      "type": "string"
+    },
+    "license_ref": {
+      "title": "License Ref",
+      "type": "string"
+    },
+    "repository": {
+      "title": "Repository",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "public-repository-organic-manifest-1.0",
+      "default": "public-repository-organic-manifest-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "validation_id": {
+      "title": "Validation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "validation_id",
+    "repository",
+    "commit_sha",
+    "license_ref",
+    "cases",
+    "content_digest"
+  ],
+  "title": "PublicRepositoryValidationManifest",
+  "type": "object"
+}

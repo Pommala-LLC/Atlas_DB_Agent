@@ -1,0 +1,226 @@
+{
+  "$defs": {
+    "CapabilityEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_id": {
+          "title": "Capability Id",
+          "type": "string"
+        },
+        "claim_text": {
+          "title": "Claim Text",
+          "type": "string"
+        },
+        "customer_input_requirements": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Customer Input Requirements",
+          "type": "array"
+        },
+        "datasheet_eligible": {
+          "default": false,
+          "title": "Datasheet Eligible",
+          "type": "boolean"
+        },
+        "display_name": {
+          "title": "Display Name",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "state": {
+          "$ref": "#/$defs/CapabilityState"
+        }
+      },
+      "required": [
+        "capability_id",
+        "display_name",
+        "state",
+        "claim_text"
+      ],
+      "title": "CapabilityEntry",
+      "type": "object"
+    },
+    "CapabilityState": {
+      "enum": [
+        "GENERALLY_AVAILABLE",
+        "COMMERCIAL_PREVIEW",
+        "EXPERIMENTAL_DISABLED_BY_DEFAULT",
+        "DESIGNED_NOT_IMPLEMENTED",
+        "CUSTOMER_INPUT_REQUIRED",
+        "NOT_SUPPORTED"
+      ],
+      "title": "CapabilityState",
+      "type": "string"
+    },
+    "CommercialMaturity": {
+      "enum": [
+        "COMMERCIALIZATION_CANDIDATE",
+        "ORGANIC_VALIDATION_REQUIRED",
+        "COMMERCIAL_FOUNDATION_READY",
+        "GENERALLY_AVAILABLE"
+      ],
+      "title": "CommercialMaturity",
+      "type": "string"
+    },
+    "CustomerInputResponsibility": {
+      "additionalProperties": false,
+      "properties": {
+        "delivery_model": {
+          "title": "Delivery Model",
+          "type": "string"
+        },
+        "input_type": {
+          "title": "Input Type",
+          "type": "string"
+        },
+        "maintained_by": {
+          "title": "Maintained By",
+          "type": "string"
+        },
+        "prepared_by": {
+          "title": "Prepared By",
+          "type": "string"
+        },
+        "validated_by": {
+          "title": "Validated By",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input_type",
+        "prepared_by",
+        "validated_by",
+        "maintained_by",
+        "delivery_model"
+      ],
+      "title": "CustomerInputResponsibility",
+      "type": "object"
+    },
+    "NamingStatus": {
+      "enum": [
+        "PROVISIONAL_PENDING_NAMING_BASELINE",
+        "FROZEN_WITH_COMPATIBILITY_POLICY"
+      ],
+      "title": "NamingStatus",
+      "type": "string"
+    },
+    "NamingSurface": {
+      "additionalProperties": false,
+      "properties": {
+        "compatibility_notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Compatibility Notes",
+          "type": "array"
+        },
+        "current_value": {
+          "title": "Current Value",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/NamingStatus"
+        },
+        "surface_kind": {
+          "title": "Surface Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "surface_kind",
+        "current_value",
+        "status"
+      ],
+      "title": "NamingSurface",
+      "type": "object"
+    }
+  },
+  "$id": "commercial-capability-manifest-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capabilities": {
+      "items": {
+        "$ref": "#/$defs/CapabilityEntry"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "commercial_maturity": {
+      "$ref": "#/$defs/CommercialMaturity",
+      "default": "ORGANIC_VALIDATION_REQUIRED"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "customer_input_responsibilities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CustomerInputResponsibility"
+      },
+      "title": "Customer Input Responsibilities",
+      "type": "array"
+    },
+    "distribution_name": {
+      "title": "Distribution Name",
+      "type": "string"
+    },
+    "distribution_version": {
+      "title": "Distribution Version",
+      "type": "string"
+    },
+    "edition_model_status": {
+      "default": "DEFERRED_UNTIL_TWO_SUPPORTED_BUNDLES_EXIST",
+      "title": "Edition Model Status",
+      "type": "string"
+    },
+    "naming_surfaces": {
+      "items": {
+        "$ref": "#/$defs/NamingSurface"
+      },
+      "title": "Naming Surfaces",
+      "type": "array"
+    },
+    "prohibited_datasheet_claims": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Prohibited Datasheet Claims",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "commercial-capability-manifest-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "distribution_name",
+    "distribution_version",
+    "naming_surfaces",
+    "capabilities",
+    "prohibited_datasheet_claims",
+    "content_digest"
+  ],
+  "title": "CommercialCapabilityManifest",
+  "type": "object"
+}

@@ -1,0 +1,9 @@
+{% extends "procedure_shell.html" %}
+{% block content %}
+{% set selected_analysis = current_analysis if current_analysis is defined else none %}
+{% include "procedure_dashboard.html" %}
+{% endblock %}
+{% block scripts %}
+<script src="/static/procedure_intake.js"></script>
+{% if current_analysis %}<script src="/static/procedure_results.js"></script>{% endif %}
+{% endblock %}

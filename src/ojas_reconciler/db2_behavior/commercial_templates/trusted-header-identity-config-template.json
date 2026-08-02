@@ -1,0 +1,10 @@
+{
+  "mode": "SIGNED_TRUSTED_HEADERS",
+  "shared_secret_env": "ATLAS_TRUSTED_HEADER_SECRET",
+  "actor_header": "x-ojas-actor",
+  "tenant_header": "x-ojas-tenant",
+  "roles_header": "x-ojas-roles",
+  "timestamp_header": "x-ojas-timestamp",
+  "signature_header": "x-ojas-signature",
+  "max_clock_skew_seconds": 300
+}

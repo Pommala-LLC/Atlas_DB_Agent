@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "BaselineComparisonStatus": {
+      "enum": [
+        "MATCH",
+        "CONFLICT",
+        "NO_BASELINE",
+        "INCONCLUSIVE"
+      ],
+      "title": "BaselineComparisonStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_revision_id": {
+      "title": "Artifact Revision Id",
+      "type": "string"
+    },
+    "baseline_artifact_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Baseline Artifact Id"
+    },
+    "baseline_signature_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Baseline Signature Digest"
+    },
+    "behavior_id": {
+      "title": "Behavior Id",
+      "type": "string"
+    },
+    "candidate_artifact_id": {
+      "title": "Candidate Artifact Id",
+      "type": "string"
+    },
+    "candidate_signature_digest": {
+      "title": "Candidate Signature Digest",
+      "type": "string"
+    },
+    "classification_candidate": {
+      "anyOf": [
+        {
+          "const": "BASELINE_BEHAVIOR_VIOLATION_CANDIDATE",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Classification Candidate"
+    },
+    "compared_at": {
+      "title": "Compared At",
+      "type": "string"
+    },
+    "comparison_id": {
+      "title": "Comparison Id",
+      "type": "string"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "source_symbol_id": {
+      "title": "Source Symbol Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/BaselineComparisonStatus"
+    },
+    "symbol_lineage_id": {
+      "title": "Symbol Lineage Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "comparison_id",
+    "candidate_artifact_id",
+    "baseline_artifact_id",
+    "behavior_id",
+    "source_symbol_id",
+    "symbol_lineage_id",
+    "artifact_revision_id",
+    "status",
+    "candidate_signature_digest",
+    "baseline_signature_digest",
+    "compared_at",
+    "content_digest"
+  ],
+  "title": "BaselineComparisonResult",
+  "type": "object"
+}

@@ -1,0 +1,341 @@
+{
+  "$defs": {
+    "OrganicCaseOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "admitted_scenarios": {
+          "minimum": 0,
+          "title": "Admitted Scenarios",
+          "type": "integer"
+        },
+        "blocked_scenarios": {
+          "minimum": 0,
+          "title": "Blocked Scenarios",
+          "type": "integer"
+        },
+        "blocker_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocker Codes",
+          "type": "array"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "internal_failure": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Internal Failure"
+        },
+        "materially_false_confident_behaviors": {
+          "minimum": 0,
+          "title": "Materially False Confident Behaviors",
+          "type": "integer"
+        },
+        "owner_rule_confirmation_complete": {
+          "default": false,
+          "title": "Owner Rule Confirmation Complete",
+          "type": "boolean"
+        },
+        "parse_findings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parse Findings",
+          "type": "array"
+        },
+        "parse_outcome": {
+          "title": "Parse Outcome",
+          "type": "string"
+        },
+        "review_classifications": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ReviewClassification"
+          },
+          "title": "Review Classifications",
+          "type": "array"
+        },
+        "semantic_status": {
+          "title": "Semantic Status",
+          "type": "string"
+        },
+        "source_digest_after": {
+          "title": "Source Digest After",
+          "type": "string"
+        },
+        "source_digest_before": {
+          "title": "Source Digest Before",
+          "type": "string"
+        },
+        "source_path": {
+          "title": "Source Path",
+          "type": "string"
+        },
+        "source_unmodified": {
+          "title": "Source Unmodified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "case_id",
+        "source_path",
+        "source_digest_before",
+        "source_digest_after",
+        "source_unmodified",
+        "parse_outcome",
+        "parse_findings",
+        "semantic_status",
+        "admitted_scenarios",
+        "blocked_scenarios",
+        "blocker_codes",
+        "materially_false_confident_behaviors"
+      ],
+      "title": "OrganicCaseOutcome",
+      "type": "object"
+    },
+    "OrganicValidationLevel": {
+      "enum": [
+        "ORGANIC_SMOKE",
+        "DISCOVERY_SAMPLE",
+        "ESTATE_PILOT"
+      ],
+      "title": "OrganicValidationLevel",
+      "type": "string"
+    },
+    "OrganicValidationStatus": {
+      "enum": [
+        "BLOCKED_CUSTODY",
+        "ORGANIC_SMOKE_COMPLETED",
+        "ORGANIC_SMOKE_FAILED",
+        "DISCOVERY_COMPLETED",
+        "ESTATE_PILOT_MEASURED",
+        "PILOT_PAUSED_PRODUCT_GAP",
+        "FAILED_INTERNAL"
+      ],
+      "title": "OrganicValidationStatus",
+      "type": "string"
+    },
+    "ReviewClassification": {
+      "enum": [
+        "CORRECT",
+        "CORRECT_BUT_TECHNICAL",
+        "INCOMPLETE",
+        "MISLEADING",
+        "FALSE",
+        "UNREVIEWABLE_WITHOUT_MORE_EVIDENCE"
+      ],
+      "title": "ReviewClassification",
+      "type": "string"
+    }
+  },
+  "$id": "organic-validation-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "admitted_scenarios": {
+      "minimum": 0,
+      "title": "Admitted Scenarios",
+      "type": "integer"
+    },
+    "blocked_scenarios": {
+      "minimum": 0,
+      "title": "Blocked Scenarios",
+      "type": "integer"
+    },
+    "case_outcomes": {
+      "items": {
+        "$ref": "#/$defs/OrganicCaseOutcome"
+      },
+      "title": "Case Outcomes",
+      "type": "array"
+    },
+    "classification_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Classification Counts",
+      "type": "object"
+    },
+    "commercial_claim_eligible": {
+      "title": "Commercial Claim Eligible",
+      "type": "boolean"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "custody_agreement_id": {
+      "title": "Custody Agreement Id",
+      "type": "string"
+    },
+    "customer_ref": {
+      "title": "Customer Ref",
+      "type": "string"
+    },
+    "estate_ref": {
+      "title": "Estate Ref",
+      "type": "string"
+    },
+    "materially_false_confident_behaviors": {
+      "minimum": 0,
+      "title": "Materially False Confident Behaviors",
+      "type": "integer"
+    },
+    "owner_rule_confirmations_complete": {
+      "minimum": 0,
+      "title": "Owner Rule Confirmations Complete",
+      "type": "integer"
+    },
+    "parsed_complete": {
+      "minimum": 0,
+      "title": "Parsed Complete",
+      "type": "integer"
+    },
+    "parsed_complete_rate": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Parsed Complete Rate",
+      "type": "number"
+    },
+    "parsed_partial": {
+      "minimum": 0,
+      "title": "Parsed Partial",
+      "type": "integer"
+    },
+    "pause_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pause Reasons",
+      "type": "array"
+    },
+    "procedures_with_admitted_scenarios": {
+      "minimum": 0,
+      "title": "Procedures With Admitted Scenarios",
+      "type": "integer"
+    },
+    "procedures_with_blocked_scenarios": {
+      "minimum": 0,
+      "title": "Procedures With Blocked Scenarios",
+      "type": "integer"
+    },
+    "recurring_blocker_codes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recurring Blocker Codes",
+      "type": "array"
+    },
+    "refused_expected": {
+      "minimum": 0,
+      "title": "Refused Expected",
+      "type": "integer"
+    },
+    "refused_unexpected": {
+      "minimum": 0,
+      "title": "Refused Unexpected",
+      "type": "integer"
+    },
+    "reviewed_procedure_count": {
+      "minimum": 0,
+      "title": "Reviewed Procedure Count",
+      "type": "integer"
+    },
+    "schema_version": {
+      "default": "organic-validation-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_blocked": {
+      "minimum": 0,
+      "title": "Semantic Blocked",
+      "type": "integer"
+    },
+    "semantic_completed": {
+      "minimum": 0,
+      "title": "Semantic Completed",
+      "type": "integer"
+    },
+    "semantic_completion_rate": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Semantic Completion Rate",
+      "type": "number"
+    },
+    "source_count": {
+      "minimum": 0,
+      "title": "Source Count",
+      "type": "integer"
+    },
+    "source_modification_count": {
+      "minimum": 0,
+      "title": "Source Modification Count",
+      "type": "integer"
+    },
+    "status": {
+      "$ref": "#/$defs/OrganicValidationStatus"
+    },
+    "total_review_effort_minutes": {
+      "minimum": 0,
+      "title": "Total Review Effort Minutes",
+      "type": "integer"
+    },
+    "unique_source_digests": {
+      "minimum": 0,
+      "title": "Unique Source Digests",
+      "type": "integer"
+    },
+    "validation_id": {
+      "title": "Validation Id",
+      "type": "string"
+    },
+    "validation_level": {
+      "$ref": "#/$defs/OrganicValidationLevel"
+    }
+  },
+  "required": [
+    "validation_id",
+    "validation_level",
+    "status",
+    "customer_ref",
+    "estate_ref",
+    "custody_agreement_id",
+    "source_count",
+    "unique_source_digests",
+    "parsed_complete",
+    "parsed_partial",
+    "refused_expected",
+    "refused_unexpected",
+    "semantic_completed",
+    "semantic_blocked",
+    "admitted_scenarios",
+    "blocked_scenarios",
+    "source_modification_count",
+    "materially_false_confident_behaviors",
+    "owner_rule_confirmations_complete",
+    "reviewed_procedure_count",
+    "total_review_effort_minutes",
+    "procedures_with_admitted_scenarios",
+    "procedures_with_blocked_scenarios",
+    "parsed_complete_rate",
+    "semantic_completion_rate",
+    "classification_counts",
+    "recurring_blocker_codes",
+    "pause_reasons",
+    "case_outcomes",
+    "commercial_claim_eligible",
+    "content_digest"
+  ],
+  "title": "OrganicValidationReport",
+  "type": "object"
+}

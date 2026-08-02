@@ -1,0 +1,103 @@
+{
+  "$defs": {
+    "DialectAdapterDescriptor": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_id": {
+          "title": "Adapter Id",
+          "type": "string"
+        },
+        "capability": {
+          "$ref": "#/$defs/DialectCapability"
+        },
+        "dialect": {
+          "$ref": "#/$defs/DialectId"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "supported_constructs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supported Constructs",
+          "type": "array"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "adapter_id",
+        "dialect",
+        "version",
+        "capability",
+        "supported_constructs",
+        "limitations"
+      ],
+      "title": "DialectAdapterDescriptor",
+      "type": "object"
+    },
+    "DialectCapability": {
+      "enum": [
+        "FULL_SEMANTIC_PIPELINE",
+        "HEADER_AND_INVENTORY",
+        "NORMALIZED_IR_IMPORT",
+        "NOT_SUPPORTED"
+      ],
+      "title": "DialectCapability",
+      "type": "string"
+    },
+    "DialectId": {
+      "enum": [
+        "DB2_SQL_PL",
+        "ORACLE_PLSQL",
+        "SQLSERVER_TSQL",
+        "POSTGRESQL_PLPGSQL",
+        "MYSQL_STORED_PROGRAM"
+      ],
+      "title": "DialectId",
+      "type": "string"
+    }
+  },
+  "$id": "dialect-registry-snapshot-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "adapters": {
+      "items": {
+        "$ref": "#/$defs/DialectAdapterDescriptor"
+      },
+      "title": "Adapters",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "dialect-registry-snapshot-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "adapters",
+    "content_digest"
+  ],
+  "title": "DialectRegistrySnapshot",
+  "type": "object"
+}

@@ -1,0 +1,191 @@
+Metadata-Version: 2.4
+Name: atlas-procedure-intelligence
+Version: 2.0.0rc5
+Summary: Atlas modular multi-database stored-routine behavior intelligence with pluggable dialect semantics and governed evidence workflows
+Author: Pommala LLC
+License-Expression: LicenseRef-Proprietary
+Requires-Python: <3.15,>=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic<3,>=2.12
+Requires-Dist: networkx<4,>=3.6
+Requires-Dist: lark<2,>=1.3
+Requires-Dist: jsonschema<5,>=4.26
+Requires-Dist: gherkin-official==42.0.0
+Provides-Extra: query
+Requires-Dist: sqlfluff[rs]<5,>=4.2; extra == "query"
+Provides-Extra: catalog
+Requires-Dist: ibm_db<4,>=3.2.9; extra == "catalog"
+Provides-Extra: runtime
+Requires-Dist: ibm_db<4,>=3.2.9; extra == "runtime"
+Provides-Extra: constraints
+Requires-Dist: z3-solver<5,>=4.13; extra == "constraints"
+Provides-Extra: ui
+Requires-Dist: fastapi<1,>=0.128; extra == "ui"
+Requires-Dist: uvicorn<1,>=0.48; extra == "ui"
+Requires-Dist: jinja2<4,>=3.1; extra == "ui"
+Requires-Dist: python-multipart<1,>=0.0.20; extra == "ui"
+Provides-Extra: auth
+Requires-Dist: PyJWT[crypto]<3,>=2.10; extra == "auth"
+Provides-Extra: test
+Requires-Dist: pytest==9.0.2; extra == "test"
+Requires-Dist: fastapi==0.128.2; extra == "test"
+Requires-Dist: uvicorn==0.48.0; extra == "test"
+Requires-Dist: jinja2==3.1.6; extra == "test"
+Requires-Dist: python-multipart==0.0.29; extra == "test"
+Requires-Dist: httpx==0.28.1; extra == "test"
+Requires-Dist: PyJWT[crypto]==2.13.0; extra == "test"
+Requires-Dist: cryptography==46.0.4; extra == "test"
+Requires-Dist: gherkin-official==42.0.0; extra == "test"
+Provides-Extra: quality
+Requires-Dist: ruff==0.16.1; extra == "quality"
+Requires-Dist: mypy==2.3.0; extra == "quality"
+Provides-Extra: release
+Requires-Dist: pytest==9.0.2; extra == "release"
+Requires-Dist: fastapi==0.128.2; extra == "release"
+Requires-Dist: uvicorn==0.48.0; extra == "release"
+Requires-Dist: jinja2==3.1.6; extra == "release"
+Requires-Dist: python-multipart==0.0.29; extra == "release"
+Requires-Dist: httpx==0.28.1; extra == "release"
+Requires-Dist: PyJWT[crypto]==2.13.0; extra == "release"
+Requires-Dist: cryptography==46.0.4; extra == "release"
+Requires-Dist: gherkin-official==42.0.0; extra == "release"
+Requires-Dist: ruff==0.16.1; extra == "release"
+Requires-Dist: mypy==2.3.0; extra == "release"
+Provides-Extra: dev
+Requires-Dist: pytest<10,>=9; extra == "dev"
+Requires-Dist: ruff<0.17,>=0.16; extra == "dev"
+Requires-Dist: mypy<3,>=2.3; extra == "dev"
+Requires-Dist: hypothesis<7,>=6.163; extra == "dev"
+Requires-Dist: syrupy<6,>=5; extra == "dev"
+Requires-Dist: fastapi<1,>=0.128; extra == "dev"
+Requires-Dist: uvicorn<1,>=0.48; extra == "dev"
+Requires-Dist: jinja2<4,>=3.1; extra == "dev"
+Requires-Dist: python-multipart<1,>=0.0.20; extra == "dev"
+Requires-Dist: httpx<1,>=0.28; extra == "dev"
+Requires-Dist: PyJWT[crypto]<3,>=2.10; extra == "dev"
+Requires-Dist: gherkin-official==42.0.0; extra == "dev"
+
+# Atlas Procedure Intelligence — 2.0.0rc5
+
+Atlas is a modular, database-neutral application for extracting governed technical behavior from stored procedures, functions, triggers and package routines.
+
+## Supported dialect adapters
+
+- Db2 SQL PL
+- Oracle PL/SQL
+- Microsoft SQL Server T-SQL
+- PostgreSQL PL/pgSQL
+- MySQL stored programs
+
+Each adapter maps complete routine bodies into the immutable Atlas IR: routine characteristics, declarations, assignments, decisions, loops, handlers, cursors, calls, dynamic SQL, queries, DML, transactions, result sets, returns, bulk operations, locks and diagnostics. Unsupported vendor extensions are never discarded; they remain explicit `OPAQUE` nodes with source evidence.
+
+## Architecture
+
+```text
+atlas.core          database-neutral immutable IR and digests
+atlas.dialects      high-cohesion vendor syntax and semantic policies
+atlas.application   orchestration and candidate-scenario services
+atlas.renderers     Gherkin and graph projections
+atlas.web           UI/API adapter
+```
+
+Each vendor is now a real package rather than a thin adapter module:
+
+```text
+atlas.dialects.db2/
+atlas.dialects.oracle/
+atlas.dialects.sqlserver/
+atlas.dialects.postgresql/
+atlas.dialects.mysql/
+    profile.py          routine discovery, parameters, routine characteristics
+    classifier.py       vendor statement classification
+    semantics.py        vendor behavior enrichment and validity findings
+    normalization.py    identifier/type comparison keys without rewriting source
+    capabilities.py     executable surface and explicit evidence boundaries
+    adapter.py          package composition into the shared Atlas IR engine
+```
+
+The shared adapter only scans statements, constructs control flow and emits immutable IR. It receives the classifier and semantic policy from the selected dialect package; it contains no vendor-policy registry switch on the execution path.
+
+The application layer depends on dialect and renderer contracts rather than parser implementations. Legacy `ojas_reconciler.db2_behavior` capabilities remain compatibility adapters through Atlas 3.0.0 so existing artifact IDs, schemas, digests and governance records are not rewritten.
+
+## Install
+
+Core analyzer:
+
+```bash
+pip install atlas-procedure-intelligence
+```
+
+Analyzer and review console:
+
+```bash
+pip install "atlas-procedure-intelligence[ui]"
+```
+
+Development:
+
+```bash
+pip install -e ".[dev]"
+```
+
+## Analyze a source file
+
+```bash
+atlas analyze procedure.sql \
+  --dialect oracle \
+  --output reports/oracle-procedure \
+  --emit-gherkin \
+  --emit-graph
+```
+
+Dialect aliases: `db2`, `oracle`, `sqlserver`, `postgresql`, and `mysql`.
+
+Outputs for one routine:
+
+```text
+source-unit-analysis.json
+routine-ir.json
+semantic-report.json
+scenario-candidates.json
+behavior-candidates.feature
+routine-graph.json
+```
+
+For multiple routines, the routine artifacts are written below `routines/<routine-ref>/`.
+The UI accepts `.sql`, `.db2`, `.ddl`, and `.txt` source files.
+
+## Run the UI
+
+```bash
+atlas-console --workspace reports/atlas
+```
+
+Windows:
+
+```text
+build.bat
+ATLAS_CONSOLE.bat
+ATLAS_ANALYZE.bat
+RUN_UI_E2E.bat
+```
+
+## Naming freeze
+
+Atlas is the canonical product, distribution, namespace and CLI from `2.0.0rc1`:
+
+```text
+Product:       Atlas
+Distribution:  atlas-procedure-intelligence
+Namespace:     atlas
+CLI:           atlas
+UI CLI:        atlas-console
+```
+
+Legacy distribution, namespace and CLI identities remain deprecated-but-functional compatibility surfaces through 3.0.0. Existing evidence is not renamed or rehashed. See `ATLAS_NAMING_MIGRATION.json`, `ATLAS_DIALECT_COVERAGE.json`, and `docs/atlas/MIGRATION_GUIDE.md`.
+
+## Evidence boundary
+
+Atlas produces non-authoritative technical evidence and candidate scenarios. Public third-party repositories may be admitted as pinned organic parser evidence without customer-custody fiction, but they do not become customer authority or commercial validation. Atlas does not turn runtime observations into authority and does not silently infer unsupported vendor extensions.
+
+For the Db2 public-source recovery gate, see `docs/DB2_ORGANIC_RECOVERY_RC5.md` and `organic/IBM_DB2_SAMPLES_PUBLIC_MANIFEST.json`.

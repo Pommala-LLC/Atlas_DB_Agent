@@ -1,0 +1,65 @@
+{
+  "$defs": {
+    "DoctorCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "title": "Check Id",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/DoctorCheckStatus"
+        }
+      },
+      "required": [
+        "check_id",
+        "status",
+        "message"
+      ],
+      "title": "DoctorCheck",
+      "type": "object"
+    },
+    "DoctorCheckStatus": {
+      "enum": [
+        "PASS",
+        "WARN",
+        "FAIL"
+      ],
+      "title": "DoctorCheckStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/DoctorCheck"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "overall_status": {
+      "$ref": "#/$defs/DoctorCheckStatus"
+    },
+    "schema_version": {
+      "default": "db2-doctor-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "checks",
+    "overall_status",
+    "content_digest"
+  ],
+  "title": "DoctorReport",
+  "type": "object"
+}

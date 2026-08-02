@@ -1,0 +1,103 @@
+{
+  "$defs": {
+    "AuthorityScope": {
+      "enum": [
+        "TEST_FIXTURE_ONLY",
+        "PLATFORM"
+      ],
+      "title": "AuthorityScope",
+      "type": "string"
+    },
+    "ClassificationApproval": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "title": "Approval Id",
+          "type": "string"
+        },
+        "approval_ref": {
+          "title": "Approval Ref",
+          "type": "string"
+        },
+        "approved_candidate": {
+          "title": "Approved Candidate",
+          "type": "string"
+        },
+        "authority_scope": {
+          "$ref": "#/$defs/AuthorityScope"
+        },
+        "classification_observation_ref": {
+          "title": "Classification Observation Ref",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "approval_id",
+        "classification_observation_ref",
+        "approved_candidate",
+        "approval_ref",
+        "authority_scope",
+        "content_digest"
+      ],
+      "title": "ClassificationApproval",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approvals": {
+      "items": {
+        "$ref": "#/$defs/ClassificationApproval"
+      },
+      "title": "Approvals",
+      "type": "array"
+    },
+    "authority_scope": {
+      "$ref": "#/$defs/AuthorityScope"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "effective_timestamp": {
+      "title": "Effective Timestamp",
+      "type": "string"
+    },
+    "registry_version": {
+      "title": "Registry Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "classification-snapshot-1.0",
+      "default": "classification-snapshot-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "registry_version",
+    "effective_timestamp",
+    "authority_scope",
+    "approvals",
+    "content_digest"
+  ],
+  "title": "ClassificationSnapshot",
+  "type": "object"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "organic-pause-disposition-1.0",
+  "disposition_id": "disposition-replace-me",
+  "validation_report_ref": "replace-with-organic-report-path",
+  "validation_report_digest": "sha256:replace-me",
+  "validation_id": "replace-me",
+  "source_digests": ["sha256:replace-me"],
+  "pause_reasons": ["REPLACE_ME"],
+  "dominant_cause": "DIALECT_GAP",
+  "responsibility": "PRODUCT",
+  "decision": "PAUSE_FOR_PRODUCT_FIX",
+  "blocker_codes": [],
+  "rationale": "Replace with measured rationale.",
+  "remediation_actions": ["Reduce and fix the unsupported construct without editing the customer source."],
+  "owner_ref": "actor:replace-me",
+  "approved_by_ref": null,
+  "decided_at": "2026-07-29T00:00:00Z",
+  "target_reassessment_at": null
+}

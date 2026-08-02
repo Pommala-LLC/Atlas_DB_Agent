@@ -1,0 +1,609 @@
+{
+  "$defs": {
+    "EffectModality": {
+      "enum": [
+        "MUST",
+        "MUST_IF_CALLER_CONTRACT_HOLDS",
+        "MAY",
+        "MUST_NOT",
+        "UNKNOWN"
+      ],
+      "title": "EffectModality",
+      "type": "string"
+    },
+    "RuntimeExecutionMode": {
+      "enum": [
+        "SCRIPTED_FIXTURE",
+        "DB2_SANDBOX"
+      ],
+      "title": "RuntimeExecutionMode",
+      "type": "string"
+    },
+    "RuntimeExecutionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "called_routines": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Called Routines",
+          "type": "array"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "ended_at": {
+          "title": "Ended At",
+          "type": "string"
+        },
+        "error_message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Message"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "execution_id": {
+          "title": "Execution Id",
+          "type": "string"
+        },
+        "execution_mode": {
+          "$ref": "#/$defs/RuntimeExecutionMode"
+        },
+        "execution_status": {
+          "$ref": "#/$defs/RuntimeExecutionStatus"
+        },
+        "executor_name": {
+          "title": "Executor Name",
+          "type": "string"
+        },
+        "executor_version": {
+          "title": "Executor Version",
+          "type": "string"
+        },
+        "invocation_ref": {
+          "title": "Invocation Ref",
+          "type": "string"
+        },
+        "observed_effect_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observed Effect Refs",
+          "type": "array"
+        },
+        "output_parameters": {
+          "items": {
+            "$ref": "#/$defs/RuntimeObservedParameter"
+          },
+          "title": "Output Parameters",
+          "type": "array"
+        },
+        "plan_digest": {
+          "title": "Plan Digest",
+          "type": "string"
+        },
+        "plan_ref": {
+          "title": "Plan Ref",
+          "type": "string"
+        },
+        "result_set_digests": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Result Set Digests",
+          "type": "array"
+        },
+        "row_changes": {
+          "items": {
+            "$ref": "#/$defs/RuntimeRowChange"
+          },
+          "title": "Row Changes",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "runtime-execution-record-1.0",
+          "default": "runtime-execution-record-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sqlstate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sqlstate"
+        },
+        "started_at": {
+          "title": "Started At",
+          "type": "string"
+        },
+        "transaction_events": {
+          "items": {
+            "$ref": "#/$defs/RuntimeTransactionEvent"
+          },
+          "title": "Transaction Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "execution_id",
+        "plan_ref",
+        "plan_digest",
+        "invocation_ref",
+        "execution_mode",
+        "executor_name",
+        "executor_version",
+        "execution_status",
+        "output_parameters",
+        "observed_effect_refs",
+        "row_changes",
+        "called_routines",
+        "transaction_events",
+        "result_set_digests",
+        "started_at",
+        "ended_at",
+        "evidence_refs",
+        "content_digest"
+      ],
+      "title": "RuntimeExecutionRecord",
+      "type": "object"
+    },
+    "RuntimeExecutionStatus": {
+      "enum": [
+        "SUCCEEDED",
+        "FAILED",
+        "BLOCKED"
+      ],
+      "title": "RuntimeExecutionStatus",
+      "type": "string"
+    },
+    "RuntimeExpectationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "expectation_ref": {
+          "title": "Expectation Ref",
+          "type": "string"
+        },
+        "finding_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Finding Refs",
+          "type": "array"
+        },
+        "matched": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Matched"
+        },
+        "modality": {
+          "$ref": "#/$defs/EffectModality"
+        },
+        "observed_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Observed Refs",
+          "type": "array"
+        },
+        "scenario_effect_ref": {
+          "title": "Scenario Effect Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "expectation_ref",
+        "scenario_effect_ref",
+        "modality",
+        "matched",
+        "observed_refs",
+        "finding_refs"
+      ],
+      "title": "RuntimeExpectationResult",
+      "type": "object"
+    },
+    "RuntimeObservedParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter_name": {
+          "title": "Parameter Name",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/$defs/RuntimeValue"
+        }
+      },
+      "required": [
+        "parameter_name",
+        "value"
+      ],
+      "title": "RuntimeObservedParameter",
+      "type": "object"
+    },
+    "RuntimeRowChange": {
+      "additionalProperties": false,
+      "properties": {
+        "after_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "After Digest"
+        },
+        "before_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Before Digest"
+        },
+        "effect_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effect Ref"
+        },
+        "operation": {
+          "enum": [
+            "INSERT",
+            "UPDATE",
+            "DELETE",
+            "MERGE",
+            "UNKNOWN"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "relation_name": {
+          "title": "Relation Name",
+          "type": "string"
+        },
+        "row_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Row Count"
+        }
+      },
+      "required": [
+        "relation_name",
+        "operation"
+      ],
+      "title": "RuntimeRowChange",
+      "type": "object"
+    },
+    "RuntimeTransactionEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event_kind": {
+          "enum": [
+            "BEGIN",
+            "COMMIT",
+            "ROLLBACK",
+            "CALLER_ROLLBACK",
+            "UNKNOWN"
+          ],
+          "title": "Event Kind",
+          "type": "string"
+        },
+        "sequence": {
+          "title": "Sequence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_kind",
+        "sequence"
+      ],
+      "title": "RuntimeTransactionEvent",
+      "type": "object"
+    },
+    "RuntimeValue": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canonical Value"
+        },
+        "value_kind": {
+          "$ref": "#/$defs/RuntimeValueKind"
+        }
+      },
+      "required": [
+        "value_kind"
+      ],
+      "title": "RuntimeValue",
+      "type": "object"
+    },
+    "RuntimeValueKind": {
+      "enum": [
+        "NULL",
+        "STRING",
+        "INTEGER",
+        "DECIMAL",
+        "BOOLEAN",
+        "DATE",
+        "TIMESTAMP",
+        "RAW"
+      ],
+      "title": "RuntimeValueKind",
+      "type": "string"
+    },
+    "RuntimeVerificationFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/RuntimeVerificationFindingCode"
+        },
+        "consequence": {
+          "title": "Consequence",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "code",
+        "message",
+        "evidence_refs",
+        "consequence"
+      ],
+      "title": "RuntimeVerificationFinding",
+      "type": "object"
+    },
+    "RuntimeVerificationFindingCode": {
+      "enum": [
+        "RUNTIME_PLAN_DIGEST_INVALID",
+        "SCENARIO_SPEC_DIGEST_INVALID",
+        "EXECUTION_RECORD_DIGEST_INVALID",
+        "OBSERVATION_SCRIPT_DIGEST_INVALID",
+        "PLAN_SCRIPT_MISMATCH",
+        "LIVE_VERIFICATION_PROHIBITED",
+        "MANUAL_APPROVAL_REQUIRED",
+        "MISSING_REQUIRED_INPUT",
+        "MUST_EFFECT_NOT_OBSERVED",
+        "MUST_NOT_EFFECT_OBSERVED",
+        "OUT_PARAMETER_VALUE_MISMATCH",
+        "STATIC_RUNTIME_EVIDENCE_CONFLICT",
+        "EXECUTION_FAILED",
+        "EXECUTION_EVIDENCE_INCOMPLETE",
+        "LIVE_ADAPTER_UNAVAILABLE",
+        "SANDBOX_ATTESTATION_REQUIRED",
+        "RUNTIME_RESULT_INCONCLUSIVE"
+      ],
+      "title": "RuntimeVerificationFindingCode",
+      "type": "string"
+    },
+    "RuntimeVerificationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_revision_id": {
+          "title": "Artifact Revision Id",
+          "type": "string"
+        },
+        "behavior_id": {
+          "title": "Behavior Id",
+          "type": "string"
+        },
+        "content_digest": {
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "execution_record_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Execution Record Ref"
+        },
+        "expectation_results": {
+          "items": {
+            "$ref": "#/$defs/RuntimeExpectationResult"
+          },
+          "title": "Expectation Results",
+          "type": "array"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/RuntimeVerificationFinding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "input_digest_set": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Input Digest Set",
+          "type": "array"
+        },
+        "plan_ref": {
+          "title": "Plan Ref",
+          "type": "string"
+        },
+        "platform_governance_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Platform Governance Ref"
+        },
+        "scenario_spec_ref": {
+          "title": "Scenario Spec Ref",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "runtime-verification-result-1.0",
+          "default": "runtime-verification-result-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_symbol_id": {
+          "title": "Source Symbol Id",
+          "type": "string"
+        },
+        "static_runtime_conflict": {
+          "title": "Static Runtime Conflict",
+          "type": "boolean"
+        },
+        "symbol_lineage_id": {
+          "title": "Symbol Lineage Id",
+          "type": "string"
+        },
+        "verification_result_id": {
+          "title": "Verification Result Id",
+          "type": "string"
+        },
+        "verification_status": {
+          "$ref": "#/$defs/RuntimeVerificationStatus"
+        }
+      },
+      "required": [
+        "verification_result_id",
+        "behavior_id",
+        "source_symbol_id",
+        "symbol_lineage_id",
+        "artifact_revision_id",
+        "scenario_spec_ref",
+        "plan_ref",
+        "verification_status",
+        "expectation_results",
+        "findings",
+        "static_runtime_conflict",
+        "input_digest_set",
+        "content_digest"
+      ],
+      "title": "RuntimeVerificationResult",
+      "type": "object"
+    },
+    "RuntimeVerificationStatus": {
+      "enum": [
+        "MATCHED",
+        "MISMATCH",
+        "INCONCLUSIVE",
+        "BLOCKED",
+        "EXECUTION_FAILED"
+      ],
+      "title": "RuntimeVerificationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "execution_records": {
+      "items": {
+        "$ref": "#/$defs/RuntimeExecutionRecord"
+      },
+      "title": "Execution Records",
+      "type": "array"
+    },
+    "plan_batch_digest": {
+      "title": "Plan Batch Digest",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "runtime-verification-batch-1.0",
+      "default": "runtime-verification-batch-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "verification_results": {
+      "items": {
+        "$ref": "#/$defs/RuntimeVerificationResult"
+      },
+      "title": "Verification Results",
+      "type": "array"
+    }
+  },
+  "required": [
+    "plan_batch_digest",
+    "execution_records",
+    "verification_results",
+    "content_digest"
+  ],
+  "title": "RuntimeVerificationBatch",
+  "type": "object"
+}

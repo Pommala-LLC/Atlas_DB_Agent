@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_policy": {
+      "type": "object"
+    },
+    "canonical": {
+      "type": "object"
+    },
+    "compatibility_policy_ref": {
+      "const": "ATLAS_NAMING_COMPATIBILITY_POLICY.json"
+    },
+    "effective_release": {
+      "type": "string"
+    },
+    "legacy_compatibility": {
+      "type": "object"
+    },
+    "module_design": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "atlas-naming-migration-1.0"
+    },
+    "status": {
+      "const": "FROZEN"
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "effective_release",
+    "canonical",
+    "legacy_compatibility",
+    "artifact_policy",
+    "module_design",
+    "compatibility_policy_ref"
+  ],
+  "title": "atlas-naming-migration-1.0",
+  "type": "object"
+}

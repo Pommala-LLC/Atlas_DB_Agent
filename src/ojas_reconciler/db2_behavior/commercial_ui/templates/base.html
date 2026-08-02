@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <link rel="stylesheet" href="/static/procedure_analysis.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">A</span><div><strong>Atlas</strong><small>Multi-database procedure intelligence</small></div></div>
+    <nav>
+      <a href="/review">Procedure review</a><a href="/commercial">Commercial overview</a><a href="/capabilities">Capabilities</a><a href="/custody">Source custody</a>
+      <a href="/organic">Organic validation</a><a href="/reviews">SME reviews</a><a href="/dispositions">Pause decisions</a>
+      <a href="/runs">Analyze procedures</a><a href="/checks">Procedure checks</a><a href="/authority">Vocabulary authority</a>
+      <a href="/catalog">Catalog intake</a><a href="/fixtures">Fixture planning</a><a href="/composition">Composition</a><a href="/baseline">Baseline comparison</a>
+      <a href="/runtime">Runtime evidence</a><a href="/graph">Knowledge graph</a><a href="/readiness">Readiness</a>
+      <a href="/operations">Operations</a><a href="/support">Support</a><a href="/artifacts">Artifacts</a><a href="/audit">Audit trail</a>
+    </nav>
+    <div class="sidebar-foot"><span class="pill neutral">{{ identity.role.value }}</span><small>{{ identity.actor_ref }}</small><small>{{ tenant_ref }}</small></div>
+  </aside>
+  <main>
+    <header class="topbar"><div><h1>{% block heading %}{{ title }}{% endblock %}</h1><p>{% block subheading %}Governed evidence, explicit refusals, no self-promotion.{% endblock %}</p></div><div class="release">Atlas 2.0.0rc5 · {{ identity_mode }}</div></header>
+    {% if message %}<div class="notice success">{{ message }}</div>{% endif %}
+    {% if error %}<div class="notice error">{{ error }}</div>{% endif %}
+    {% block content %}{% endblock %}
+    <footer>Workspace: <code>{{ workspace }}</code> · Atlas semantic platform · compatibility mode: legacy Ojas artifacts preserved</footer>
+  </main>
+  <script src="/static/app.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

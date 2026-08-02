@@ -1,0 +1,365 @@
+{
+  "$defs": {
+    "PublicFileOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "blob_verified": {
+          "title": "Blob Verified",
+          "type": "boolean"
+        },
+        "blocked_count": {
+          "minimum": 0,
+          "title": "Blocked Count",
+          "type": "integer"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "complete_count": {
+          "minimum": 0,
+          "title": "Complete Count",
+          "type": "integer"
+        },
+        "detected_terminator": {
+          "title": "Detected Terminator",
+          "type": "string"
+        },
+        "discovered_source_unit_count": {
+          "minimum": 0,
+          "title": "Discovered Source Unit Count",
+          "type": "integer"
+        },
+        "expected_source_unit_count": {
+          "minimum": 0,
+          "title": "Expected Source Unit Count",
+          "type": "integer"
+        },
+        "git_blob_sha_actual": {
+          "title": "Git Blob Sha Actual",
+          "type": "string"
+        },
+        "git_blob_sha_expected": {
+          "title": "Git Blob Sha Expected",
+          "type": "string"
+        },
+        "opaque_count": {
+          "minimum": 0,
+          "title": "Opaque Count",
+          "type": "integer"
+        },
+        "partial_count": {
+          "minimum": 0,
+          "title": "Partial Count",
+          "type": "integer"
+        },
+        "procedure_outcomes": {
+          "items": {
+            "$ref": "#/$defs/PublicProcedureOutcome"
+          },
+          "title": "Procedure Outcomes",
+          "type": "array"
+        },
+        "relative_path": {
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "source_digest_after": {
+          "title": "Source Digest After",
+          "type": "string"
+        },
+        "source_digest_before": {
+          "title": "Source Digest Before",
+          "type": "string"
+        },
+        "source_unit_count_matches": {
+          "title": "Source Unit Count Matches",
+          "type": "boolean"
+        },
+        "source_unmodified": {
+          "title": "Source Unmodified",
+          "type": "boolean"
+        },
+        "unclassified_fragment_count": {
+          "minimum": 0,
+          "title": "Unclassified Fragment Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "case_id",
+        "relative_path",
+        "git_blob_sha_expected",
+        "git_blob_sha_actual",
+        "blob_verified",
+        "source_digest_before",
+        "source_digest_after",
+        "source_unmodified",
+        "detected_terminator",
+        "expected_source_unit_count",
+        "discovered_source_unit_count",
+        "source_unit_count_matches",
+        "complete_count",
+        "partial_count",
+        "blocked_count",
+        "opaque_count",
+        "procedure_outcomes",
+        "unclassified_fragment_count"
+      ],
+      "title": "PublicFileOutcome",
+      "type": "object"
+    },
+    "PublicProcedureOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "blocked_scenario_count": {
+          "minimum": 0,
+          "title": "Blocked Scenario Count",
+          "type": "integer"
+        },
+        "blocker_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocker Codes",
+          "type": "array"
+        },
+        "declared_result_set_capacity": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declared Result Set Capacity"
+        },
+        "node_count": {
+          "minimum": 0,
+          "title": "Node Count",
+          "type": "integer"
+        },
+        "opaque_count": {
+          "minimum": 0,
+          "title": "Opaque Count",
+          "type": "integer"
+        },
+        "parse_findings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parse Findings",
+          "type": "array"
+        },
+        "parse_outcome": {
+          "title": "Parse Outcome",
+          "type": "string"
+        },
+        "procedure_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Procedure Name"
+        },
+        "returned_cursor_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Returned Cursor Count",
+          "type": "integer"
+        },
+        "semantic_completed": {
+          "title": "Semantic Completed",
+          "type": "boolean"
+        },
+        "technical_scenario_count": {
+          "minimum": 0,
+          "title": "Technical Scenario Count",
+          "type": "integer"
+        },
+        "unit_index": {
+          "minimum": 1,
+          "title": "Unit Index",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "unit_index",
+        "procedure_name",
+        "parse_outcome",
+        "node_count",
+        "opaque_count",
+        "parse_findings",
+        "semantic_completed",
+        "technical_scenario_count",
+        "blocked_scenario_count"
+      ],
+      "title": "PublicProcedureOutcome",
+      "type": "object"
+    }
+  },
+  "$id": "https://pommala.com/contracts/public-repository-organic-report-1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocked_scenario_count": {
+      "minimum": 0,
+      "title": "Blocked Scenario Count",
+      "type": "integer"
+    },
+    "commercialization_state": {
+      "enum": [
+        "BLOCKED",
+        "ORGANIC_VALIDATION_REQUIRED"
+      ],
+      "title": "Commercialization State",
+      "type": "string"
+    },
+    "commit_verified": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Commit Verified"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "file_outcomes": {
+      "items": {
+        "$ref": "#/$defs/PublicFileOutcome"
+      },
+      "title": "File Outcomes",
+      "type": "array"
+    },
+    "first_five_pause_rule_fired": {
+      "title": "First Five Pause Rule Fired",
+      "type": "boolean"
+    },
+    "license_ref": {
+      "title": "License Ref",
+      "type": "string"
+    },
+    "observed_commit_sha": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Observed Commit Sha"
+    },
+    "opaque_count": {
+      "minimum": 0,
+      "title": "Opaque Count",
+      "type": "integer"
+    },
+    "parsed_blocked": {
+      "minimum": 0,
+      "title": "Parsed Blocked",
+      "type": "integer"
+    },
+    "parsed_complete": {
+      "minimum": 0,
+      "title": "Parsed Complete",
+      "type": "integer"
+    },
+    "parsed_partial": {
+      "minimum": 0,
+      "title": "Parsed Partial",
+      "type": "integer"
+    },
+    "pause_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pause Reasons",
+      "type": "array"
+    },
+    "recurring_finding_codes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recurring Finding Codes",
+      "type": "array"
+    },
+    "repository": {
+      "title": "Repository",
+      "type": "string"
+    },
+    "requested_commit_sha": {
+      "title": "Requested Commit Sha",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "public-repository-organic-report-1.0",
+      "default": "public-repository-organic-report-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_completed": {
+      "minimum": 0,
+      "title": "Semantic Completed",
+      "type": "integer"
+    },
+    "source_file_count": {
+      "minimum": 0,
+      "title": "Source File Count",
+      "type": "integer"
+    },
+    "source_unit_count": {
+      "minimum": 0,
+      "title": "Source Unit Count",
+      "type": "integer"
+    },
+    "technical_scenario_count": {
+      "minimum": 0,
+      "title": "Technical Scenario Count",
+      "type": "integer"
+    },
+    "validation_id": {
+      "title": "Validation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "validation_id",
+    "repository",
+    "requested_commit_sha",
+    "observed_commit_sha",
+    "commit_verified",
+    "license_ref",
+    "source_file_count",
+    "source_unit_count",
+    "parsed_complete",
+    "parsed_partial",
+    "parsed_blocked",
+    "opaque_count",
+    "semantic_completed",
+    "technical_scenario_count",
+    "blocked_scenario_count",
+    "first_five_pause_rule_fired",
+    "pause_reasons",
+    "recurring_finding_codes",
+    "commercialization_state",
+    "file_outcomes",
+    "content_digest"
+  ],
+  "title": "PublicRepositoryOrganicReport",
+  "type": "object"
+}
