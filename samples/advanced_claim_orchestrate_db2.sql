@@ -1,0 +1,501 @@
+-- Target dialect: IBM Db2 LUW SQL PL
+-- Complex procedure for parser, BDD, control-flow, side-effect, and governance testing.
+
+CREATE OR REPLACE PROCEDURE CLAIMS.ADVANCED_CLAIM_ORCHESTRATE (
+    IN  P_CLAIM_ID          BIGINT,
+    IN  P_TENANT_ID         CHAR(8),
+    IN  P_REQUESTED_BY      VARCHAR(64),
+    OUT P_FINAL_DECISION    VARCHAR(30),
+    OUT P_RISK_SCORE        DECIMAL(7,3),
+    OUT P_APPROVER_ID       BIGINT,
+    OUT P_AUDIT_ID          BIGINT,
+    OUT P_EXCEPTION_FLAG    CHAR(1)
+)
+LANGUAGE SQL
+MODIFIES SQL DATA
+P_ADVANCED_CLAIM: BEGIN
+
+    DECLARE V_CURRENT_TS          TIMESTAMP DEFAULT CURRENT TIMESTAMP;
+    DECLARE V_CUSTOMER_ID         BIGINT;
+    DECLARE V_CLAIM_AMOUNT        DECIMAL(15,2);
+    DECLARE V_CLAIM_TYPE          VARCHAR(20);
+    DECLARE V_CUSTOMER_TIER       VARCHAR(10);
+    DECLARE V_FRAUD_FLAG          CHAR(1) DEFAULT 'N';
+    DECLARE V_DOC_COUNT           INTEGER DEFAULT 0;
+    DECLARE V_LIFETIME_COUNT      INTEGER DEFAULT 0;
+    DECLARE V_AVG_AMOUNT          DECIMAL(15,2) DEFAULT 0;
+    DECLARE V_MAX_SELF_AMOUNT     DECIMAL(15,2) DEFAULT 0;
+    DECLARE V_SPIKE_FLAG          SMALLINT DEFAULT 0;
+    DECLARE V_PEER_AVG_AMOUNT     DECIMAL(15,2);
+    DECLARE V_APPROVAL_DEPTH      INTEGER;
+    DECLARE V_APPROVAL_PATH       VARCHAR(1000);
+    DECLARE V_RULE_TABLE          VARCHAR(128);
+    DECLARE V_RULE_THRESHOLD      DECIMAL(15,2);
+    DECLARE V_RULE_ACTION         VARCHAR(30);
+    DECLARE V_DYNAMIC_SQL         VARCHAR(4000);
+    DECLARE V_OPEN_COUNT          INTEGER DEFAULT 0;
+    DECLARE V_OPEN_TOTAL          DECIMAL(17,2) DEFAULT 0;
+    DECLARE V_SCORE               DECIMAL(12,4) DEFAULT 0;
+    DECLARE V_RELATED_CLAIM_ID    BIGINT;
+    DECLARE V_RELATED_AMOUNT      DECIMAL(15,2);
+    DECLARE V_RELATED_RISK        VARCHAR(10);
+    DECLARE V_ESCALATION_COUNT    INTEGER DEFAULT 0;
+    DECLARE V_ERROR_SQLSTATE      CHAR(5);
+    DECLARE V_ERROR_MESSAGE       VARCHAR(2048);
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS EXCEPTION 1
+            V_ERROR_SQLSTATE = RETURNED_SQLSTATE,
+            V_ERROR_MESSAGE  = MESSAGE_TEXT;
+
+        SET P_FINAL_DECISION = 'ERROR';
+        SET P_RISK_SCORE = -1;
+        SET P_APPROVER_ID = NULL;
+        SET P_AUDIT_ID = -1;
+        SET P_EXCEPTION_FLAG = 'Y';
+
+        INSERT INTO ERROR_LOG (
+            CLAIM_ID, TENANT_ID, REQUESTED_BY,
+            SQLSTATE_CODE, ERROR_MESSAGE, CREATED_TS
+        )
+        VALUES (
+            P_CLAIM_ID, P_TENANT_ID, P_REQUESTED_BY,
+            V_ERROR_SQLSTATE, V_ERROR_MESSAGE, V_CURRENT_TS
+        );
+    END;
+
+    IF P_CLAIM_ID IS NULL THEN
+        SIGNAL SQLSTATE '75001'
+            SET MESSAGE_TEXT = 'P_CLAIM_ID is required';
+    END IF;
+
+    IF P_TENANT_ID IS NULL OR LENGTH(TRIM(P_TENANT_ID)) = 0 THEN
+        SIGNAL SQLSTATE '75002'
+            SET MESSAGE_TEXT = 'P_TENANT_ID is required';
+    END IF;
+
+    IF P_REQUESTED_BY IS NULL OR LENGTH(TRIM(P_REQUESTED_BY)) = 0 THEN
+        SIGNAL SQLSTATE '75003'
+            SET MESSAGE_TEXT = 'P_REQUESTED_BY is required';
+    END IF;
+
+    SET P_FINAL_DECISION = NULL;
+    SET P_RISK_SCORE = NULL;
+    SET P_APPROVER_ID = NULL;
+    SET P_AUDIT_ID = NULL;
+    SET P_EXCEPTION_FLAG = 'N';
+
+    CLAIM_LOOKUP: BEGIN
+        DECLARE V_CLAIM_NOT_FOUND SMALLINT DEFAULT 0;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+            SET V_CLAIM_NOT_FOUND = 1;
+
+        SELECT
+            C.CLAIM_AMOUNT,
+            C.CLAIM_TYPE,
+            C.CUSTOMER_ID,
+            CU.CUSTOMER_TIER,
+            COALESCE((
+                SELECT 'Y'
+                FROM FRAUD_WATCHLIST FW
+                WHERE FW.CUSTOMER_ID = CU.CUSTOMER_ID
+                  AND FW.TENANT_ID = CU.TENANT_ID
+                  AND FW.ACTIVE_IND = 'Y'
+                FETCH FIRST 1 ROW ONLY
+            ), 'N'),
+            (
+                SELECT COUNT(*)
+                FROM CLAIM_DOCUMENT DOC
+                WHERE DOC.CLAIM_ID = C.CLAIM_ID
+                  AND DOC.TENANT_ID = C.TENANT_ID
+                  AND DOC.STATUS = 'VERIFIED'
+            )
+        INTO
+            V_CLAIM_AMOUNT, V_CLAIM_TYPE, V_CUSTOMER_ID,
+            V_CUSTOMER_TIER, V_FRAUD_FLAG, V_DOC_COUNT
+        FROM CLAIM C
+        INNER JOIN CUSTOMER CU
+            ON C.CUSTOMER_ID = CU.CUSTOMER_ID
+           AND C.TENANT_ID = CU.TENANT_ID
+        WHERE C.CLAIM_ID = P_CLAIM_ID
+          AND C.TENANT_ID = P_TENANT_ID
+          AND C.DELETED_IND = 'N';
+
+        IF V_CLAIM_NOT_FOUND = 1 THEN
+            SET P_FINAL_DECISION = 'CLAIM_NOT_FOUND';
+            SET P_EXCEPTION_FLAG = 'Y';
+            LEAVE P_ADVANCED_CLAIM;
+        END IF;
+    END CLAIM_LOOKUP;
+
+    WITH CLAIM_HISTORY AS (
+        SELECT
+            CL.CLAIM_ID,
+            CL.CLAIM_AMOUNT,
+            LAG(CL.CLAIM_AMOUNT) OVER (
+                PARTITION BY CL.CUSTOMER_ID, CL.CLAIM_TYPE
+                ORDER BY CL.CREATED_TS
+            ) AS PREVIOUS_AMOUNT
+        FROM CLAIM CL
+        WHERE CL.CUSTOMER_ID = V_CUSTOMER_ID
+          AND CL.TENANT_ID = P_TENANT_ID
+          AND CL.CLAIM_TYPE = V_CLAIM_TYPE
+          AND CL.STATUS IN ('APPROVED', 'PAID')
+          AND CL.DELETED_IND = 'N'
+    ),
+    HISTORY_SUMMARY AS (
+        SELECT
+            COUNT(*) AS CLAIM_COUNT,
+            COALESCE(AVG(CLAIM_AMOUNT), 0) AS AVG_AMOUNT,
+            COALESCE(MAX(
+                CASE WHEN CLAIM_ID <> P_CLAIM_ID
+                     THEN CLAIM_AMOUNT END
+            ), 0) AS MAX_SELF_AMOUNT,
+            COALESCE(MAX(
+                CASE WHEN PREVIOUS_AMOUNT IS NOT NULL
+                       AND CLAIM_AMOUNT > PREVIOUS_AMOUNT * 1.5
+                     THEN 1 ELSE 0 END
+            ), 0) AS SPIKE_FLAG
+        FROM CLAIM_HISTORY
+    )
+    SELECT CLAIM_COUNT, AVG_AMOUNT, MAX_SELF_AMOUNT, SPIKE_FLAG
+    INTO V_LIFETIME_COUNT, V_AVG_AMOUNT,
+         V_MAX_SELF_AMOUNT, V_SPIKE_FLAG
+    FROM HISTORY_SUMMARY;
+
+    SELECT AVG(PEER_AMOUNT)
+    INTO V_PEER_AVG_AMOUNT
+    FROM (
+        SELECT
+            PEER.CLAIM_AMOUNT AS PEER_AMOUNT,
+            ROW_NUMBER() OVER (
+                PARTITION BY PEER.CLAIM_TYPE, PCU.CUSTOMER_TIER
+                ORDER BY PEER.CLAIM_AMOUNT DESC
+            ) AS RN
+        FROM CLAIM PEER
+        INNER JOIN CUSTOMER PCU
+            ON PEER.CUSTOMER_ID = PCU.CUSTOMER_ID
+           AND PEER.TENANT_ID = PCU.TENANT_ID
+        WHERE PEER.TENANT_ID = P_TENANT_ID
+          AND PEER.CLAIM_TYPE = V_CLAIM_TYPE
+          AND PCU.CUSTOMER_TIER = V_CUSTOMER_TIER
+          AND PEER.CLAIM_ID <> P_CLAIM_ID
+          AND PEER.STATUS IN ('APPROVED', 'PAID')
+          AND PEER.DELETED_IND = 'N'
+    ) PEER_SET
+    WHERE RN <= 25;
+
+    APPROVAL_LOOKUP: BEGIN
+        DECLARE V_APPROVER_NOT_FOUND SMALLINT DEFAULT 0;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+            SET V_APPROVER_NOT_FOUND = 1;
+
+        WITH APPROVAL_CHAIN (
+            EMP_ID, MANAGER_ID, LVL, APPROVAL_LIMIT, PATH_TEXT
+        ) AS (
+            SELECT
+                E.EMP_ID,
+                E.MANAGER_ID,
+                1,
+                E.APPROVAL_LIMIT,
+                CAST(E.EMP_NAME AS VARCHAR(1000))
+            FROM CUSTOMER_ACCOUNT_REP R
+            INNER JOIN EMPLOYEE E
+                ON R.REP_EMP_ID = E.EMP_ID
+            WHERE R.CUSTOMER_ID = V_CUSTOMER_ID
+              AND R.TENANT_ID = P_TENANT_ID
+              AND R.ACTIVE_IND = 'Y'
+
+            UNION ALL
+
+            SELECT
+                M.EMP_ID,
+                M.MANAGER_ID,
+                A.LVL + 1,
+                M.APPROVAL_LIMIT,
+                A.PATH_TEXT || ' -> ' || M.EMP_NAME
+            FROM APPROVAL_CHAIN A
+            INNER JOIN EMPLOYEE M
+                ON A.MANAGER_ID = M.EMP_ID
+            WHERE A.LVL < 10
+              AND M.ACTIVE_IND = 'Y'
+        ),
+        QUALIFIED_APPROVER AS (
+            SELECT
+                EMP_ID,
+                LVL,
+                PATH_TEXT,
+                ROW_NUMBER() OVER (
+                    ORDER BY LVL ASC, APPROVAL_LIMIT ASC
+                ) AS RN
+            FROM APPROVAL_CHAIN
+            WHERE APPROVAL_LIMIT >= V_CLAIM_AMOUNT
+        )
+        SELECT EMP_ID, LVL, PATH_TEXT
+        INTO P_APPROVER_ID, V_APPROVAL_DEPTH, V_APPROVAL_PATH
+        FROM QUALIFIED_APPROVER
+        WHERE RN = 1;
+
+        IF V_APPROVER_NOT_FOUND = 1 THEN
+            SET P_APPROVER_ID = NULL;
+            SET V_APPROVAL_DEPTH = NULL;
+            SET V_APPROVAL_PATH = NULL;
+        END IF;
+    END APPROVAL_LOOKUP;
+
+    RULE_TABLE_LOOKUP: BEGIN
+        DECLARE V_RULE_TABLE_NOT_FOUND SMALLINT DEFAULT 0;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+            SET V_RULE_TABLE_NOT_FOUND = 1;
+
+        SELECT RULE_TABLE_NAME
+        INTO V_RULE_TABLE
+        FROM TENANT_RULE_TABLE_REGISTRY
+        WHERE TENANT_ID = P_TENANT_ID
+          AND ACTIVE_IND = 'Y';
+
+        IF V_RULE_TABLE_NOT_FOUND = 1 THEN
+            SET V_RULE_TABLE = NULL;
+        END IF;
+    END RULE_TABLE_LOOKUP;
+
+    DYNAMIC_RULE_LOOKUP: BEGIN
+        DECLARE V_RULE_NOT_FOUND SMALLINT DEFAULT 0;
+        DECLARE C_RULE CURSOR FOR S_RULE;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+            SET V_RULE_NOT_FOUND = 1;
+
+        IF V_RULE_TABLE IS NOT NULL THEN
+            SET V_DYNAMIC_SQL =
+                'SELECT THRESHOLD_AMOUNT, ACTION_CODE ' ||
+                'FROM ' || V_RULE_TABLE || ' ' ||
+                'WHERE CLAIM_TYPE = ? ' ||
+                'AND CUSTOMER_TIER = ? ' ||
+                'AND VALID_FROM <= ? ' ||
+                'AND VALID_TO > ? ' ||
+                'ORDER BY PRIORITY DESC ' ||
+                'FETCH FIRST 1 ROW ONLY';
+
+            PREPARE S_RULE FROM V_DYNAMIC_SQL;
+
+            OPEN C_RULE USING
+                V_CLAIM_TYPE,
+                V_CUSTOMER_TIER,
+                V_CURRENT_TS,
+                V_CURRENT_TS;
+
+            FETCH C_RULE INTO V_RULE_THRESHOLD, V_RULE_ACTION;
+            CLOSE C_RULE;
+
+            IF V_RULE_NOT_FOUND = 1 THEN
+                SET V_RULE_THRESHOLD = NULL;
+                SET V_RULE_ACTION = NULL;
+            END IF;
+        END IF;
+    END DYNAMIC_RULE_LOOKUP;
+
+    SELECT
+        COUNT(*),
+        COALESCE(SUM(CLAIM_AMOUNT), 0)
+    INTO V_OPEN_COUNT, V_OPEN_TOTAL
+    FROM CLAIM
+    WHERE CUSTOMER_ID = V_CUSTOMER_ID
+      AND TENANT_ID = P_TENANT_ID
+      AND STATUS IN (
+          'SUBMITTED', 'PENDING_REVIEW', 'UNDER_INVESTIGATION'
+      )
+      AND DELETED_IND = 'N';
+
+    MERGE INTO CUSTOMER_CLAIM_SUMMARY T
+    USING (
+        VALUES (
+            V_CUSTOMER_ID,
+            P_TENANT_ID,
+            V_OPEN_COUNT,
+            V_OPEN_TOTAL,
+            V_CURRENT_TS
+        )
+    ) S (
+        CUSTOMER_ID, TENANT_ID, OPEN_COUNT, OPEN_TOTAL, UPDATED_TS
+    )
+    ON T.CUSTOMER_ID = S.CUSTOMER_ID
+   AND T.TENANT_ID = S.TENANT_ID
+    WHEN MATCHED THEN
+        UPDATE SET
+            OPEN_CLAIM_COUNT = S.OPEN_COUNT,
+            TOTAL_OPEN_AMOUNT = S.OPEN_TOTAL,
+            UPDATED_TS = S.UPDATED_TS
+    WHEN NOT MATCHED THEN
+        INSERT (
+            CUSTOMER_ID, TENANT_ID, OPEN_CLAIM_COUNT,
+            TOTAL_OPEN_AMOUNT, UPDATED_TS
+        )
+        VALUES (
+            S.CUSTOMER_ID, S.TENANT_ID, S.OPEN_COUNT,
+            S.OPEN_TOTAL, S.UPDATED_TS
+        );
+
+    SET V_SCORE =
+          (
+              V_CLAIM_AMOUNT
+              / NULLIF(
+                    COALESCE(
+                        V_PEER_AVG_AMOUNT,
+                        NULLIF(V_CLAIM_AMOUNT, 0),
+                        1
+                    ),
+                    0
+                )
+            ) * 40.0
+        + (V_LIFETIME_COUNT * 0.5)
+        + CASE
+              WHEN V_MAX_SELF_AMOUNT > 0
+              THEN (V_CLAIM_AMOUNT / V_MAX_SELF_AMOUNT) * 30.0
+              ELSE 0
+          END
+        + CASE WHEN V_SPIKE_FLAG = 1 THEN 20.0 ELSE 0 END
+        + CASE WHEN V_FRAUD_FLAG = 'Y' THEN 50.0 ELSE 0 END
+        + CASE WHEN V_DOC_COUNT < 2 THEN 10.0 ELSE 0 END;
+
+    IF V_RULE_THRESHOLD IS NOT NULL
+       AND V_CLAIM_AMOUNT > V_RULE_THRESHOLD THEN
+        SET V_SCORE = V_SCORE + 15.0;
+    END IF;
+
+    SET P_RISK_SCORE = DECIMAL(ROUND(V_SCORE, 3), 7, 3);
+
+    IF V_FRAUD_FLAG = 'Y' THEN
+        SET P_FINAL_DECISION = 'REJECTED_FRAUD';
+        SET P_EXCEPTION_FLAG = 'Y';
+
+    ELSEIF V_RULE_ACTION = 'AUTO_REJECT'
+       AND V_RULE_THRESHOLD IS NOT NULL
+       AND V_CLAIM_AMOUNT > V_RULE_THRESHOLD THEN
+        SET P_FINAL_DECISION = 'REJECTED_RULE';
+        SET P_EXCEPTION_FLAG = 'Y';
+
+    ELSEIF P_RISK_SCORE > 90.000
+       AND P_APPROVER_ID IS NULL THEN
+        SET P_FINAL_DECISION = 'REJECTED_NO_APPROVAL';
+        SET P_EXCEPTION_FLAG = 'Y';
+
+    ELSEIF P_RISK_SCORE > 75.000 THEN
+        SET P_FINAL_DECISION = 'MANUAL_REVIEW';
+        SET P_EXCEPTION_FLAG = 'N';
+
+    ELSEIF V_DOC_COUNT < 2 THEN
+        SET P_FINAL_DECISION = 'MANUAL_REVIEW_DOCS';
+        SET P_EXCEPTION_FLAG = 'N';
+
+    ELSE
+        SET P_FINAL_DECISION = 'APPROVED';
+        SET P_EXCEPTION_FLAG = 'N';
+    END IF;
+
+    RELATED_CLAIM_SCAN: BEGIN
+        DECLARE V_CURSOR_DONE SMALLINT DEFAULT 0;
+
+        DECLARE C_RELATED CURSOR WITH HOLD FOR
+            SELECT
+                CL.CLAIM_ID,
+                CL.CLAIM_AMOUNT,
+                COALESCE(RF.RISK_LEVEL, 'NONE')
+            FROM CLAIM CL
+            LEFT JOIN CLAIM_RISK_FLAG RF
+                ON CL.CLAIM_ID = RF.CLAIM_ID
+               AND CL.TENANT_ID = RF.TENANT_ID
+            WHERE CL.CUSTOMER_ID = V_CUSTOMER_ID
+              AND CL.TENANT_ID = P_TENANT_ID
+              AND CL.CLAIM_ID <> P_CLAIM_ID
+              AND CL.STATUS IN (
+                  'PENDING_REVIEW', 'UNDER_INVESTIGATION'
+              )
+              AND CL.DELETED_IND = 'N'
+            ORDER BY CL.CREATED_TS DESC
+            FETCH FIRST 5 ROWS ONLY;
+
+        DECLARE CONTINUE HANDLER FOR NOT FOUND
+            SET V_CURSOR_DONE = 1;
+
+        IF P_FINAL_DECISION IN (
+            'MANUAL_REVIEW', 'MANUAL_REVIEW_DOCS'
+        ) THEN
+            OPEN C_RELATED;
+
+            FETCH_LOOP: LOOP
+                FETCH C_RELATED
+                INTO V_RELATED_CLAIM_ID,
+                     V_RELATED_AMOUNT,
+                     V_RELATED_RISK;
+
+                IF V_CURSOR_DONE = 1 THEN
+                    LEAVE FETCH_LOOP;
+                END IF;
+
+                IF V_RELATED_RISK = 'HIGH'
+                   OR V_RELATED_AMOUNT > V_CLAIM_AMOUNT * 1.25 THEN
+                    SET V_ESCALATION_COUNT = V_ESCALATION_COUNT + 1;
+                    SET P_FINAL_DECISION = 'MANUAL_REVIEW_ESCALATED';
+
+                    INSERT INTO CLAIM_AUDIT (
+                        CLAIM_ID, TENANT_ID, EVENT_TYPE,
+                        RELATED_CLAIM_ID, NOTE, CREATED_TS
+                    )
+                    VALUES (
+                        P_CLAIM_ID, P_TENANT_ID,
+                        'RELATED_CLAIM_ESCALATION',
+                        V_RELATED_CLAIM_ID,
+                        'Related claim triggered escalation',
+                        V_CURRENT_TS
+                    );
+                END IF;
+            END LOOP FETCH_LOOP;
+
+            CLOSE C_RELATED;
+        END IF;
+    END RELATED_CLAIM_SCAN;
+
+    IF P_FINAL_DECISION IN (
+        'APPROVED',
+        'MANUAL_REVIEW',
+        'MANUAL_REVIEW_DOCS',
+        'MANUAL_REVIEW_ESCALATED'
+    ) THEN
+        UPDATE CLAIM
+        SET
+            STATUS = P_FINAL_DECISION,
+            RISK_SCORE = P_RISK_SCORE,
+            APPROVER_ID = P_APPROVER_ID,
+            UPDATED_TS = V_CURRENT_TS
+        WHERE CLAIM_ID = P_CLAIM_ID
+          AND TENANT_ID = P_TENANT_ID;
+    ELSE
+        INSERT INTO CLAIM_REJECTION_AUDIT (
+            CLAIM_ID, TENANT_ID, DECISION, RISK_SCORE,
+            APPROVER_ID, REQUESTED_BY, CREATED_TS
+        )
+        VALUES (
+            P_CLAIM_ID, P_TENANT_ID, P_FINAL_DECISION,
+            P_RISK_SCORE, P_APPROVER_ID,
+            P_REQUESTED_BY, V_CURRENT_TS
+        );
+    END IF;
+
+    SET P_AUDIT_ID = NEXT VALUE FOR CLAIM_PROCESSING_AUDIT_SEQ;
+
+    INSERT INTO CLAIM_PROCESSING_AUDIT (
+        AUDIT_ID, CLAIM_ID, TENANT_ID, FINAL_DECISION,
+        RISK_SCORE, APPROVER_ID, APPROVAL_DEPTH,
+        APPROVAL_PATH, RULE_ACTION, ESCALATION_COUNT,
+        REQUESTED_BY, CREATED_TS
+    )
+    VALUES (
+        P_AUDIT_ID, P_CLAIM_ID, P_TENANT_ID,
+        P_FINAL_DECISION, P_RISK_SCORE, P_APPROVER_ID,
+        V_APPROVAL_DEPTH, V_APPROVAL_PATH,
+        V_RULE_ACTION, V_ESCALATION_COUNT,
+        P_REQUESTED_BY, V_CURRENT_TS
+    );
+
+END P_ADVANCED_CLAIM;
